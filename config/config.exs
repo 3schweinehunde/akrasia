@@ -13,10 +13,10 @@ config :akrasia,
 # Configures the endpoint
 config :akrasia, AkrasiaWeb.Endpoint,
   url: [host: "localhost"],
-  secret_key_base: "HWEwKDPr7oTn/92HkjEp0PPzHQSwWEeFKdWjkLqQKe38Xttt3ORiSwMJHP9mIbEA",
+  secret_key_base: "kIFJQWZTUQ3chntrpz7N8BJbi4xl7sorCa7Zc8Y17xW+9KjbypRP2ttfg1EIyz5k",
   render_errors: [view: AkrasiaWeb.ErrorView, accepts: ~w(html json), layout: false],
   pubsub_server: Akrasia.PubSub,
-  live_view: [signing_salt: "Z89slPr+"]
+  live_view: [signing_salt: "YNVjJjW7"]
 
 # Configures Elixir's Logger
 config :logger, :console,

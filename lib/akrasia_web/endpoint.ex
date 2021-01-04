@@ -7,7 +7,7 @@ defmodule AkrasiaWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_akrasia_key",
-    signing_salt: "DwlfLtHk"
+    signing_salt: "d8HDEfr5"
   ]
 
   socket "/socket", AkrasiaWeb.UserSocket,
