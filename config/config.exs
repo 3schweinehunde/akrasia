@@ -26,7 +26,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :pan, Akrasia.Mailer,
+config :akrasia, Akrasia.Mailer,
   adapter: Bamboo.SMTPAdapter,
   server: "localhost",
   port: 25,

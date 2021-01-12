@@ -1,15 +1,15 @@
 defmodule Akrasia.Accounts.UserNotifier do
   defp deliver(to, body) do
-    require Bamboo.Email
+    import Bamboo.Email
 
-    Bamboo.Email.new_email(
+    new_email(
         from: "noreply@akrasia.informatom.com",
         to: to,
         subject: "Akrasia Email Notification",
-        text_body: body,
+        text_body: body
     )
+    |> Akrasia.Mailer.deliver_now()
 
-    Akrasia.Mailer.deliver_now(new_email)
     {:ok, %{to: to, body: body}}
   end
 
