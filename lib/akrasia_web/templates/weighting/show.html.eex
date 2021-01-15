@@ -1,0 +1,28 @@
+<h1>Show Weighting</h1>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @weighting.date %>
+  </li>
+
+  <li>
+    <strong>Weight:</strong>
+    <%= @weighting.weight %>
+  </li>
+
+  <li>
+    <strong>Abdominal girth:</strong>
+    <%= @weighting.abdominal_girth %>
+  </li>
+
+  <li>
+    <strong>Adipose:</strong>
+    <%= @weighting.adipose %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: Routes.weighting_path(@conn, :edit, @weighting) %></span>
+<span><%= link "Back", to: Routes.weighting_path(@conn, :index) %></span>

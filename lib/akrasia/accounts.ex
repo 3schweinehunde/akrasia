@@ -346,4 +346,100 @@ defmodule Akrasia.Accounts do
       {:error, :user, changeset, _} -> {:error, changeset}
     end
   end
+
+  alias Akrasia.Accounts.Weighting
+
+  @doc """
+  Returns the list of weightings.
+
+  ## Examples
+
+      iex> list_weightings()
+      [%Weighting{}, ...]
+
+  """
+  def list_weightings do
+    Repo.all(Weighting)
+  end
+
+  @doc """
+  Gets a single weighting.
+
+  Raises `Ecto.NoResultsError` if the Weighting does not exist.
+
+  ## Examples
+
+      iex> get_weighting!(123)
+      %Weighting{}
+
+      iex> get_weighting!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_weighting!(id), do: Repo.get!(Weighting, id)
+
+  @doc """
+  Creates a weighting.
+
+  ## Examples
+
+      iex> create_weighting(%{field: value})
+      {:ok, %Weighting{}}
+
+      iex> create_weighting(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_weighting(attrs \\ %{}) do
+    %Weighting{}
+    |> Weighting.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a weighting.
+
+  ## Examples
+
+      iex> update_weighting(weighting, %{field: new_value})
+      {:ok, %Weighting{}}
+
+      iex> update_weighting(weighting, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_weighting(%Weighting{} = weighting, attrs) do
+    weighting
+    |> Weighting.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a weighting.
+
+  ## Examples
+
+      iex> delete_weighting(weighting)
+      {:ok, %Weighting{}}
+
+      iex> delete_weighting(weighting)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_weighting(%Weighting{} = weighting) do
+    Repo.delete(weighting)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking weighting changes.
+
+  ## Examples
+
+      iex> change_weighting(weighting)
+      %Ecto.Changeset{data: %Weighting{}}
+
+  """
+  def change_weighting(%Weighting{} = weighting, attrs \\ %{}) do
+    Weighting.changeset(weighting, attrs)
+  end
 end

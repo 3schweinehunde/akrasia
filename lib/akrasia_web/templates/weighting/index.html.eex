@@ -1,0 +1,32 @@
+<h1>Listing Weightings</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Weight</th>
+      <th>Abdominal girth</th>
+      <th>Adipose</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for weighting <- @weightings do %>
+    <tr>
+      <td><%= weighting.date %></td>
+      <td><%= weighting.weight %></td>
+      <td><%= weighting.abdominal_girth %></td>
+      <td><%= weighting.adipose %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.weighting_path(@conn, :show, weighting) %></span>
+        <span><%= link "Edit", to: Routes.weighting_path(@conn, :edit, weighting) %></span>
+        <span><%= link "Delete", to: Routes.weighting_path(@conn, :delete, weighting), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Weighting", to: Routes.weighting_path(@conn, :new) %></span>

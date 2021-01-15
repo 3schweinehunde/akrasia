@@ -501,4 +501,69 @@ defmodule Akrasia.AccountsTest do
       refute inspect(%User{password: "123456"}) =~ "password: \"123456\""
     end
   end
+
+  describe "weightings" do
+    alias Akrasia.Accounts.Weighting
+
+    @valid_attrs %{abdominal_girth: 42, adipose: "120.5", date: ~N[2010-04-17 14:00:00], weight: "120.5"}
+    @update_attrs %{abdominal_girth: 43, adipose: "456.7", date: ~N[2011-05-18 15:01:01], weight: "456.7"}
+    @invalid_attrs %{abdominal_girth: nil, adipose: nil, date: nil, weight: nil}
+
+    def weighting_fixture(attrs \\ %{}) do
+      {:ok, weighting} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_weighting()
+
+      weighting
+    end
+
+    test "list_weightings/0 returns all weightings" do
+      weighting = weighting_fixture()
+      assert Accounts.list_weightings() == [weighting]
+    end
+
+    test "get_weighting!/1 returns the weighting with given id" do
+      weighting = weighting_fixture()
+      assert Accounts.get_weighting!(weighting.id) == weighting
+    end
+
+    test "create_weighting/1 with valid data creates a weighting" do
+      assert {:ok, %Weighting{} = weighting} = Accounts.create_weighting(@valid_attrs)
+      assert weighting.abdominal_girth == 42
+      assert weighting.adipose == Decimal.new("120.5")
+      assert weighting.date == ~N[2010-04-17 14:00:00]
+      assert weighting.weight == Decimal.new("120.5")
+    end
+
+    test "create_weighting/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_weighting(@invalid_attrs)
+    end
+
+    test "update_weighting/2 with valid data updates the weighting" do
+      weighting = weighting_fixture()
+      assert {:ok, %Weighting{} = weighting} = Accounts.update_weighting(weighting, @update_attrs)
+      assert weighting.abdominal_girth == 43
+      assert weighting.adipose == Decimal.new("456.7")
+      assert weighting.date == ~N[2011-05-18 15:01:01]
+      assert weighting.weight == Decimal.new("456.7")
+    end
+
+    test "update_weighting/2 with invalid data returns error changeset" do
+      weighting = weighting_fixture()
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_weighting(weighting, @invalid_attrs)
+      assert weighting == Accounts.get_weighting!(weighting.id)
+    end
+
+    test "delete_weighting/1 deletes the weighting" do
+      weighting = weighting_fixture()
+      assert {:ok, %Weighting{}} = Accounts.delete_weighting(weighting)
+      assert_raise Ecto.NoResultsError, fn -> Accounts.get_weighting!(weighting.id) end
+    end
+
+    test "change_weighting/1 returns a weighting changeset" do
+      weighting = weighting_fixture()
+      assert %Ecto.Changeset{} = Accounts.change_weighting(weighting)
+    end
+  end
 end
