@@ -16,7 +16,7 @@
     </thead>
     <tbody>
   <%= for weighting <- @weightings do %>
-      <tr>
+      <tr class="odd:bg-gray-100">
         <td class="border p-2"><%= weighting.date %></td>
         <td class="border p-2"><%= weighting.weight %></td>
         <td class="border p-2"><%= weighting.abdominal_girth %></td>
