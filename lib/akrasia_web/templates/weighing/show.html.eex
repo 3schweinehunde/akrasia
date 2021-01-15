@@ -1,36 +1,36 @@
-<h1 class="text-2xl">Show Weighting</h1>
+<h1 class="text-2xl">Show Weighing</h1>
 
 <ul class="p-4 list-disc">
 
   <li>
     <strong>Date:</strong>
-    <%= @weighting.date %>
+    <%= @weighing.date %>
   </li>
 
   <li>
     <strong>Weight:</strong>
-    <%= @weighting.weight %>
+    <%= @weighing.weight %>
   </li>
 
   <li>
     <strong>Abdominal girth:</strong>
-    <%= @weighting.abdominal_girth %>
+    <%= @weighing.abdominal_girth %>
   </li>
 
   <li>
     <strong>Adipose:</strong>
-    <%= @weighting.adipose %>
+    <%= @weighing.adipose %>
   </li>
 
 </ul>
 
 <span>
-  <%= link "Edit", to: Routes.weighting_path(@conn, :edit, @weighting),
+  <%= link "Edit", to: Routes.weighing_path(@conn, :edit, @weighing),
     class: "text-yellow-500"
    %>
 </span>
 <span>
-  <%= link "Back", to: Routes.weighting_path(@conn, :index),
+  <%= link "Back", to: Routes.weighing_path(@conn, :index),
     class: "text-blue-500"
   %>
 </span>

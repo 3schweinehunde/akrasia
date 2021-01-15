@@ -43,6 +43,8 @@ defmodule Akrasia.MixProject do
       {:ecto_sql, "~> 3.4"},
       # database adapter
       {:postgrex, ">= 0.0.0"},
+      # database adapter
+      {:myxql, "~> 0.4.0"},
       # phoenix live views
       {:phoenix_live_view, "~> 0.15.0"},
       # HTML parser

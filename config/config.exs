@@ -8,7 +8,7 @@
 use Mix.Config
 
 config :akrasia,
-  ecto_repos: [Akrasia.Repo]
+  ecto_repos: [Akrasia.Repo, Akrasia.LegacyRepo]
 
 # Configures the endpoint
 config :akrasia, AkrasiaWeb.Endpoint,

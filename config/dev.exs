@@ -9,6 +9,13 @@ config :akrasia, Akrasia.Repo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
+config :akrasia, Akrasia.LegacyRepo,
+  adapter: Ecto.Adapters.MyXQL,
+  database: "bmi_development",
+  username: "bmi",
+  password: "bmi",
+  hostname: "localhost"
+
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

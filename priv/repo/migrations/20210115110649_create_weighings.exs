@@ -1,8 +1,8 @@
-defmodule Akrasia.Repo.Migrations.CreateWeightings do
+defmodule Akrasia.Repo.Migrations.CreateWeighings do
   use Ecto.Migration
 
   def change do
-    create table(:weightings) do
+    create table(:weighings) do
       add :date, :naive_datetime
       add :weight, :decimal
       add :abdominal_girth, :integer
@@ -12,6 +12,6 @@ defmodule Akrasia.Repo.Migrations.CreateWeightings do
       timestamps()
     end
 
-    create index(:weightings, [:user_id])
+    create index(:weighings, [:user_id])
   end
 end

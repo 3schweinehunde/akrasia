@@ -1,8 +1,8 @@
-defmodule Akrasia.Accounts.Weighting do
+defmodule Akrasia.Accounts.Weighing do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "weightings" do
+  schema "weighings" do
     field :abdominal_girth, :integer
     field :adipose, :decimal
     field :date, :naive_datetime
@@ -13,8 +13,8 @@ defmodule Akrasia.Accounts.Weighting do
   end
 
   @doc false
-  def changeset(weighting, attrs) do
-    weighting
+  def changeset(weighing, attrs) do
+    weighing
     |> cast(attrs, [:date, :weight, :abdominal_girth, :adipose, :user_id])
     |> validate_required([:date, :weight, :abdominal_girth, :adipose])
   end

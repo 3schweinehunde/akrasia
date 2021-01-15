@@ -347,100 +347,100 @@ defmodule Akrasia.Accounts do
     end
   end
 
-  alias Akrasia.Accounts.Weighting
+  alias Akrasia.Accounts.Weighing
 
   @doc """
-  Returns the list of weightings.
+  Returns the list of weighings.
 
   ## Examples
 
-      iex> list_weightings()
-      [%Weighting{}, ...]
+      iex> list_weighings()
+      [%Weighing{}, ...]
 
   """
-  def list_weightings do
-    Repo.all(Weighting)
+  def list_weighings do
+    Repo.all(Weighing)
     |> Repo.preload(:user)
   end
 
   @doc """
-  Gets a single weighting.
+  Gets a single weighing.
 
-  Raises `Ecto.NoResultsError` if the Weighting does not exist.
+  Raises `Ecto.NoResultsError` if the Weighing does not exist.
 
   ## Examples
 
-      iex> get_weighting!(123)
-      %Weighting{}
+      iex> get_weighing!(123)
+      %Weighing{}
 
-      iex> get_weighting!(456)
+      iex> get_weighing!(456)
       ** (Ecto.NoResultsError)
 
   """
-  def get_weighting!(id), do: Repo.get!(Weighting, id)
+  def get_weighing!(id), do: Repo.get!(Weighing, id)
 
   @doc """
-  Creates a weighting.
+  Creates a weighing.
 
   ## Examples
 
-      iex> create_weighting(%{field: value})
-      {:ok, %Weighting{}}
+      iex> create_weighing(%{field: value})
+      {:ok, %Weighing{}}
 
-      iex> create_weighting(%{field: bad_value})
+      iex> create_weighing(%{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_weighting(attrs \\ %{}) do
-    %Weighting{}
-    |> Weighting.changeset(attrs)
+  def create_weighing(attrs \\ %{}) do
+    %Weighing{}
+    |> Weighing.changeset(attrs)
     |> Repo.insert()
   end
 
   @doc """
-  Updates a weighting.
+  Updates a weighing.
 
   ## Examples
 
-      iex> update_weighting(weighting, %{field: new_value})
-      {:ok, %Weighting{}}
+      iex> update_weighing(weighing, %{field: new_value})
+      {:ok, %Weighing{}}
 
-      iex> update_weighting(weighting, %{field: bad_value})
+      iex> update_weighing(weighing, %{field: bad_value})
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_weighting(%Weighting{} = weighting, attrs) do
-    weighting
-    |> Weighting.changeset(attrs)
+  def update_weighing(%Weighing{} = weighing, attrs) do
+    weighing
+    |> Weighing.changeset(attrs)
     |> Repo.update()
   end
 
   @doc """
-  Deletes a weighting.
+  Deletes a weighing.
 
   ## Examples
 
-      iex> delete_weighting(weighting)
-      {:ok, %Weighting{}}
+      iex> delete_weighing(weighing)
+      {:ok, %Weighing{}}
 
-      iex> delete_weighting(weighting)
+      iex> delete_weighing(weighing)
       {:error, %Ecto.Changeset{}}
 
   """
-  def delete_weighting(%Weighting{} = weighting) do
-    Repo.delete(weighting)
+  def delete_weighing(%Weighing{} = weighing) do
+    Repo.delete(weighing)
   end
 
   @doc """
-  Returns an `%Ecto.Changeset{}` for tracking weighting changes.
+  Returns an `%Ecto.Changeset{}` for tracking weighing changes.
 
   ## Examples
 
-      iex> change_weighting(weighting)
-      %Ecto.Changeset{data: %Weighting{}}
+      iex> change_weighing(weighing)
+      %Ecto.Changeset{data: %Weighing{}}
 
   """
-  def change_weighting(%Weighting{} = weighting, attrs \\ %{}) do
-    Weighting.changeset(weighting, attrs)
+  def change_weighing(%Weighing{} = weighing, attrs \\ %{}) do
+    Weighing.changeset(weighing, attrs)
   end
 end

@@ -9,3 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
+
+IO.puts weighings

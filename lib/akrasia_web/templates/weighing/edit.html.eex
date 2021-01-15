@@ -1,0 +1,8 @@
+<h1 class="text-2xl">Edit Weighing</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.weighing_path(@conn, :update, @weighing)) %>
+
+<span>
+  <%= link "Back", to: Routes.weighing_path(@conn, :index),
+    class: "text-blue-700" %>
+</span>

@@ -1,4 +1,4 @@
-<h1 class="text-2xl">Listing Weightings</h1>
+<h1 class="text-2xl">Listing Weighings</h1>
 
 <div class="py-6">
   <table class="table-auto">
@@ -15,31 +15,31 @@
       </tr>
     </thead>
     <tbody>
-  <%= for weighting <- @weightings do %>
+  <%= for weighing <- @weighings do %>
       <tr class="odd:bg-gray-100">
-        <td class="border p-2"><%= weighting.date %></td>
-        <td class="border p-2"><%= weighting.weight %></td>
-        <td class="border p-2"><%= weighting.abdominal_girth %></td>
-        <td class="border p-2"><%= weighting.adipose %></td>
-        <td class="border p-2"><%= weighting.user_id %></td>
-        <td class="border p-2"><%= weighting.user && weighting.user.email %></td>
+        <td class="border p-2"><%= weighing.date %></td>
+        <td class="border p-2"><%= weighing.weight %></td>
+        <td class="border p-2"><%= weighing.abdominal_girth %></td>
+        <td class="border p-2"><%= weighing.adipose %></td>
+        <td class="border p-2"><%= weighing.user_id %></td>
+        <td class="border p-2"><%= weighing.user && weighing.user.email %></td>
 
         <td class="border p-2 space-x-2">
           <span>
             <%= link "Show",
-              to: Routes.weighting_path(@conn, :show, weighting),
+              to: Routes.weighing_path(@conn, :show, weighing),
               class: "text-green-500"
             %>
           </span>
           <span>
             <%= link "Edit",
-              to: Routes.weighting_path(@conn, :edit, weighting),
+              to: Routes.weighing_path(@conn, :edit, weighing),
               class: "text-yellow-500"
             %>
           </span>
           <span>
             <%= link "Delete",
-              to: Routes.weighting_path(@conn, :delete, weighting),
+              to: Routes.weighing_path(@conn, :delete, weighing),
               method: :delete,
               data: [confirm: "Are you sure?"],
               class: "text-red-500"
@@ -52,4 +52,4 @@
   </table>
 </div>
 
-<span><%= link "New Weighting", to: Routes.weighting_path(@conn, :new), class: "text-blue-500" %></span>
+<span><%= link "New Weighing", to: Routes.weighing_path(@conn, :new), class: "text-blue-500" %></span>

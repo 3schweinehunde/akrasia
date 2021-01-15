@@ -15,7 +15,7 @@
       <%= b.(:year, [class: "py-2 pl-1 my-1"]) %> <br/>
       <%= b.(:hour, [class: "py-2 pl-1 my-1"]) %> :
       <%= b.(:minute, [class: "py-2 pl-1 my-1"]) %>
-    <%= end %>
+    <% end %>
   </span>
   <%= error_tag f, :date %>
 
