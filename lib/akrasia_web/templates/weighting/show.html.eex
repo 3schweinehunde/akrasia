@@ -1,6 +1,6 @@
-<h1>Show Weighting</h1>
+<h1 class="text-2xl">Show Weighting</h1>
 
-<ul>
+<ul class="p-4 list-disc">
 
   <li>
     <strong>Date:</strong>
@@ -24,5 +24,13 @@
 
 </ul>
 
-<span><%= link "Edit", to: Routes.weighting_path(@conn, :edit, @weighting) %></span>
-<span><%= link "Back", to: Routes.weighting_path(@conn, :index) %></span>
+<span>
+  <%= link "Edit", to: Routes.weighting_path(@conn, :edit, @weighting),
+    class: "text-yellow-500"
+   %>
+</span>
+<span>
+  <%= link "Back", to: Routes.weighting_path(@conn, :index),
+    class: "text-blue-500"
+  %>
+</span>

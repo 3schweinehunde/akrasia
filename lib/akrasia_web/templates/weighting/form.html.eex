@@ -1,4 +1,6 @@
-<%= form_for @changeset, @action, fn f -> %>
+<%= form_for @changeset, @action,
+  [class: "flex flex-col space-y-4  max-w-md"],
+  fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -6,7 +8,15 @@
   <% end %>
 
   <%= label f, :date %>
-  <%= datetime_select f, :date %>
+  <span>
+    <%= datetime_select f, :date , builder: fn b -> %>
+      <%= b.(:day, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:month, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:year, [class: "py-2 pl-1 my-1"]) %> <br/>
+      <%= b.(:hour, [class: "py-2 pl-1 my-1"]) %> :
+      <%= b.(:minute, [class: "py-2 pl-1 my-1"]) %>
+    <%= end %>
+  </span>
   <%= error_tag f, :date %>
 
   <%= label f, :weight %>
@@ -26,6 +36,7 @@
   <%= error_tag f, :user_id %>
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Save",
+      [class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
   </div>
 <% end %>
