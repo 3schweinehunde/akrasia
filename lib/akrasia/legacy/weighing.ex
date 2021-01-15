@@ -2,6 +2,11 @@ defmodule Akrasia.Legacy.Weighing do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @field_source_mapper fn
+    :inserted_at -> :created_at
+    x -> x
+  end
+
   schema "weighings" do
     field :date, :date
     field :user_id, :integer

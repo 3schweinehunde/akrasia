@@ -12,4 +12,4 @@
 
 weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
 
-IO.puts weighings
+IO.inspect weighings
