@@ -1,7 +1,8 @@
 <h1 class="text-2xl"> Register</h1>
 
 <%= form_for @changeset, Routes.user_registration_path(@conn, :create),
-  [class: "flex flex-col space-y-4  max-w-md"], fn f -> %>
+  [class: "flex flex-col space-y-4  max-w-md"],
+  fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -17,11 +18,12 @@
   <%= error_tag f, :password %>
 
   <div>
-    <%= submit "Register", [class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
+    <%= submit "Register",
+      [class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
   </div>
 <% end %>
 
-<p class="flex flex-row space-x-12">
-  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %>
+<p>
+  <%= link "Log in", to: Routes.user_session_path(@conn, :new) %> |
   <%= link "Forgot your password?", to: Routes.user_reset_password_path(@conn, :new) %>
 </p>
