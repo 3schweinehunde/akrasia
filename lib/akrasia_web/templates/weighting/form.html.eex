@@ -21,6 +21,10 @@
   <%= number_input f, :adipose, step: "any" %>
   <%= error_tag f, :adipose %>
 
+  <%= label f, :user_id %>
+  <%= number_input f, :user_id %>
+  <%= error_tag f, :user_id %>
+
   <div>
     <%= submit "Save" %>
   </div>

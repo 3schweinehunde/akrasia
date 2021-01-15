@@ -1,32 +1,38 @@
-<h1>Listing Weightings</h1>
+<h1 class="text-2xl">Listing Weightings</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Weight</th>
-      <th>Abdominal girth</th>
-      <th>Adipose</th>
+<div class="py-6">
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th class="border p-2">Date</th>
+        <th class="border p-2">Weight</th>
+        <th class="border p-2">Abdominal girth</th>
+        <th class="border p-2">Adipose</th>
+        <th class="border p-2">User Id</th>
+        <th class="border p-2">User Name</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for weighting <- @weightings do %>
-    <tr>
-      <td><%= weighting.date %></td>
-      <td><%= weighting.weight %></td>
-      <td><%= weighting.abdominal_girth %></td>
-      <td><%= weighting.adipose %></td>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for weighting <- @weightings do %>
+      <tr>
+        <td class="border p-2"><%= weighting.date %></td>
+        <td class="border p-2"><%= weighting.weight %></td>
+        <td class="border p-2"><%= weighting.abdominal_girth %></td>
+        <td class="border p-2"><%= weighting.adipose %></td>
+        <td class="border p-2"><%= weighting.user_id %></td>
+        <td class="border p-2"><%= weighting.user && weighting.user.email %></td>
 
-      <td>
-        <span><%= link "Show", to: Routes.weighting_path(@conn, :show, weighting) %></span>
-        <span><%= link "Edit", to: Routes.weighting_path(@conn, :edit, weighting) %></span>
-        <span><%= link "Delete", to: Routes.weighting_path(@conn, :delete, weighting), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
+        <td class="border p-2">
+          <span><%= link "Show", to: Routes.weighting_path(@conn, :show, weighting) %></span>
+          <span><%= link "Edit", to: Routes.weighting_path(@conn, :edit, weighting) %></span>
+          <span><%= link "Delete", to: Routes.weighting_path(@conn, :delete, weighting), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+</div>
 
-<span><%= link "New Weighting", to: Routes.weighting_path(@conn, :new) %></span>
+<span><%= link "New Weighting", to: Routes.weighting_path(@conn, :new), class: "text-blue-500" %></span>

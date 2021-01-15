@@ -360,6 +360,7 @@ defmodule Akrasia.Accounts do
   """
   def list_weightings do
     Repo.all(Weighting)
+    |> Repo.preload(:user)
   end
 
   @doc """

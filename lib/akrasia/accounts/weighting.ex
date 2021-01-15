@@ -7,7 +7,7 @@ defmodule Akrasia.Accounts.Weighting do
     field :adipose, :decimal
     field :date, :naive_datetime
     field :weight, :decimal
-    field :user_id, :id
+    belongs_to :user, Akrasia.Accounts.User, foreign_key: :user_id
 
     timestamps()
   end
@@ -15,7 +15,7 @@ defmodule Akrasia.Accounts.Weighting do
   @doc false
   def changeset(weighting, attrs) do
     weighting
-    |> cast(attrs, [:date, :weight, :abdominal_girth, :adipose])
+    |> cast(attrs, [:date, :weight, :abdominal_girth, :adipose, :user_id])
     |> validate_required([:date, :weight, :abdominal_girth, :adipose])
   end
 end
