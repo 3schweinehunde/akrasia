@@ -14,9 +14,19 @@
       <section class="container p-6">
         <nav role="navigation" class="flex flex-row space-x-4">
           <ul class="flex flex-row space-x-4">
-            <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>
+            <li>
+              <a href="https://hexdocs.pm/phoenix/overview.html"
+                class="text-blue-500">
+                Get Started
+              </a>
+            </li>
             <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li><%= link "LiveDashboard", to: Routes.live_dashboard_path(@conn, :home) %></li>
+              <li>
+                <%= link "LiveDashboard",
+                  to: Routes.live_dashboard_path(@conn, :home),
+                  class: "text-green-500"
+                %>
+                </li>
             <% end %>
           </ul>
           <%= render "_user_menu.html", assigns %>

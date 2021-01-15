@@ -28,19 +28,22 @@
           <span>
             <%= link "Show",
               to: Routes.weighting_path(@conn, :show, weighting),
-              class: "text-green-700" %>
+              class: "text-green-500"
+            %>
           </span>
           <span>
             <%= link "Edit",
               to: Routes.weighting_path(@conn, :edit, weighting),
-              class: "text-yellow-700" %>
+              class: "text-yellow-500"
+            %>
           </span>
           <span>
             <%= link "Delete",
               to: Routes.weighting_path(@conn, :delete, weighting),
               method: :delete,
               data: [confirm: "Are you sure?"],
-              class: "text-red-700" %>
+              class: "text-red-500"
+            %>
           </span>
         </td>
       </tr>
