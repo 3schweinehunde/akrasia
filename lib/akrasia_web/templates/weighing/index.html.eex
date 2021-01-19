@@ -4,6 +4,7 @@
   <table class="table-auto">
     <thead>
       <tr>
+        <th class="border p-2">Id</th>
         <th class="border p-2">Date</th>
         <th class="border p-2">Weight</th>
         <th class="border p-2">Abdominal girth</th>
@@ -17,6 +18,7 @@
     <tbody>
   <%= for weighing <- @weighings do %>
       <tr class="odd:bg-gray-100">
+        <td class="border p-2"><%= weighing.id %></td>
         <td class="border p-2"><%= weighing.date %></td>
         <td class="border p-2"><%= weighing.weight %></td>
         <td class="border p-2"><%= weighing.abdominal_girth %></td>
