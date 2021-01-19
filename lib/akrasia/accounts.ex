@@ -176,6 +176,10 @@ defmodule Akrasia.Accounts do
 
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
         from q in query, order_by: [{^sort_order, ^sort_by}]
+
+      {:search, %{search_by: search_by, search_term: search_term}}, query ->
+          from q in query, where: ^[{search_by, search_term}]
+
     end)
     |> Repo.all()
     |> Repo.preload(:user)

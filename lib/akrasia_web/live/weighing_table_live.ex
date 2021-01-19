@@ -2,6 +2,14 @@ defmodule AkrasiaWeb.WeighingTableLive do
   use AkrasiaWeb, :live_view
 
   def mount(_params, _session, socket) do
+    socket = assign(socket,
+               id: "",
+               date: "",
+               weight: "",
+               abdominal_girth: "",
+               adipose: "",
+               user_id: "",
+               weighings: [],)
     {:ok, socket}
   end
 
@@ -69,4 +77,44 @@ defmodule AkrasiaWeb.WeighingTableLive do
 
   defp emoji(:asc), do: "⬆️"
   defp emoji(:desc), do: "⬇️"
+
+  def handle_event("id-search", %{"value" => id }, socket) do
+    search_options = %{search_by: :id, search_term: id}
+    socket = assign(socket,
+               options: Map.merge(socket.assigns.options, search_options),
+               id: id)
+
+    socket = get_weighings(socket, search_options)
+    {:noreply, socket}
+  end
+
+  def handle_event("weight-search", %{"value" => weight }, socket) do
+    search_options = %{search_by: :weight, search_term: weight}
+    socket = assign(socket,
+               options: Map.merge(socket.assigns.options, search_options),
+               weight: weight)
+
+    socket = get_weighings(socket, search_options)
+    {:noreply, socket}
+  end
+
+  defp get_weighings(socket, search_options) do
+    paginate_options =
+      %{page: socket.assigns.options.page,
+        per_page: socket.assigns.options.per_page
+      }
+    sort_options =
+      %{sort_by: socket.assigns.options.sort_by,
+        sort_order: socket.assigns.options.sort_order
+      }
+
+    weighings =
+      Akrasia.Accounts.list_weighings(
+        paginate: paginate_options,
+        sort: sort_options,
+        search: search_options
+      )
+
+    assign(socket, weighings: weighings)
+  end
 end
