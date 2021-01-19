@@ -4,12 +4,12 @@
   <table class="table-auto">
     <thead>
       <tr>
-        <th class="border p-2">Id</th>
-        <th class="border p-2">Date</th>
-        <th class="border p-2">Weight</th>
-        <th class="border p-2">Abdominal girth</th>
-        <th class="border p-2">Adipose</th>
-        <th class="border p-2">User Id</th>
+        <th class="border p-2"><%= sort_link(@socket, "Id", :id, @options) %></th>
+        <th class="border p-2"><%= sort_link(@socket, "Date", :date, @options) %></th>
+        <th class="border p-2"><%= sort_link(@socket, "Weight", :weight, @options) %></th>
+        <th class="border p-2"><%= sort_link(@socket, "Abdominal girth", :abdominal_girth, @options) %></th>
+        <th class="border p-2"><%= sort_link(@socket, "Adipose", :adipose, @options) %></th>
+        <th class="border p-2"><%= sort_link(@socket, "User Id", :user_id, @options) %></th>
         <th class="border p-2">User Name</th>
 
         <th></th>
