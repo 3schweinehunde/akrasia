@@ -10,9 +10,24 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+Akrasia.Repo.delete_all(Akrasia.Accounts.User)
 users = Akrasia.LegacyRepo.all(Akrasia.Legacy.User)
-IO.inspect users
 
-# weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
+for user <- users do
+  user
+  |> Map.drop([:admin, :height])
+  |> Map.from_struct()
+  |> Akrasia.Accounts.User.from_legacy_user()
+  |> Akrasia.Repo.insert!()
+ end
 
-# IO.inspect weighings
+Akrasia.Repo.delete_all(Akrasia.Accounts.Weighing)
+weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
+
+for weighing <- weighings do
+  weighing
+  |> Map.from_struct()
+  |> Akrasia.Accounts.Weighing.from_legacy_weighing()
+  |> Akrasia.Repo.preload(:user)
+  |> Akrasia.Repo.insert!()
+ end

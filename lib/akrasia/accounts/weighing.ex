@@ -5,7 +5,7 @@ defmodule Akrasia.Accounts.Weighing do
   schema "weighings" do
     field :abdominal_girth, :integer
     field :adipose, :decimal
-    field :date, :naive_datetime
+    field :date, :date
     field :weight, :decimal
     belongs_to :user, Akrasia.Accounts.User, foreign_key: :user_id
 
@@ -17,5 +17,9 @@ defmodule Akrasia.Accounts.Weighing do
     weighing
     |> cast(attrs, [:date, :weight, :abdominal_girth, :adipose, :user_id])
     |> validate_required([:date, :weight, :abdominal_girth, :adipose])
+  end
+
+  def from_legacy_weighing(legacy_weighing) do
+    struct(__MODULE__, legacy_weighing)
   end
 end
