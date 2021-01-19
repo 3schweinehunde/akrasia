@@ -21,6 +21,7 @@ defmodule AkrasiaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+    live "/live/weighings", WeighingTableLive
   end
 
   # Other scopes may use custom stacks.

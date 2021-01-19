@@ -1,0 +1,72 @@
+<h1 class="text-2xl">Listing Weighings</h1>
+
+<div class="py-6">
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th class="border p-2">Id</th>
+        <th class="border p-2">Date</th>
+        <th class="border p-2">Weight</th>
+        <th class="border p-2">Abdominal girth</th>
+        <th class="border p-2">Adipose</th>
+        <th class="border p-2">User Id</th>
+        <th class="border p-2">User Name</th>
+
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= for weighing <- @weighings do %>
+        <tr class="odd:bg-gray-100">
+          <td class="border p-2"><%= weighing.id %></td>
+          <td class="border p-2"><%= weighing.date %></td>
+          <td class="border p-2"><%= weighing.weight %></td>
+          <td class="border p-2"><%= weighing.abdominal_girth %></td>
+          <td class="border p-2"><%= weighing.adipose %></td>
+          <td class="border p-2"><%= weighing.user_id %></td>
+          <td class="border p-2"><%= weighing.user && weighing.user.email %></td>
+
+          <td class="border p-2 space-x-2">
+            <span>
+              <%= link "Show",
+                to: Routes.weighing_path(@socket, :show, weighing),
+                class: "text-green-500"
+              %>
+            </span>
+            <span>
+              <%= link "Edit",
+                to: Routes.weighing_path(@socket, :edit, weighing),
+                class: "text-yellow-500"
+              %>
+            </span>
+            <span>
+              <%= link "Delete",
+                to: Routes.weighing_path(@socket, :delete, weighing),
+                method: :delete,
+                data: [confirm: "Are you sure?"],
+                class: "text-red-500"
+              %>
+            </span>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<div class="pb-6">
+  <%= if @options.page > 1 do %>
+    <%= pagination_link(@socket, "Previous", @options.page - 1, @options, "border p-2 text-blue-500") %>
+  <% end %>
+  <%= for i <- (@options.page - 2)..(@options.page + 2), i > 0 do %>
+    <%= pagination_link(@socket, i, i, @options, (if i == @options.page do
+        "bg-gray-200 border p-2 text-gray-500"
+      else
+        "border p-2 text-blue-500"
+      end)) %>
+  <% end %>
+  <%= pagination_link(@socket, "Next", @options.page + 1, @options, "border p-2 text-blue-500") %>
+</div>
+</div>
+
+<span><%= link "New Weighing", to: Routes.weighing_path(@socket, :new), class: "text-blue-500" %></span>
