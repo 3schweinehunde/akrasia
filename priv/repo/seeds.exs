@@ -10,6 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
+users = Akrasia.LegacyRepo.all(Akrasia.Legacy.User)
+IO.inspect users
 
-IO.inspect weighings
+# weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
+
+# IO.inspect weighings
