@@ -181,11 +181,16 @@ defmodule Akrasia.Accounts do
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
             if value != "" do
-              from q in query, where: ^[{column, value}]
+              if criteria[:like_search] do
+                from q in query, where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%"<>value<>"%"))
+              else
+                from q in query, where: ^[{column, value}]
+              end
             else
               query
             end
           end)
+      {:like_search, _}, query -> query
     end)
     |> Repo.all()
     |> Repo.preload(:user)

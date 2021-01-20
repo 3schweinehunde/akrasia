@@ -11,7 +11,8 @@ defmodule AkrasiaWeb.WeighingTableLive do
                user_id: "",
                weighings: [],
                options: %{},
-               search_options: %{})
+               search_options: %{},
+               like_search: false)
     {:ok, socket}
   end
 
@@ -82,6 +83,13 @@ defmodule AkrasiaWeb.WeighingTableLive do
     {:noreply, socket}
   end
 
+  def handle_event("toggle_search_mode", _, socket) do
+    socket = assign(socket, like_search: !socket.assigns.like_search)
+    socket = get_weighings(socket)
+
+    {:noreply, socket}
+  end
+
   defp get_weighings(socket) do
     paginate_options =
       %{page: socket.assigns.options.page,
@@ -96,7 +104,8 @@ defmodule AkrasiaWeb.WeighingTableLive do
       Akrasia.Accounts.list_weighings(
         paginate: paginate_options,
         sort: sort_options,
-        search: socket.assigns.search_options
+        search: socket.assigns.search_options,
+        like_search: socket.assigns.like_search
       )
 
     assign(socket, weighings: weighings)

@@ -10,6 +10,7 @@
         <th class="border p-2"><%= sort_link(@socket, "Adipose", :adipose, @options) %></th>
         <th class="border p-2"><%= sort_link(@socket, "User Id", :user_id, @options) %></th>
         <th class="border p-2">User Name</th>
+        <th class="border p-2">Actions</th>
         <th></th>
       </tr>
     </thead>
@@ -46,6 +47,13 @@
           </form>
         </td>
         <td class="border p-2">&nbsp;</td>
+        <td class="border p-2 text-center">
+          Search mode:
+          <%= link (if @like_search, do: "contains", else: "exact"),
+                to: "#",
+                phx_click: "toggle_search_mode",
+                class: "text-blue-500" %>
+        </td>
       </tr>
       <%= for weighing <- @weighings do %>
         <tr class="odd:bg-gray-100">
