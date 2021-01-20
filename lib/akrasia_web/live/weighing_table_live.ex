@@ -78,13 +78,14 @@ defmodule AkrasiaWeb.WeighingTableLive do
   defp emoji(:asc), do: "⬆️"
   defp emoji(:desc), do: "⬇️"
 
-  def handle_event("id-search", %{"value" => id }, socket) do
-    search_options = %{search_by: :id, search_term: id}
+  def handle_event("search", %{"search" => search}, socket) do
+    [column_string | _] = Map.keys(search)
+    search_options = %{search_by: String.to_atom(column_string), search_term: search[column_string]}
     socket = assign(socket,
-               options: Map.merge(socket.assigns.options, search_options),
-               id: id)
-
+                options: Map.merge(socket.assigns.options, search_options),
+                id: search[column_string])
     socket = get_weighings(socket, search_options)
+
     {:noreply, socket}
   end
 
@@ -119,13 +120,13 @@ defmodule AkrasiaWeb.WeighingTableLive do
   end
 
 
-  defp column_search(column_name, value) do
-    text_input(:search, String.to_atom(column_name),
+  defp column_search(form, column_name, value) do
+    text_input(form, String.to_atom(column_name),
       value: value,
       placeholder: column_name,
       autofocus: "autofocus",
       autocomplete: "off",
-      class: "w-20",
+      class: "w-20 p-1.5",
       "phx-keyup": column_name <> "-search")
   end
 end

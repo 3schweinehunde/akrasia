@@ -16,7 +16,9 @@
     <tbody>
       <tr>
         <td class="border p-2">
-          <%= column_search("id", @id) %>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "id", @id) %>
+          </form>
         </td>
         <td class="border p-2">
           <input type="text" name="date" value="<%= @date %>"
@@ -26,7 +28,7 @@
                 phx-keyup="date-search"/>
         </td>
         <td class="border p-2">
-          <%= column_search("weight", @weight) %>
+          <%= column_search(f, "weight", @weight) %>
         </td>
         <td class="border p-2">
           <input type="text" name="abdominal_girth" value="<%= @abdominal_girth %>"
