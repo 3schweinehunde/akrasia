@@ -175,15 +175,16 @@ defmodule Akrasia.Accounts do
           limit: ^per_page
 
       {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
-        from q in query,
-          order_by: [{^sort_order, ^sort_by}]
+        from q in query, order_by: [{^sort_order, ^sort_by}]
 
       {:search, search_options}, query ->
-
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
-            from q in query,
-              where: ^[{column, value}]
+            if value != "" do
+              from q in query, where: ^[{column, value}]
+            else
+              query
+            end
           end)
     end)
     |> Repo.all()

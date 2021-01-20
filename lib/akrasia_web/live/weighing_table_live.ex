@@ -110,6 +110,6 @@ defmodule AkrasiaWeb.WeighingTableLive do
       autofocus: "autofocus",
       autocomplete: "off",
       class: "w-20 p-1.5",
-      phx_debounce: 2000)
+      phx_debounce: 300)
   end
 end
