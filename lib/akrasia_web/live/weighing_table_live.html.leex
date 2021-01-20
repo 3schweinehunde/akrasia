@@ -21,35 +21,29 @@
           </form>
         </td>
         <td class="border p-2">
-          <input type="text" name="date" value="<%= @date %>"
-                placeholder="date"
-                autofocus autocomplete="off"
-                class="w-40"
-                phx-keyup="date-search"/>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "date", @date) %>
+          </form>
         </td>
         <td class="border p-2">
-          <%= column_search(f, "weight", @weight) %>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "weight", @weight) %>
+          </form>
         </td>
         <td class="border p-2">
-          <input type="text" name="abdominal_girth" value="<%= @abdominal_girth %>"
-                placeholder="abdominal girth"
-                autofocus autocomplete="off"
-                class="w-20"
-                phx-keyup="abdominal_girth-search"/>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "abdominal_girth", @abdominal_girth) %>
+          </form>
         </td>
         <td class="border p-2">
-          <input type="text" name="adipose" value="<%= @adipose %>"
-                placeholder="adipose"
-                autofocus autocomplete="off"
-                class="w-20"
-                phx-keyup="adipose-search"/>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "adipose", @adipose) %>
+          </form>
         </td>
         <td class="border p-2">
-          <input type="text" name="user_id" value="<%= @user_id %>"
-                placeholder="user id"
-                autofocus autocomplete="off"
-                class="w-20"
-                phx-keyup="user_id-search"/>
+          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+            <%= column_search(f, "user_id", @user_id) %>
+          </form>
         </td>
         <td class="border p-2">&nbsp;</td>
       </tr>

@@ -9,7 +9,9 @@ defmodule AkrasiaWeb.WeighingTableLive do
                abdominal_girth: "",
                adipose: "",
                user_id: "",
-               weighings: [])
+               weighings: [],
+               options: %{},
+               search_options: %{})
     {:ok, socket}
   end
 
@@ -23,17 +25,8 @@ defmodule AkrasiaWeb.WeighingTableLive do
     paginate_options = %{page: page, per_page: per_page}
     sort_options = %{sort_by: sort_by, sort_order: sort_order}
 
-    weighings =
-      Akrasia.Accounts.list_weighings(
-        paginate: paginate_options,
-        sort: sort_options
-      )
-
-    socket =
-      assign(socket,
-        options: Map.merge(paginate_options, sort_options),
-        weighings: weighings
-      )
+    socket = assign(socket, options: Map.merge(paginate_options, sort_options))
+    socket = get_weighings(socket)
 
     {:noreply, socket}
   end
@@ -80,26 +73,16 @@ defmodule AkrasiaWeb.WeighingTableLive do
 
   def handle_event("search", %{"search" => search}, socket) do
     [column_string | _] = Map.keys(search)
-    search_options = %{search_by: String.to_atom(column_string), search_term: search[column_string]}
-    socket = assign(socket,
-                options: Map.merge(socket.assigns.options, search_options),
-                id: search[column_string])
-    socket = get_weighings(socket, search_options)
+    column = String.to_atom(column_string)
+    search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
+    socket = assign(socket, search_options: search_options)
+    socket = assign(socket, %{column => search[column_string]})
+    socket = get_weighings(socket)
 
     {:noreply, socket}
   end
 
-  def handle_event("weight-search", %{"value" => weight }, socket) do
-    search_options = %{search_by: :weight, search_term: weight}
-    socket = assign(socket,
-               options: Map.merge(socket.assigns.options, search_options),
-               weight: weight)
-
-    socket = get_weighings(socket, search_options)
-    {:noreply, socket}
-  end
-
-  defp get_weighings(socket, search_options) do
+  defp get_weighings(socket) do
     paginate_options =
       %{page: socket.assigns.options.page,
         per_page: socket.assigns.options.per_page
@@ -113,7 +96,7 @@ defmodule AkrasiaWeb.WeighingTableLive do
       Akrasia.Accounts.list_weighings(
         paginate: paginate_options,
         sort: sort_options,
-        search: search_options
+        search: socket.assigns.search_options
       )
 
     assign(socket, weighings: weighings)
@@ -127,6 +110,6 @@ defmodule AkrasiaWeb.WeighingTableLive do
       autofocus: "autofocus",
       autocomplete: "off",
       class: "w-20 p-1.5",
-      "phx-keyup": column_name <> "-search")
+      phx_debounce: 2000)
   end
 end
