@@ -9,7 +9,7 @@ defmodule AkrasiaWeb.WeighingTableLive do
                abdominal_girth: "",
                adipose: "",
                user_id: "",
-               weighings: [],)
+               weighings: [])
     {:ok, socket}
   end
 
@@ -116,5 +116,16 @@ defmodule AkrasiaWeb.WeighingTableLive do
       )
 
     assign(socket, weighings: weighings)
+  end
+
+
+  defp column_search(column_name, value) do
+    text_input(:search, String.to_atom(column_name),
+      value: value,
+      placeholder: column_name,
+      autofocus: "autofocus",
+      autocomplete: "off",
+      class: "w-20",
+      "phx-keyup": column_name <> "-search")
   end
 end
