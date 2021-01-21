@@ -41,14 +41,14 @@
               <% end %>
             </td>
           <% end %>
-          <td class="border p-2 space-x-2 text-center">
-            <%= link raw(icon(:show)),
+          <td class="border p-2 space-x-2">
+            <%= link "Show",
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :show, record),
               class: "text-green-500" %> &nbsp;
-            <%= link raw(icon(:edit)),
+            <%= link "Edit",
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :edit, record),
               class: "text-yellow-500" %> &nbsp;
-            <%= link raw(icon(:delete)),
+            <%= link "Delete",
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :delete, record),
               method: :delete,
               data: [confirm: "Are you sure?"],
