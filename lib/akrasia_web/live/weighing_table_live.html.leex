@@ -3,50 +3,25 @@
   <table class="table-auto">
     <thead>
       <tr>
-        <th class="border p-2"><%= sort_link(@socket, "Id", :id, @options) %></th>
-        <th class="border p-2"><%= sort_link(@socket, "Date", :date, @options) %></th>
-        <th class="border p-2"><%= sort_link(@socket, "Weight", :weight, @options) %></th>
-        <th class="border p-2"><%= sort_link(@socket, "Abdominal girth", :abdominal_girth, @options) %></th>
-        <th class="border p-2"><%= sort_link(@socket, "Adipose", :adipose, @options) %></th>
-        <th class="border p-2"><%= sort_link(@socket, "User Id", :user_id, @options) %></th>
-        <th class="border p-2">User Name</th>
+        <%= for column <- @columns do %>
+          <th class="border p-2">
+            <%= sort_link(@socket, column.name, column.field, @options) %>
+          </th>
+        <% end %>
         <th class="border p-2">Actions</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "id", @id) %>
-          </form>
-        </td>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "date", @date) %>
-          </form>
-        </td>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "weight", @weight) %>
-          </form>
-        </td>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "abdominal_girth", @abdominal_girth) %>
-          </form>
-        </td>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "adipose", @adipose) %>
-          </form>
-        </td>
-        <td class="border p-2">
-          <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-            <%= column_search(f, "user_id", @user_id) %>
-          </form>
-        </td>
-        <td class="border p-2">&nbsp;</td>
+        <%= for column <- @columns do %>
+          <td class="border p-2">
+            <%= if column[:searchable] do %>
+              <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
+                <%= column_search(f, Atom.to_string(column.field), @search_options[column.field]) %>
+              </form>
+            <% end %>
+          </td>
+        <% end %>
         <td class="border p-2 text-center">
           Search mode:
           <%= link (if @like_search, do: "contains", else: "exact"),
@@ -57,40 +32,34 @@
       </tr>
       <%= for weighing <- @weighings do %>
         <tr class="odd:bg-gray-100">
-          <td class="border p-2"><%= weighing.id %></td>
-          <td class="border p-2"><%= weighing.date %></td>
-          <td class="border p-2"><%= weighing.weight %></td>
-          <td class="border p-2"><%= weighing.abdominal_girth %></td>
-          <td class="border p-2"><%= weighing.adipose %></td>
-          <td class="border p-2"><%= weighing.user_id %></td>
-          <td class="border p-2"><%= weighing.user && weighing.user.email %></td>
+          <%= for column <- @columns do %>
+            <td class="border p-2">
+              <%= if column[:template_function] do %>
+                <%= column.template_function.(weighing) %>
+              <% else %>
+                <%= Map.get(weighing, column.field) %>
+              <% end %>
+            </td>
+          <% end %>
           <td class="border p-2 space-x-2">
-            <span>
-              <%= link "Show",
-                to: Routes.weighing_path(@socket, :show, weighing),
-                class: "text-green-500"
-              %>
-            </span>
-            <span>
-              <%= link "Edit",
-                to: Routes.weighing_path(@socket, :edit, weighing),
-                class: "text-yellow-500"
-              %>
-            </span>
-            <span>
-              <%= link "Delete",
-                to: Routes.weighing_path(@socket, :delete, weighing),
-                method: :delete,
-                data: [confirm: "Are you sure?"],
-                class: "text-red-500"
-              %>
-            </span>
+            <%= link "Show",
+              to: Routes.weighing_path(@socket, :show, weighing),
+              class: "text-green-500" %>
+            <%= link "Edit",
+              to: Routes.weighing_path(@socket, :edit, weighing),
+              class: "text-yellow-500" %>
+            <%= link "Delete",
+              to: Routes.weighing_path(@socket, :delete, weighing),
+              method: :delete,
+              data: [confirm: "Are you sure?"],
+              class: "text-red-500" %>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
 </div>
+
 <div class="pb-6">
   <%= if @options.page > 1 do %>
     <%= pagination_link(@socket, "Previous", @options.page - 1, @options, "border p-2 text-blue-500") %>
@@ -104,5 +73,7 @@
   <% end %>
   <%= pagination_link(@socket, "Next", @options.page + 1, @options, "border p-2 text-blue-500") %>
 </div>
-</div>
-<span><%= link "New Weighing", to: Routes.weighing_path(@socket, :new), class: "text-blue-500" %></span>
+
+<%= link "New Weighing",
+      to: Routes.weighing_path(@socket, :new),
+      class: "text-blue-500" %>

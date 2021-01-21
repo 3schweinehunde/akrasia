@@ -22,4 +22,8 @@ defmodule Akrasia.Accounts.Weighing do
   def from_legacy_weighing(legacy_weighing) do
     struct(__MODULE__, legacy_weighing)
   end
+
+  def user_email(weighing) do
+    weighing.user && weighing.user.email
+  end
 end
