@@ -2,6 +2,10 @@ defmodule AkrasiaWeb.WeighingTableLive do
   use AkrasiaWeb, :live_view
 
   def mount(_params, _session, socket) do
+    config = %{heading: "Listing Weighings",
+               function_retrieving_records: &Akrasia.Accounts.list_weighings/1,
+               path_helper: :weighing_path}
+
     columns = [
       %{field: :id,
         name: "ID",
@@ -33,8 +37,9 @@ defmodule AkrasiaWeb.WeighingTableLive do
     ]
 
     socket = assign(socket,
+               config: config,
                columns: columns,
-               weighings: [],
+               records: [],
                options: %{},
                search_options: %{},
                like_search: false)
@@ -52,7 +57,7 @@ defmodule AkrasiaWeb.WeighingTableLive do
     sort_options = %{sort_by: sort_by, sort_order: sort_order}
 
     socket = assign(socket, options: Map.merge(paginate_options, sort_options))
-    socket = get_weighings(socket)
+    socket = get_records(socket)
 
     {:noreply, socket}
   end
@@ -103,19 +108,19 @@ defmodule AkrasiaWeb.WeighingTableLive do
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
     socket = assign(socket, search_options: search_options)
     socket = assign(socket, %{column => search[column_string]})
-    socket = get_weighings(socket)
+    socket = get_records(socket)
 
     {:noreply, socket}
   end
 
   def handle_event("toggle_search_mode", _, socket) do
     socket = assign(socket, like_search: !socket.assigns.like_search)
-    socket = get_weighings(socket)
+    socket = get_records(socket)
 
     {:noreply, socket}
   end
 
-  defp get_weighings(socket) do
+  defp get_records(socket) do
     paginate_options =
       %{page: socket.assigns.options.page,
         per_page: socket.assigns.options.per_page
@@ -125,15 +130,15 @@ defmodule AkrasiaWeb.WeighingTableLive do
         sort_order: socket.assigns.options.sort_order
       }
 
-    weighings =
-      Akrasia.Accounts.list_weighings(
+    records =
+      socket.assigns.config.function_retrieving_records.(
         paginate: paginate_options,
         sort: sort_options,
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search
       )
 
-    assign(socket, weighings: weighings)
+    assign(socket, records: records)
   end
 
 

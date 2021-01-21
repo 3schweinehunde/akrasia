@@ -1,4 +1,4 @@
-<h1 class="text-2xl">Listing Weighings</h1>
+<h1 class="text-2xl"><%= @config.heading %></h1>
 <div class="py-6">
   <table class="table-auto">
     <thead>
@@ -30,26 +30,26 @@
                 class: "text-blue-500" %>
         </td>
       </tr>
-      <%= for weighing <- @weighings do %>
+      <%= for record <- @records do %>
         <tr class="odd:bg-gray-100">
           <%= for column <- @columns do %>
             <td class="border p-2">
               <%= if column[:template_function] do %>
-                <%= column.template_function.(weighing) %>
+                <%= column.template_function.(record) %>
               <% else %>
-                <%= Map.get(weighing, column.field) %>
+                <%= Map.get(record, column.field) %>
               <% end %>
             </td>
           <% end %>
           <td class="border p-2 space-x-2">
             <%= link "Show",
-              to: Routes.weighing_path(@socket, :show, weighing),
+              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :show, record),
               class: "text-green-500" %>
             <%= link "Edit",
-              to: Routes.weighing_path(@socket, :edit, weighing),
+              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :edit, record),
               class: "text-yellow-500" %>
             <%= link "Delete",
-              to: Routes.weighing_path(@socket, :delete, weighing),
+              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :delete, record),
               method: :delete,
               data: [confirm: "Are you sure?"],
               class: "text-red-500" %>
@@ -74,6 +74,6 @@
   <%= pagination_link(@socket, "Next", @options.page + 1, @options, "border p-2 text-blue-500") %>
 </div>
 
-<%= link "New Weighing",
-      to: Routes.weighing_path(@socket, :new),
+<%= link "New Record",
+      to: Function.capture(Routes, @config.path_helper, 2).(@socket, :new),
       class: "text-blue-500" %>
