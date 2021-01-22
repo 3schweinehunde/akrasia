@@ -16,8 +16,14 @@ defmodule AkrasiaWeb.GridComponent do
     {:ok, socket}
   end
 
-  defp pagination_link(socket, text, page, options, class, caller) do
-    live_patch(text,
+  defp pagination_link(socket, opts) do
+    [options: options,
+     caller: caller,
+     link_title: link_title,
+     page: page,
+     class: class] = opts
+
+    live_patch(link_title,
       to:
         Routes.live_path(socket, caller,
           page: page,
@@ -29,15 +35,20 @@ defmodule AkrasiaWeb.GridComponent do
     )
   end
 
-  defp sort_link(socket, text, sort_by, options, caller) do
-    text =
+  defp sort_link(socket, opts) do
+    [link_title: link_title,
+     sort_by: sort_by,
+     options: options,
+     caller: caller] = opts
+
+    link_title =
       if sort_by == options.sort_by do
-         icon(options.sort_order) <> " " <> text
+         icon(options.sort_order) <> " " <> link_title
       else
-        text
+        link_title
       end
 
-    live_patch(raw(text),
+    live_patch(raw(link_title),
       to:
         Routes.live_path(socket, caller,
           sort_by: sort_by,

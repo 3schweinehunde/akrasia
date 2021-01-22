@@ -6,7 +6,11 @@
       <tr>
         <%= for column <- @columns do %>
           <th class="border p-2">
-            <%= sort_link(@socket, column.name, column.field, @options, @config.caller) %>
+            <%= sort_link(@socket,
+                  link_title: column.name,
+                  sort_by: column.field,
+                  options: @options,
+                  caller: @config.caller) %>
           </th>
         <% end %>
         <th class="border p-2">Actions</th>
@@ -17,7 +21,11 @@
         <%= for column <- @columns do %>
           <td class="border p-2">
             <%= if column[:searchable] do %>
-              <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save, phx_target: @myself] %>
+              <%= f= form_for :search, "#", [
+                    phx_change: :search,
+                    phx_submit: :save,
+                    phx_target: @myself
+                  ] %>
                 <%= column_search(f, Atom.to_string(column.field), @search_options[column.field]) %>
               </form>
             <% end %>
@@ -64,16 +72,35 @@
 
 <div class="pb-6">
   <%= if @options.page > 1 do %>
-    <%= pagination_link(@socket, "Previous", @options.page - 1, @options, "border p-2 text-blue-500", @config.caller) %>
+    <%= pagination_link(@socket,
+          options: @options,
+          caller: @config.caller,
+          link_title: "Previous",
+          page: @options.page - 1,
+          class: "border p-2 text-blue-500") %>
   <% end %>
+
   <%= for i <- 1..@options.page do %>
-    <%= pagination_link(@socket, i, i, @options, (if i == @options.page do
-        "bg-gray-200 border p-2 text-gray-500"
-      else
-        "border p-2 text-blue-500"
-      end), @config.caller) %>
+    <%= pagination_link(@socket,
+          options: @options,
+          caller: @config.caller,
+          link_title: i,
+          page: i,
+          class:
+            if i == @options.page do
+              "bg-gray-200 border p-2 text-gray-500"
+            else
+              "border p-2 text-blue-500"
+            end
+          ) %>
   <% end %>
-  <%= pagination_link(@socket, "Next", @options.page + 1, @options, "border p-2 text-blue-500", @config.caller) %>
+
+  <%= pagination_link(@socket,
+        options: @options,
+        caller: @config.caller,
+        link_title: "Next",
+        page: @options.page + 1,
+        class: "border p-2 text-blue-500") %>
 </div>
 
 <%= link "New Record",
