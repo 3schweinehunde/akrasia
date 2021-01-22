@@ -2,7 +2,7 @@
       id: :weighings,
       options: @options,
       config:  %{heading: "Listing Weighings",
-                 function_retrieving_records: &Akrasia.Accounts.list_weighings/1,
+                 records_getter: &Akrasia.Accounts.list_weighings/1,
                  path_helper: :weighing_path,
                  caller: __MODULE__},
       columns: [

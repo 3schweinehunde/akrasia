@@ -122,19 +122,14 @@ defmodule AkrasiaWeb.GridComponent do
   end
 
   defp get_records(socket) do
-    paginate_options =
-      %{page: socket.assigns.options.page,
-        per_page: socket.assigns.options.per_page
-      }
-    sort_options =
-      %{sort_by: socket.assigns.options.sort_by,
-        sort_order: socket.assigns.options.sort_order
-      }
-
     records =
-      socket.assigns.config.function_retrieving_records.(
-        paginate: paginate_options,
-        sort: sort_options,
+      socket.assigns.config.records_getter.(
+        paginate: %{
+          page: socket.assigns.options.page,
+          per_page: socket.assigns.options.per_page},
+        sort: %{
+          sort_by: socket.assigns.options.sort_by,
+          sort_order: socket.assigns.options.sort_order },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search
       )
