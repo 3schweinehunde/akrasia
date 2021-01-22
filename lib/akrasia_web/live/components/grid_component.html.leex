@@ -10,7 +10,8 @@
                   link_title: column.name,
                   sort_by: column.field,
                   options: @options,
-                  caller: @config.caller) %>
+                  caller: @config[:caller],
+                  myself: @myself ) %>
           </th>
         <% end %>
         <th class="border p-2">Actions</th>
@@ -74,16 +75,17 @@
   <%= if @options.page > 1 do %>
     <%= pagination_link(@socket,
           options: @options,
-          caller: @config.caller,
+          caller: @config[:caller],
           link_title: "Previous",
           page: @options.page - 1,
-          class: "border p-2 text-blue-500") %>
+          class: "border p-2 text-blue-500",
+          myself: @myself) %>
   <% end %>
 
   <%= for i <- 1..@options.page do %>
     <%= pagination_link(@socket,
           options: @options,
-          caller: @config.caller,
+          caller: @config[:caller],
           link_title: i,
           page: i,
           class:
@@ -91,16 +93,17 @@
               "bg-gray-200 border p-2 text-gray-500"
             else
               "border p-2 text-blue-500"
-            end
-          ) %>
+            end,
+          myself: @myself) %>
   <% end %>
 
   <%= pagination_link(@socket,
         options: @options,
-        caller: @config.caller,
+        caller: @config[:caller],
         link_title: "Next",
         page: @options.page + 1,
-        class: "border p-2 text-blue-500") %>
+        class: "border p-2 text-blue-500",
+        myself: @myself) %>
 </div>
 
 <%= link "New Record",

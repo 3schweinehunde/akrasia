@@ -21,25 +21,36 @@ defmodule AkrasiaWeb.GridComponent do
      caller: caller,
      link_title: link_title,
      page: page,
-     class: class] = opts
+     class: class,
+     myself: myself] = opts
 
-    live_patch(link_title,
-      to:
-        Routes.live_path(socket, caller,
-          page: page,
-          per_page: options.per_page,
-          sort_by: options.sort_by,
-          sort_order: options.sort_order
-        ),
-      class: class
-    )
+    if opts[:caller] do
+      live_patch(link_title,
+        to:
+          Routes.live_path(socket, caller,
+            page: page,
+            per_page: options.per_page,
+            sort_by: options.sort_by,
+            sort_order: options.sort_order
+          ),
+        class: class
+      )
+    else
+      link link_title,
+           to: "#",
+           phx_click: "paginate",
+           phx_target: myself,
+           phx_value_page: page,
+           phx_value_per_page: options.per_page
+    end
   end
 
   defp sort_link(socket, opts) do
     [link_title: link_title,
      sort_by: sort_by,
      options: options,
-     caller: caller] = opts
+     caller: caller,
+     myself: myself] = opts
 
     link_title =
       if sort_by == options.sort_by do
@@ -48,15 +59,23 @@ defmodule AkrasiaWeb.GridComponent do
         link_title
       end
 
-    live_patch(raw(link_title),
-      to:
-        Routes.live_path(socket, caller,
-          sort_by: sort_by,
-          sort_order: toggle_sort_order(options.sort_order),
-          page: options.page,
-          per_page: options.per_page
-        )
-    )
+    if caller do
+      live_patch raw(link_title),
+        to:
+          Routes.live_path(socket, caller,
+            sort_by: sort_by,
+            sort_order: toggle_sort_order(options.sort_order),
+            page: options.page,
+            per_page: options.per_page
+          )
+    else
+      link raw(link_title),
+           to: "#",
+           phx_click: "sort",
+           phx_target: myself,
+           phx_value_sort_by: sort_by,
+           phx_value_sort_order: toggle_sort_order(options.sort_order)
+    end
   end
 
   defp toggle_sort_order(:asc), do: :desc
@@ -111,6 +130,22 @@ defmodule AkrasiaWeb.GridComponent do
     socket = assign(socket, %{column => search[column_string]})
     socket = get_records(socket)
 
+    {:noreply, socket}
+  end
+
+  def handle_event("sort", %{"sort-by"=> sort_by, "sort-order"=> sort_order}, socket) do
+    sort_options = %{sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order)}
+    socket = assign(socket, options: Map.merge(socket.assigns.options, sort_options))
+
+    socket = get_records(socket)
+    {:noreply, socket}
+  end
+
+  def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
+    paginate_options = %{page: page, per_page: per_page}
+    socket = assign(socket, options: Map.merge(socket.assigns.options, paginate_options))
+
+    socket = get_records(socket)
     {:noreply, socket}
   end
 
