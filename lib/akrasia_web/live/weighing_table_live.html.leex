@@ -1,79 +1,36 @@
-<h1 class="text-2xl"><%= @config.heading %></h1>
-<div class="py-6">
-  <table class="table-auto">
-    <thead>
-      <tr>
-        <%= for column <- @columns do %>
-          <th class="border p-2">
-            <%= sort_link(@socket, column.name, column.field, @options) %>
-          </th>
-        <% end %>
-        <th class="border p-2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <%= for column <- @columns do %>
-          <td class="border p-2">
-            <%= if column[:searchable] do %>
-              <%= f= form_for :search, "#", [phx_change: :search, phx_submit: :save] %>
-                <%= column_search(f, Atom.to_string(column.field), @search_options[column.field]) %>
-              </form>
-            <% end %>
-          </td>
-        <% end %>
-        <td class="border p-2 text-center">
-          Search mode:
-          <%= link (if @like_search, do: "contains", else: "exact"),
-                to: "#",
-                phx_click: "toggle_search_mode",
-                class: "text-blue-500" %>
-        </td>
-      </tr>
-      <%= for record <- @records do %>
-        <tr class="odd:bg-gray-100">
-          <%= for column <- @columns do %>
-            <td class="border p-2">
-              <%= if column[:template_function] do %>
-                <%= column.template_function.(record) %>
-              <% else %>
-                <%= Map.get(record, column.field) %>
-              <% end %>
-            </td>
-          <% end %>
-          <td class="border p-2 space-x-2">
-            <%= link "Show",
-              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :show, record),
-              class: "text-green-500" %> &nbsp;
-            <%= link "Edit",
-              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :edit, record),
-              class: "text-yellow-500" %> &nbsp;
-            <%= link "Delete",
-              to: Function.capture(Routes, @config.path_helper, 3).(@socket, :delete, record),
-              method: :delete,
-              data: [confirm: "Are you sure?"],
-              class: "text-red-500" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-</div>
-
-<div class="pb-6">
-  <%= if @options.page > 1 do %>
-    <%= pagination_link(@socket, "Previous", @options.page - 1, @options, "border p-2 text-blue-500") %>
-  <% end %>
-  <%= for i <- 1..@options.page do %>
-    <%= pagination_link(@socket, i, i, @options, (if i == @options.page do
-        "bg-gray-200 border p-2 text-gray-500"
-      else
-        "border p-2 text-blue-500"
-      end)) %>
-  <% end %>
-  <%= pagination_link(@socket, "Next", @options.page + 1, @options, "border p-2 text-blue-500") %>
-</div>
-
-<%= link "New Record",
-      to: Function.capture(Routes, @config.path_helper, 2).(@socket, :new),
-      class: "text-blue-500" %>
+<%= live_component @socket, GridComponent,
+      id: :weighings,
+      options: @options,
+      config:  %{heading: "Listing Weighings",
+                 function_retrieving_records: &Akrasia.Accounts.list_weighings/1,
+                 path_helper: :weighing_path,
+                 caller: __MODULE__},
+      columns: [
+        %{field: :id,
+          name: "ID",
+          sortable: true,
+          searchable: true},
+        %{field: :date,
+          name: "Date",
+          sortable: true,
+          searchable: true},
+        %{field: :weight,
+          name: "Weight",
+          sortable: true,
+          searchable: true},
+        %{field: :abdominal_girth,
+          name: "Abdominal girth",
+          sortable: true,
+          searchable: true},
+        %{field: :adipose,
+          name: "adipose",
+          sortable: true,
+          searchable: true},
+        %{field: :user_id,
+          name: "User Id",
+          sortable: true,
+          searchable: true},
+        %{field: :user_name,
+          name: "User Name",
+          presenter: &Akrasia.Accounts.Weighing.user_email/1}
+      ] %>
