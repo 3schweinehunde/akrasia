@@ -41,7 +41,8 @@ defmodule AkrasiaWeb.GridComponent do
            phx_click: "paginate",
            phx_target: myself,
            phx_value_page: page,
-           phx_value_per_page: options.per_page
+           phx_value_per_page: options.per_page,
+           class: class
     end
   end
 
@@ -142,7 +143,7 @@ defmodule AkrasiaWeb.GridComponent do
   end
 
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
-    paginate_options = %{page: page, per_page: per_page}
+    paginate_options = %{page: String.to_integer(page), per_page: String.to_integer(per_page)}
     socket = assign(socket, options: Map.merge(socket.assigns.options, paginate_options))
 
     socket = get_records(socket)
