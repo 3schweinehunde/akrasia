@@ -1,6 +1,6 @@
 defmodule AkrasiaWeb.WeighingTableLive do
   use AkrasiaWeb, :live_view
-  alias AkrasiaWeb.GridComponent
+  alias AkrasiaWeb.Grid
 
   def mount(_params, _session, socket) do
     socket = assign(socket, options: %{})

@@ -53,13 +53,13 @@
             </td>
           <% end %>
           <td class="border p-2 space-x-2">
-            <%= link icon(:show),
+            <%= link @icon_show,
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :show, record),
               class: "text-green-500" %> &nbsp;
-            <%= link icon(:edit),
+            <%= link @icon_edit,
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :edit, record),
               class: "text-yellow-500" %> &nbsp;
-            <%= link icon(:delete),
+            <%= link @icon_delete,
               to: Function.capture(Routes, @config.path_helper, 3).(@socket, :delete, record),
               method: :delete,
               data: [confirm: "Are you sure?"],
