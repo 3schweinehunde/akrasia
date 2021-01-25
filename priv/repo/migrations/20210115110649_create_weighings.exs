@@ -3,7 +3,7 @@ defmodule Akrasia.Repo.Migrations.CreateWeighings do
 
   def change do
     create table(:weighings) do
-      add :date, :naive_datetime
+      add :date, :date
       add :weight, :decimal
       add :abdominal_girth, :integer
       add :adipose, :decimal
