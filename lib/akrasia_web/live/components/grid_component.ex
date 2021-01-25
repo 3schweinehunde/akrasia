@@ -55,13 +55,13 @@ defmodule AkrasiaWeb.GridComponent do
 
     link_title =
       if sort_by == options.sort_by do
-         icon(options.sort_order) <> " " <> link_title
+        icon(options.sort_order, link_title)
       else
         link_title
       end
 
     if caller do
-      live_patch raw(link_title),
+      live_patch link_title,
         to:
           Routes.live_path(socket, caller,
             sort_by: sort_by,
@@ -70,7 +70,7 @@ defmodule AkrasiaWeb.GridComponent do
             per_page: options.per_page
           )
     else
-      link raw(link_title),
+      link link_title,
            to: "#",
            phx_click: "sort",
            phx_target: myself,
@@ -82,23 +82,32 @@ defmodule AkrasiaWeb.GridComponent do
   defp toggle_sort_order(:asc), do: :desc
   defp toggle_sort_order(:desc), do: :asc
 
-  defp icon(:asc) do """
+  def icon(:asc, title) do
+    assigns = %{title: title}
+
+    ~L"""
       <svg xmlns="http://www.w3.org/2000/svg"
           class="w-8 h-8 inline-block"
           viewBox="0 0 32 32">
         <path d="M 4 5 L 4 7 L 6 7 L 6 5 Z M 21 5 L 21 23.6875 L 18.40625 21.09375 L 17 22.5 L 21.28125 26.8125 L 22 27.5 L 22.71875 26.8125 L 27 22.5 L 25.59375 21.09375 L 23 23.6875 L 23 5 Z M 4 9 L 4 11 L 8 11 L 8 9 Z M 4 13 L 4 15 L 10 15 L 10 13 Z M 4 17 L 4 19 L 12 19 L 12 17 Z M 4 21 L 4 23 L 14 23 L 14 21 Z M 4 25 L 4 27 L 16 27 L 16 25 Z"/>
-      </svg>
+      </svg> <%= @title %>
      """
   end
-  defp icon(:desc) do """
+  def icon(:desc, title) do
+    assigns = %{title: title}
+
+    ~L"""
       <svg xmlns="http://www.w3.org/2000/svg"
            class="w-8 h-8 inline-block"
            viewBox="0 0 32 32">
         <path d="M 4 5 L 4 7 L 16 7 L 16 5 Z M 21 5 L 21 23.6875 L 18.40625 21.09375 L 17 22.5 L 21.28125 26.8125 L 22 27.5 L 22.71875 26.8125 L 27 22.5 L 25.59375 21.09375 L 23 23.6875 L 23 5 Z M 4 9 L 4 11 L 14 11 L 14 9 Z M 4 13 L 4 15 L 12 15 L 12 13 Z M 4 17 L 4 19 L 10 19 L 10 17 Z M 4 21 L 4 23 L 8 23 L 8 21 Z M 4 25 L 4 27 L 6 27 L 6 25 Z"/>
-      </svg>
+      </svg> <%= @title %>
     """
   end
-  defp icon(:show) do """
+  defp icon(:show) do
+    assigns = %{}
+
+    ~L"""
       <svg xmlns="http://www.w3.org/2000/svg"
            class="w-6 h-6 inline-block fill-current"
            viewBox="0 0 32 32">
@@ -106,7 +115,10 @@ defmodule AkrasiaWeb.GridComponent do
       </svg>
     """
   end
-  defp icon(:edit) do """
+  defp icon(:edit) do
+    assigns = %{}
+
+    ~L"""
       <svg xmlns="http://www.w3.org/2000/svg"
            class="w-6 h-6 inline-block fill-current"
            viewBox="0 0 32 32">
@@ -114,7 +126,10 @@ defmodule AkrasiaWeb.GridComponent do
       </svg>
     """
   end
-  defp icon(:delete) do """
+  defp icon(:delete) do
+    assigns = %{}
+
+    ~L"""
       <svg xmlns="http://www.w3.org/2000/svg"
            class="w-6 h-6 inline-block fill-current"
            viewBox="0 0 32 32">
