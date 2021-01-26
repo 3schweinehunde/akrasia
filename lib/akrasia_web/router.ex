@@ -21,7 +21,8 @@ defmodule AkrasiaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
-    live "/live/weighings", WeighingTableLive
+    live "/live/weighings", WeighingGrid
+    live "/live/users", UserGrid
   end
 
   # Other scopes may use custom stacks.
@@ -77,5 +78,6 @@ defmodule AkrasiaWeb.Router do
     get "/users/confirm/:token", UserConfirmationController, :confirm
 
     resources("/weighings", WeighingController)
+    resources("/users", UserController)
   end
 end

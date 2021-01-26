@@ -158,6 +158,36 @@ defmodule Akrasia.Accounts do
     end
   end
 
+  def list_users(criteria) when is_list(criteria) do
+    query = from(w in User)
+
+    Enum.reduce(criteria, query, fn
+      {:paginate, %{page: page, per_page: per_page}}, query ->
+        from q in query,
+          offset: ^((page - 1) * per_page),
+          limit: ^per_page
+
+      {:sort, %{sort_by: sort_by, sort_order: sort_order}}, query ->
+        from q in query, order_by: [{^sort_order, ^sort_by}]
+
+      {:search, search_options}, query ->
+        Enum.reduce(search_options, query, fn
+          {column, value}, query ->
+            if value != "" do
+              if criteria[:like_search] do
+                from q in query, where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%"<>value<>"%"))
+              else
+                from q in query, where: ^[{column, value}]
+              end
+            else
+              query
+            end
+          end)
+      {:like_search, _}, query -> query
+    end)
+    |> Repo.all()
+  end
+
   alias Akrasia.Accounts.Weighing
 
   def list_weighings do

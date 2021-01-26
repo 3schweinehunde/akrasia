@@ -1,4 +1,4 @@
-defmodule AkrasiaWeb.WeighingTableLive do
+defmodule AkrasiaWeb.UserGrid do
   use AkrasiaWeb, :live_view
   alias AkrasiaWeb.Grid
 

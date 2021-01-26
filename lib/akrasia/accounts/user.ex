@@ -8,6 +8,12 @@ defmodule Akrasia.Accounts.User do
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
+    field :admin, :boolean
+    field :height, :decimal
+    field :public, :boolean
+    field :invitation_limit, :integer
+    field :target, :decimal
+  # belongs_to :invitation, Akrasia.Accounts.Invitation, foreign_key: :invitation_id
 
     timestamps()
   end
