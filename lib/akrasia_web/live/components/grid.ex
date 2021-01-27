@@ -31,7 +31,7 @@ defmodule AkrasiaWeb.Grid do
     if opts[:caller] do
       live_patch(link_title,
         to:
-          Routes.live_path(socket, caller,
+          Function.capture(Routes, @config.path_helper, 3).(socket, caller,
             page: page,
             per_page: options.per_page,
             sort_by: options.sort_by,

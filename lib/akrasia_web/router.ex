@@ -21,6 +21,11 @@ defmodule AkrasiaWeb.Router do
     pipe_through :browser
 
     live "/", PageLive, :index
+  end
+
+  scope "/admin", AkrasiaWeb do
+    pipe_through [:browser, :require_authenticated_admin_user]
+
     live "/weighings", WeighingGrid, :index, as: :weighing
     live "/users", UserGrid, :index, as: :user
   end
@@ -76,6 +81,10 @@ defmodule AkrasiaWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+  end
+
+  scope "/admin", AkrasiaWeb do
+    pipe_through [:browser, :require_authenticated_admin_user]
 
     resources "/weighings", WeighingController, except: [:index]
     resources "/users", UserController, except: [:index]
