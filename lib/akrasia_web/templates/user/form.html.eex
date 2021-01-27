@@ -1,0 +1,47 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :weight %>
+  <%= email_input f, :weight %>
+  <%= error_tag f, :weight %>
+
+  <%= label f, :email %>
+  <%= email_input f, :email %>
+  <%= error_tag f, :email %>
+
+  <%= label f, :password %>
+  <%= password_input f, :password, required: true %>
+  <%= error_tag f, :password %>
+
+  <%= label f, :confirmed_at %>
+  <%= datetime_select f, :confirmed_at %>
+  <%= error_tag f, :confirmed_at %>
+
+  <%= label f, :admin %>
+  <%= checkbox f, :admin %>
+  <%= error_tag f, :admin %>
+
+  <%= label f, :height %>
+  <%= number_input f, :height, step: "1"%>
+  <%= error_tag f, :height %>
+
+  <%= label f, :public %>
+  <%= checkbox f, :public %>
+  <%= error_tag f, :public %>
+
+  <%= label f, :invitation_limit %>
+  <%= number_input f, :invitation_limit, step: "1" %>
+  <%= error_tag f, :invitation_limit %>
+
+  <%= label f, :target %>
+  <%= number_input f, :target, step: "0.1" %>
+  <%= error_tag f, :invittargetation_limit %>
+
+  <div>
+    <%= submit "Save" %>
+  </div>
+<% end %>

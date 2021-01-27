@@ -10,7 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
+Akrasia.Repo.delete_all(Akrasia.Accounts.Weighing)
 Akrasia.Repo.delete_all(Akrasia.Accounts.User)
+
 users = Akrasia.LegacyRepo.all(Akrasia.Legacy.User)
 
 for user <- users do
@@ -21,7 +23,6 @@ for user <- users do
   |> Akrasia.Repo.insert!()
  end
 
-Akrasia.Repo.delete_all(Akrasia.Accounts.Weighing)
 weighings = Akrasia.LegacyRepo.all(Akrasia.Legacy.Weighing)
 
 for weighing <- weighings do

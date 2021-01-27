@@ -77,7 +77,7 @@ defmodule AkrasiaWeb.Router do
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
 
-    resources("/weighings", WeighingController)
-    resources("/users", UserController)
+    resources "/weighings", WeighingController
+    resources "/users", UserController
   end
 end

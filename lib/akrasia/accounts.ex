@@ -158,6 +158,10 @@ defmodule Akrasia.Accounts do
     end
   end
 
+  def list_users do
+    Repo.all(User)
+  end
+
   def list_users(criteria) when is_list(criteria) do
     query = from(w in User)
 
@@ -186,6 +190,26 @@ defmodule Akrasia.Accounts do
       {:like_search, _}, query -> query
     end)
     |> Repo.all()
+  end
+
+  def create_user(attrs \\ %{}) do
+    %User{}
+    |> User.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_user(%User{} = user, attrs) do
+    user
+    |> User.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_user(%User{} = user) do
+    Repo.delete(user)
+  end
+
+  def change_user(%User{} = user, attrs \\ %{}) do
+    User.changeset(user, attrs)
   end
 
   alias Akrasia.Accounts.Weighing
