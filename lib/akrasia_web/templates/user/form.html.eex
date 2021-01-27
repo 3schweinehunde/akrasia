@@ -1,4 +1,6 @@
-<%= form_for @changeset, @action, fn f -> %>
+<%= form_for @changeset, @action,
+  [class: "flex flex-col space-y-4  max-w-md"],
+  fn f -> %>
   <%= if @changeset.action do %>
     <div class="alert alert-danger">
       <p>Oops, something went wrong! Please check the errors below.</p>
@@ -14,11 +16,19 @@
   <%= error_tag f, :email %>
 
   <%= label f, :password %>
-  <%= password_input f, :password, required: true %>
+  <%= password_input f, :password %>
   <%= error_tag f, :password %>
 
   <%= label f, :confirmed_at %>
-  <%= datetime_select f, :confirmed_at %>
+  <span>
+    <%= datetime_select f, :confirmed_at , builder: fn b -> %>
+      <%= b.(:day, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:month, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:year, [class: "py-2 pl-1 my-1"]) %> <br/>
+      <%= b.(:hour, [class: "py-2 pl-1 my-1"]) %>:
+      <%= b.(:minute, [class: "py-2 pl-1 my-1"]) %>
+    <% end %>
+  </span>
   <%= error_tag f, :confirmed_at %>
 
   <%= label f, :admin %>
@@ -42,6 +52,6 @@
   <%= error_tag f, :invittargetation_limit %>
 
   <div>
-    <%= submit "Save" %>
+    <%= submit "Save", class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded" %>
   </div>
 <% end %>

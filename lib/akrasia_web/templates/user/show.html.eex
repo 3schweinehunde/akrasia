@@ -1,8 +1,49 @@
-<h1>Show User</h1>
+<h1 class="text-2xl">Show User</h1>
 
-<ul>
+<ul class="p-4 list-disc">
+  <li>
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </li>
 
+  <li>
+    <strong>Confirmed at:</strong>
+    <%= @user.confirmed_at %>
+  </li>
+
+  <li>
+    <strong>Admin:</strong>
+    <%= @user.admin %>
+  </li>
+
+  <li>
+    <strong>Height:</strong>
+    <%= @user.height %>
+  </li>
+
+  <li>
+    <strong>Public:</strong>
+    <%= @user.public %>
+  </li>
+
+  <li>
+    <strong>Invitation Limit:</strong>
+    <%= @user.invitation_limit %>
+  </li>
+
+  <li>
+    <strong>Target:</strong>
+    <%= @user.target %>
+  </li>
 </ul>
 
-<span><%= link "Edit", to: Routes.user_path(@conn, :edit, @user) %></span>
-<span><%= link "Back", to: Routes.user_path(@conn, :index) %></span>
+<span>
+  <%= link "Edit",
+    to: Routes.user_path(@conn, :edit, @user),
+    class: "text-yellow-500" %>
+</span> |
+<span>
+  <%= link "Back",
+    to: Routes.user_path(@conn, :index),
+    class: "text-yellow-500" %>
+</span>

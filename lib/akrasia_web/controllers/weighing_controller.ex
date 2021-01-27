@@ -4,11 +4,6 @@ defmodule AkrasiaWeb.WeighingController do
   alias Akrasia.Accounts
   alias Akrasia.Accounts.Weighing
 
-  def index(conn, _params) do
-    weighings = Accounts.list_weighings()
-    render(conn, "index.html", weighings: weighings)
-  end
-
   def new(conn, _params) do
     changeset = Accounts.change_weighing(%Weighing{})
     render(conn, "new.html", changeset: changeset)

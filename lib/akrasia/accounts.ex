@@ -5,7 +5,7 @@ defmodule Akrasia.Accounts do
 
   import Ecto.Query, warn: false
   alias Akrasia.Repo
-  alias Akrasia.Accounts.{User, UserToken, UserNotifier}
+  alias Akrasia.Accounts.{User, UserToken, UserNotifier, Weighing}
 
   def get_user_by_email(email) when is_binary(email) do
     Repo.get_by(User, email: email)
@@ -158,10 +158,6 @@ defmodule Akrasia.Accounts do
     end
   end
 
-  def list_users do
-    Repo.all(User)
-  end
-
   def list_users(criteria) when is_list(criteria) do
     query = from(w in User)
 
@@ -212,12 +208,7 @@ defmodule Akrasia.Accounts do
     User.changeset(user, attrs)
   end
 
-  alias Akrasia.Accounts.Weighing
-
-  def list_weighings do
-    Repo.all(Weighing)
-    |> Repo.preload(:user)
-  end
+  #################################################################
 
   def list_weighings(criteria) when is_list(criteria) do
     query = from(w in Weighing)

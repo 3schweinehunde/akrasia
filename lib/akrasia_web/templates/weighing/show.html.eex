@@ -28,7 +28,7 @@
   <%= link "Edit", to: Routes.weighing_path(@conn, :edit, @weighing),
     class: "text-yellow-500"
    %>
-</span>
+</span> |
 <span>
   <%= link "Back", to: Routes.weighing_path(@conn, :index),
     class: "text-blue-500"

@@ -22,8 +22,6 @@ defmodule Akrasia.Accounts.User do
     user
     |> cast(attrs, [:email, :password, :confirmed_at, :admin, :height, :public,
                     :invitation_limit, :target])
-    |> validate_email()
-    |> validate_password(opts)
   end
 
   @doc """

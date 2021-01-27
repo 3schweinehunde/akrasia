@@ -34,7 +34,6 @@
   <%= error_tag f, :user_id %>
 
   <div>
-    <%= submit "Save",
-      [class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
+    <%= submit "Save", class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded" %>
   </div>
 <% end %>
