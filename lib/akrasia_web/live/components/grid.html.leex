@@ -96,7 +96,8 @@
             else
               "border p-2 text-blue-500"
             end,
-          myself: @myself) %>
+          myself: @myself,
+          path_helper: @config[:path_helper]) %>
   <% end %>
 
   <%= pagination_link(@socket,
@@ -105,7 +106,8 @@
         link_title: "Next",
         page: @options.page + 1,
         class: "border p-2 text-blue-500",
-        myself: @myself) %>
+        myself: @myself,
+        path_helper: @config[:path_helper]) %>
 </div>
 
 <%= link "New Record",
