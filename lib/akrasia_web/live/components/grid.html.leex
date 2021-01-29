@@ -11,7 +11,8 @@
                   sort_by: column.field,
                   options: @options,
                   caller: @config[:caller],
-                  myself: @myself) %>
+                  myself: @myself,
+                  path_helper: @config[:path_helper]) %>
           </th>
         <% end %>
         <th class="border p-2">Actions</th>
@@ -79,7 +80,8 @@
           link_title: "Previous",
           page: @options.page - 1,
           class: "border p-2 text-blue-500",
-          myself: @myself) %>
+          myself: @myself,
+          path_helper: @config[:path_helper]) %>
   <% end %>
 
   <%= for i <- 1..@options.page do %>

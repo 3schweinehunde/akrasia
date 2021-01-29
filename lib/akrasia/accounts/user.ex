@@ -18,7 +18,7 @@ defmodule Akrasia.Accounts.User do
     timestamps()
   end
 
-  def changeset(user, attrs, opts \\ []) do
+  def changeset(user, attrs, _opts \\ []) do
     user
     |> cast(attrs, [:email, :password, :confirmed_at, :admin, :height, :public,
                     :invitation_limit, :target])

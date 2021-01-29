@@ -26,12 +26,13 @@ defmodule AkrasiaWeb.Grid do
      link_title: link_title,
      page: page,
      class: class,
-     myself: myself] = opts
+     myself: myself,
+     path_helper: path_helper] = opts
 
     if opts[:caller] do
       live_patch(link_title,
         to:
-          Function.capture(Routes, @config.path_helper, 3).(socket, caller,
+          Function.capture(Routes, path_helper, 3).(socket, caller,
             page: page,
             per_page: options.per_page,
             sort_by: options.sort_by,
@@ -55,7 +56,8 @@ defmodule AkrasiaWeb.Grid do
      sort_by: sort_by,
      options: options,
      caller: caller,
-     myself: myself] = opts
+     myself: myself,
+     path_helper: path_helper] = opts
 
     link_title =
       if sort_by == options.sort_by do
@@ -71,7 +73,7 @@ defmodule AkrasiaWeb.Grid do
     if caller do
       live_patch link_title,
         to:
-          Routes.live_path(socket, caller,
+        Function.capture(Routes, path_helper, 3).(socket, caller,
             sort_by: sort_by,
             sort_order: toggle_sort_order(options.sort_order),
             page: options.page,
