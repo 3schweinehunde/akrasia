@@ -12,6 +12,7 @@ defmodule Akrasia.Repo.Migrations.CreateUsersAuthTables do
       add :height, :decimal
       add :public, :boolean
       add :target, :decimal
+      add :invitation_limit, :integer
 
       timestamps()
     end
