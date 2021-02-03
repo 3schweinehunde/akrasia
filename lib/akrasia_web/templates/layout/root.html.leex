@@ -12,53 +12,36 @@
 
   <body>
     <header>
-      <a href="https://github.com/mittenin-at/bmi">
-        <img style="position: absolute; top: 0; right: 0; border: 0; z-index:10" alt="Fork me on GitHub" src="fork_me_on_github.png" />
+      <a class="fixed top-0 right-0" href="https://github.com/mittenin-at/bmi">
+        <img alt="Fork me on GitHub" src="/images/fork_me_on_github.png" />
       </a>
 
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">BMI Monitor@mittenin.at</a>
-          </div>
+      <nav class="flex justify-around bg-gray-100 shadow items-center p-2 mb-8">
+        <div id="nav-left" class="flex m-3">
+          <button id="hamburger-menu">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="text-2xl text-gray-500" href="/">BMI Monitor@mittenin.at</a>
+        </div>
 
-          <div class="navbar-collapse collapse navbar-responsive-collapse">
-            <ul class="nav navbar-nav">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/?locale=de">DE</a></li>
-              <li><a href="/?locale=en">EN</a></li>
-              <li></li>
-              <li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li>
-              <li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li>
-            </ul>
-          </div>
+        <div id="nav-right" class="flex space-x-8">
+          <a href="/?locale=de">DE</a>
+          <a href="/?locale=en">EN</a>
         </div>
       </nav>
     </header>
 
     <%= @inner_content %>
 
-    <footer class="footer">
-      <div class="container">
-        <p>
-          <br/>
-          <a href="http://bmi.mittenin.at">BMI Monitor </a> @ <a href="http://www.mittenin.at">Mittenin.at</a>
-          &nbsp; - &nbsp;
-          <a href="./impressum.html">Impressum</a>
-          &nbsp; - &nbsp;
-          <a href="./datenschutz.html">Datenschutz</a>
-          &nbsp; - &nbsp;
-          Ruby 2.7.2 on Rails 6.0.3.4
-        </p>
-      </div>
+    <footer class="flex bg-gray-100 p-4 space-x-8 justify-center w-full fixed bottom-0 border-1">
+    <!-- a full-width fixed footer with subtle-gray-background and a small border,
+         the elements are padded within the footer, and against each other and are horizontally centered -->
+      <a href="http://bmi.mittenin.at">BMI Monitor </a> @ <a href="http://www.mittenin.at">Mittenin.at</a>
+      <a href="./impressum.html">Impressum</a>
+      <a href="./datenschutz.html">Datenschutz</a>
     </footer>
-
   </body>
 </html>
