@@ -1,19 +1,48 @@
-<section class="p-6">
-  <h1 class="text-2xl"><%= gettext "Welcome to %{name}!", name: "Akrasia" %></h1>
-  <p class="my-4">Peace of mind from prototype to production</p>
-  <form phx-change="suggest" phx-submit="search">
-    <input type="text"
-      name="q"
-      value="<%= @query %>"
-      placeholder="Live dependency search"
-      list="results"
-      autocomplete="off"
-      class="block my-4"/>
-    <datalist id="results">
-      <%= for {app, _vsn} <- @results do %>
-        <option value="<%= app %>"><%= app %></option>
-      <% end %>
-    </datalist>
-    <button type="submit" phx-disable-with="Searching...">Go to Hexdocs</button>
-  </form>
-</section>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="well" style="background-image:url(/packs/media/images/background-b918c3f6e7687ca23981aba153d7c89f.png)">
+  <h1 class="icon-stethoscope"> BMI Monitor</h1>
+  <p>Sie wollen Ihr Gewicht halten oder sogar abnehmen?<br/>Beobachten Sie Ihren Body Mass Index und seien Sie konsequenter, indem Sie Ihren Status veröffentlichen und mit dem von Freunden und Bekannten vergleichen!</p>
+</div>
+
+<div class="row-fluid">
+  <div class="col-md-4">
+    <br/><br/><h3 class="icon-pencil"> Anmelden</h3></br>
+    <form class="form" action="/authentication/login" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="H+zEWMJgSVU+7a8EJ9CF/E7IroHgFK2HY742wJdpTFHUT1S/YIsNTYiPQglWZarfMToD4JRzyBzykOM2JBVMfw==" />
+      <div class="form-group">
+        <label for="email">Emailadresse</label>
+        <input type="text" name="email" id="email" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input type="password" name="password" id="password" class="form-control" />
+      </div>
+      <button name="button" type="submit" class="btn btn-success">Anmelden</button>
+</form>  </div>
+
+  <div class="col-md-4">
+    <br/><br/><h3 class="icon-check"> Registrieren </h3></br>
+    <p>Momentan sind wir in einer offenen &beta;-Phase.<br/> Wenn Sie Ihre Emailadresse hinterlassen, werden wir Sie benachrichtigen, sobald wir weitere Benutzer aufnehmen.</p>
+    <form class="new_invitation" id="new_invitation" action="/invitations" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="6n8ozgyz8p3o1IkfZgqvRUkOAaWFP0bZHtZjaolukrdXVJ9s78GUPV39MIRaeV6XZ9THkUZptkiwzQj73FB3kA==" />
+      <div class="form-group">
+        <label>Ihre Email-Adresse</label>
+        <input class="form-control" type="text" name="invitation[recipient_email]" id="invitation_recipient_email" />
+      </div>
+      <input type="submit" name="commit" value="Registrieren" class="btn btn-primary" data-disable-with="Registrieren" />
+</form>  </div>
+
+  <div class="col-md-4">
+    <br/><br/><h3 class="icon-bullhorn"> Freunde einladen </h3></br>
+    <p>Laden Sie Ihre Familie und Ihre Freunde ein! Es macht gemeinsam einfach mehr Spaß und gibt den extra-Kick Motivation!</p>
+    <form class="new_invitation" id="new_invitation" action="/invitations" accept-charset="UTF-8" method="post"><input type="hidden" name="authenticity_token" value="D3AnFNOlUb7N/LVcOvuPoyGb2uh+n9fcaDvre6/VrUKyW5C2MNc3HnjVDMcGiH5xD0Ec3L3JJ03GIIDq+utIZQ==" />
+      <div class="form-group">
+        <label>E-Mail Adresse</label>
+        <input class="form-control" type="text" name="invitation[recipient_email]" id="invitation_recipient_email" />
+      </div>
+      <input type="submit" name="commit" value="Freunde einladen" class="btn btn-primary" data-disable-with="Freunde einladen" />
+</form>  </div>
+</div>
+        </div>
+      </div><!--/row-->
+    </div> <!-- /container -->

@@ -5,36 +5,60 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <%= csrf_meta_tag() %>
-    <%= live_title_tag assigns[:page_title] || "Akrasia", suffix: " · Phoenix Framework" %>
+    <%= live_title_tag assigns[:page_title] || "Akrasia" %>
     <link phx-track-static rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>"/>
     <script defer phx-track-static type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
   </head>
+
   <body>
     <header>
-      <section class="container p-6">
-        <nav role="navigation" class="flex flex-row space-x-4">
-          <ul class="flex flex-row space-x-4">
-            <li>
-              <a href="https://hexdocs.pm/phoenix/overview.html"
-                class="text-blue-500">
-                Get Started
-              </a>
-            </li>
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li>
-                <%= link "LiveDashboard",
-                  to: Routes.live_dashboard_path(@conn, :home),
-                  class: "text-green-500"
-                %>
-                </li>
-            <% end %>
-          </ul>
-          <%= render "_user_menu.html", assigns %>
-        </nav>
-      </section>
+      <a href="https://github.com/mittenin-at/bmi">
+        <img style="position: absolute; top: 0; right: 0; border: 0; z-index:10" alt="Fork me on GitHub" src="fork_me_on_github.png" />
+      </a>
+
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">BMI Monitor@mittenin.at</a>
+          </div>
+
+          <div class="navbar-collapse collapse navbar-responsive-collapse">
+            <ul class="nav navbar-nav">
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/?locale=de">DE</a></li>
+              <li><a href="/?locale=en">EN</a></li>
+              <li></li>
+              <li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li>
+              <li>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</li>
+            </ul>
+          </div>
+        </div>
+      </nav>
     </header>
-    <div class="container p-6">
-      <%= @inner_content %>
-    </div>
+
+    <%= @inner_content %>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          <br/>
+          <a href="http://bmi.mittenin.at">BMI Monitor </a> @ <a href="http://www.mittenin.at">Mittenin.at</a>
+          &nbsp; - &nbsp;
+          <a href="./impressum.html">Impressum</a>
+          &nbsp; - &nbsp;
+          <a href="./datenschutz.html">Datenschutz</a>
+          &nbsp; - &nbsp;
+          Ruby 2.7.2 on Rails 6.0.3.4
+        </p>
+      </div>
+    </footer>
+
   </body>
 </html>
