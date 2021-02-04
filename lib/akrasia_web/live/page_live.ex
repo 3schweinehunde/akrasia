@@ -1,5 +1,6 @@
 defmodule AkrasiaWeb.PageLive do
   use AkrasiaWeb, :live_view
+  use Phoenix.HTML
 
   @impl true
   def mount(_params, _session, socket) do

@@ -19,8 +19,6 @@ defmodule AkrasiaWeb.Router do
 
   scope "/", AkrasiaWeb do
     pipe_through :browser
-
-    live "/", PageLive, :index
   end
 
   scope "/admin", AkrasiaWeb do
@@ -68,6 +66,7 @@ defmodule AkrasiaWeb.Router do
     get "/users/confirm", UserConfirmationController, :new
     post "/users/confirm", UserConfirmationController, :create
     get "/users/confirm/:token", UserConfirmationController, :confirm
+    get "/", PageController, :index
   end
 
   scope "/admin", AkrasiaWeb do
