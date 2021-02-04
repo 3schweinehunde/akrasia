@@ -243,6 +243,12 @@ defmodule Akrasia.Accounts do
 
   def get_weighing!(id), do: Repo.get!(Weighing, id)
 
+  def get_personal_weighings(user_id) do
+    Weighing
+    |> where(user_id: ^user_id)
+    |> Repo.all()
+  end
+
   def create_weighing(attrs \\ %{}) do
     %Weighing{}
     |> Weighing.changeset(attrs)
