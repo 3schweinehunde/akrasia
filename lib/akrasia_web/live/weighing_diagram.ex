@@ -6,7 +6,6 @@ defmodule AkrasiaWeb.WeighingDiagram do
     user = Accounts.get_user_by_session_token(session["user_token"])
     weighings = Accounts.get_personal_weighings(user.id)
 
-    socket = assign(socket, weighings: weighings)
-    {:ok, socket}
+    {:ok, assign(socket, weighings: weighings)}
   end
 end
