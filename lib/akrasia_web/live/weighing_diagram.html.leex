@@ -15,5 +15,5 @@
 
 <div id="<%= if connected?(@socket), do: "connected-id", else: "not-connected-id" %>"
   style="width: 700px; height: 500px;"
-  x-data x-init="new ApexCharts($el, options).render()">
+  x-data x-init="<%= connected?(@socket) %> && new ApexCharts($el, options).render()">
 </div>
