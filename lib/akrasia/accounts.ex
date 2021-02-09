@@ -246,6 +246,7 @@ defmodule Akrasia.Accounts do
   def get_personal_weighings(user_id) do
     Weighing
     |> where(user_id: ^user_id)
+    |> order_by(:date)
     |> Repo.all()
   end
 

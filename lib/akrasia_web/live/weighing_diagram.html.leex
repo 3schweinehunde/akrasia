@@ -1,19 +1,72 @@
 <script>
-  var options = {
-    chart: { type: 'bar' },
-    series: [
-      {
-        name: 'sales',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+  var data = <%= @data %>;
+
+  var chart_options = {
+    series: [{data: data}],
+    chart: {
+      id: 'chart',
+      type: 'line',
+      height: 400,
+      toolbar: {
+        autoSelected: 'pan',
+        show: false
       }
-    ],
+    },
+    colors: ['#546E7A'],
+    stroke: {width: 2},
+    dataLabels: {enabled: false},
+    fill: { opacity: 1, },
+    markers: { size: 0 },
+    xaxis: { type: 'datetime' }
+  };
+
+  var oneYearAgo = new Date()
+  oneYearAgo.setFullYear(new Date().getFullYear() - 1)
+
+  var overview_chart_options = {
+    series: [{ data: data }],
+    chart: {
+      id: 'overview_chart',
+      height: 200,
+      type: 'line',
+      brush: {
+        target: 'chart',
+        enabled: true
+      },
+      selection: {
+        enabled: true,
+        xaxis: {
+          min: oneYearAgo.getTime(),
+          max: new Date().getTime()
+        }
+      },
+    },
+    colors: ['#008FFB'],
     xaxis: {
-      categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+      type: 'datetime',
+      tooltip: {enabled: false}
+    },
+    yaxis: {tickAmount: 4}
+  };
+
+  function charts(){
+    return {
+      init_charts() {
+        var chart_div = document.getElementById("chart")
+        var chart = new ApexCharts(chart_div, chart_options)
+        chart.render()
+        var overview_chart_div = document.getElementById("overview_chart")
+        var overview_chart = new ApexCharts(overview_chart_div, overview_chart_options)
+        overview_chart.render()
+      },
     }
   }
 </script>
 
-<div id="<%= if connected?(@socket), do: "connected-id", else: "not-connected-id" %>"
-  style="width: 700px; height: 500px;"
-  x-data x-init="<%= connected?(@socket) %> && new ApexCharts($el, options).render()">
+<div id="charts_container_<%= connected?(@socket) %>"
+  x-show="<%= connected?(@socket) %>"
+  x-data="charts()"
+  x-init="init_charts()">
+  <div id="chart" style="width: 1200px; height: 500px;"></div>
+  <div id="overview_chart" style="width: 1200px; height: 300px;"></div>
 </div>
