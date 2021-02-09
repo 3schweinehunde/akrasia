@@ -64,9 +64,8 @@
 </script>
 
 <div id="charts_container_<%= connected?(@socket) %>"
-  x-show="<%= connected?(@socket) %>"
-  x-data="charts()"
-  x-init="init_charts()">
-  <div id="chart" style="width: 1200px; height: 500px;"></div>
-  <div id="overview_chart" style="width: 1200px; height: 300px;"></div>
+     x-data="charts()"
+     x-init="init_charts()">
+  <div id="chart"></div>
+  <div id="overview_chart"></div>
 </div>
