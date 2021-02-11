@@ -15,8 +15,8 @@
 </div>
 
 <div class="flex justify-center">
-  <div class="flex max-w-screen-lg justify-around space-x-8 py-16">
-    <div class="flex-1">
+  <div class="flex max-w-screen-lg justify-around space-x-32 py-16">
+    <div class="flex-grow">
       <h2 class="text-xl">
         <svg class="h-6 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
           <path d="M 23.90625 3.96875 C 22.859375 3.96875 21.8125 4.375 21 5.1875 L 5.1875 21 L 5.125 21.3125 L 4.03125 26.8125 L 3.71875 28.28125 L 5.1875 27.96875 L 10.6875 26.875 L 11 26.8125 L 26.8125 11 C 28.4375 9.375 28.4375 6.8125 26.8125 5.1875 C 26 4.375 24.953125 3.96875 23.90625 3.96875 Z M 23.90625 5.875 C 24.410156 5.875 24.917969 6.105469 25.40625 6.59375 C 26.378906 7.566406 26.378906 8.621094 25.40625 9.59375 L 24.6875 10.28125 L 21.71875 7.3125 L 22.40625 6.59375 C 22.894531 6.105469 23.402344 5.875 23.90625 5.875 Z M 20.3125 8.71875 L 23.28125 11.6875 L 11.1875 23.78125 C 10.53125 22.5 9.5 21.46875 8.21875 20.8125 Z M 6.9375 22.4375 C 8.136719 22.921875 9.078125 23.863281 9.5625 25.0625 L 6.28125 25.71875 Z"/>
@@ -25,7 +25,7 @@
       </h2>
 
       <%= form_for @conn, Routes.user_session_path(@conn, :create),
-        [as: :user, class: "flex flex-col space-y-4  max-w-md"],
+        [as: :user, class: "flex flex-col space-y-4 w-96 max-w-xl"],
         fn f -> %>
         <%= if @error_message do %>
           <div class="alert alert-danger">
@@ -36,7 +36,7 @@
         <%= label f, :email, "E-Mail Adresse", class: "font-medium" %>
         <%= email_input f, :email, required: true %>
 
-        <%= label f, :password, class: "font-medium" %>
+        <%= label f, :password, "Passwort", class: "font-medium" %>
         <%= password_input f, :password, required: true %>
 
         <span class="flex">
@@ -45,51 +45,50 @@
         </span>
 
         <div>
-          <%= submit "Log in",
+          <%= submit "Anmelden",
             [class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
         </div>
       <% end %>
     </div>
 
-    <div class="flex-1">
+    <div class="flex-grow">
       <h2 class="text-xl">
         <svg class="h-6 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
           <path d="M 4 4 L 4 28 L 28 28 L 28 12.1875 L 26 14.1875 L 26 26 L 6 26 L 6 6 L 25.8125 6 L 27.8125 4 Z M 27.28125 7.28125 L 16 18.5625 L 11.71875 14.28125 L 10.28125 15.71875 L 15.28125 20.71875 L 16 21.40625 L 16.71875 20.71875 L 28.71875 8.71875 Z"/>
         </svg>
         Registrieren
       </h2>
-      <p class="my-4">Momentan sind wir in einer offenen &beta;-Phase.<br/>
-        Wenn Sie Ihre Emailadresse hinterlassen, werden wir Sie benachrichtigen, sobald wir weitere Benutzer aufnehmen.</p>
-      <form class="new_invitation" id="new_invitation" action="/invitations" accept-charset="UTF-8" method="post">
-        <div class="form-group flex flex-col py-4">
-          <label class="font-medium" for="email">Ihre E-Mail Adresse</label>
-          <input class="form-control" type="text" name="invitation[recipient_email]" id="invitation_recipient_email" />
-        </div>
-        <input type="submit"
-          name="commit"
-          value="Registrieren"
-          class="mt-3 py-2 px-3 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-      </form>
-    </div>
 
-    <div class="flex-1">
-      <h2 class="text-xl">
-        <svg class="h-6 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-          <path d="M 28 3.03125 L 26.40625 4.1875 C 26.40625 4.1875 24.417969 5.664063 21.5625 7.125 C 18.707031 8.585938 14.988281 10 11.71875 10 L 2 10 L 2 19.125 L 2.03125 19.28125 L 4.03125 26.28125 L 4.25 27 L 10.3125 27 L 9.96875 25.71875 L 8.34375 20 L 11.71875 20 C 14.945313 20 18.664063 21.441406 21.53125 22.90625 C 24.398438 24.371094 26.40625 25.8125 26.40625 25.8125 L 28 26.96875 L 28 17.8125 C 29.15625 17.394531 30 16.292969 30 15 C 30 13.707031 29.15625 12.605469 28 12.1875 Z M 26 6.75 L 26 23.21875 C 25.171875 22.660156 24.515625 22.152344 22.4375 21.09375 C 19.5 19.59375 15.707031 18.074219 12 18 L 12 12 C 15.742188 11.925781 19.539063 10.375 22.46875 8.875 C 24.542969 7.8125 25.179688 7.308594 26 6.75 Z M 4 12 L 10 12 L 10 18 L 4 18 Z M 4.34375 20 L 6.25 20 L 7.65625 25 L 5.75 25 Z"/>
-        </svg>
-        Freunde einladen
-      </h2>
-      <p class="my-4">Laden Sie Ihre Familie und Ihre Freunde ein! Es macht gemeinsam einfach mehr Spaß und gibt den extra-Kick Motivation!</p>
-      <form class="new_invitation" id="new_invitation" action="/invitations" accept-charset="UTF-8" method="post">
-        <div class="form-group flex flex-col py-4">
-          <label class="font-medium" for="email">E-Mail Adresse</label>
-          <input class="form-control" type="text" name="invitation[recipient_email]" id="invitation_recipient_email" />
+      <p class="my-4">Momentan sind wir in einer offenen &beta;-Phase.<br/>
+        Sie können Sich selbst registrieren:</p>
+
+      <%= form_for @changeset, Routes.user_registration_path(@conn, :create),
+        [class: "flex flex-col space-y-4 w-96 max-w-xl"],
+        fn f -> %>
+        <%= if @changeset.action do %>
+          <div class="alert alert-danger">
+            <p>Oops, da ist etwas schief gegangen. Bitte überprüfen Sie die Fehlermeldungen unten.</p>
+          </div>
+        <% end %>
+
+        <%= label f, :email, "E-Mail Adresse", class: "font-medium" %>
+        <%= email_input f, :email, required: true %>
+        <%= error_tag f, :email %>
+
+        <%= label f, :password, "Passwort", class: "font-medium" %>
+        <%= password_input f, :password, required: true %>
+        <%= error_tag f, :password %>
+
+        <%= label f, "Wenn Sie von 44 zwei abziehen, dann macht das...", class: "font-medium" %>
+        <%= number_input f, :bot_check,
+          length: 2 %>
+        <p>Wir wollen keine Bots unterstützen, die abnehmen wollen! 😉</p>
+        <%= error_tag f, :bot_check %>
+        <div>
+          <%= submit "Registrieren",
+            [class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
         </div>
-        <input type="submit"
-          name="commit"
-          value="Freunde einladen"
-          class="mt-3 py-2 px-3 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700" />
-      </form>
+      <% end %>
     </div>
   </div>
 </div>
