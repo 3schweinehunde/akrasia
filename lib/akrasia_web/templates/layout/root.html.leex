@@ -30,6 +30,7 @@
         <div id="nav-right" class="flex space-x-8">
           <a href="/?locale=de">DE</a>
           <a href="/?locale=en">EN</a>
+          <%= render "_user_menu.html", conn: @conn, current_user: @current_user %>
         </div>
       </nav>
     </header>

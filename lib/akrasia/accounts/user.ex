@@ -13,6 +13,7 @@ defmodule Akrasia.Accounts.User do
     field :public, :boolean
     field :invitation_limit, :integer
     field :target, :decimal
+    field :bot_check, :integer, virtual: true
   # belongs_to :invitation, Akrasia.Accounts.Invitation, foreign_key: :invitation_id
 
     timestamps()
@@ -43,9 +44,10 @@ defmodule Akrasia.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :bot_check])
     |> validate_email()
     |> validate_password(opts)
+    |> validate_bot_check()
   end
 
   defp validate_email(changeset) do
@@ -66,6 +68,13 @@ defmodule Akrasia.Accounts.User do
     |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
   end
+
+  defp validate_bot_check(changeset) do
+    changeset
+    |> validate_required([:bot_check])
+    |> validate_number(:bot_check, equal_to: 42, message: "You got this one wrong, please try again!")
+  end
+
 
   defp maybe_hash_password(changeset, opts) do
     hash_password? = Keyword.get(opts, :hash_password, true)
