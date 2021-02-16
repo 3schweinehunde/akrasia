@@ -211,7 +211,7 @@ defmodule Akrasia.Accounts do
   #################################################################
 
   def list_weighings(criteria) when is_list(criteria) do
-    query = from(w in Weighing)
+    query = from w in Weighing
 
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
@@ -247,6 +247,13 @@ defmodule Akrasia.Accounts do
     Weighing
     |> where(user_id: ^user_id)
     |> order_by(:date)
+    |> Repo.all()
+  end
+
+  def get_comparators(user_id) do
+    from(u in User, where: u.id != ^user_id,
+                    where: u.public == true,
+                    order_by: u.email)
     |> Repo.all()
   end
 

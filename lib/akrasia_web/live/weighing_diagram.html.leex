@@ -1,8 +1,8 @@
 <script>
-  var data = <%= @data %>;
+  var series = <%= @series %>;
 
   var chart_options = {
-    series: [{data: data}],
+    series: series,
     chart: {
       id: 'chart',
       type: 'line',
@@ -24,7 +24,7 @@
   oneYearAgo.setFullYear(new Date().getFullYear() - 1)
 
   var overview_chart_options = {
-    series: [{ data: data }],
+    series: series,
     chart: {
       id: 'overview_chart',
       height: 200,
@@ -63,9 +63,26 @@
   }
 </script>
 
-<div id="charts_container_<%= connected?(@socket) %>"
-     x-data="charts()"
-     x-init="init_charts()">
-  <div id="chart"></div>
-  <div id="overview_chart"></div>
+<div class="flex-auto flex justify-evenly">
+  <div class="w-6/12" id="charts_container_<%= connected?(@socket) %>"
+      x-data="charts()"
+      x-init="init_charts()"
+      dummy="<%= length(@comparators) %>">
+    <div id="chart"></div>
+    <div id="overview_chart"></div>
+  </div>
+  <div class="w-2/12">
+    <h2 class="text-xl">Compare to <%= @comparator_name %></h2>
+    <ul id="comparators">
+      <%= for comparator <- @comparators do %>
+        <%= if @comparator_id != comparator.id do %>
+          <li>
+            <%= link comparator.email, to: "#",
+              phx_click: "compare",
+              phx_value_comparator_id: comparator.id %>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
 </div>
