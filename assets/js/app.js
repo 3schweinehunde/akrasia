@@ -25,8 +25,8 @@ Hooks.Charts = {
   mounted() {
     var chartDiv = document.getElementById("chart")
     var chart = new ApexCharts(chartDiv, chartOptions)
-    var overviewChartDiv = document.getElementById("overview_chart")
-    var overview_chart = new ApexCharts(overviewChartDiv, overviewChartOptions)
+    var overviewChartDiv = document.getElementById("overviewChart")
+    var overviewChart = new ApexCharts(overviewChartDiv, overviewChartOptions)
     chart.render()
     overviewChart.render()
 
@@ -61,4 +61,3 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 window.ApexCharts = ApexCharts
-window.Hooks = Hooks
