@@ -32,7 +32,7 @@ Hooks.Charts = {
 
     this.handleEvent("series", ({series}) => {
       chart.updateSeries(series)
-      overview_chart.updateSeries(series)
+      overviewChart.updateSeries(series)
     })
   },
 }

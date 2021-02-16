@@ -7,8 +7,14 @@ defmodule AkrasiaWeb.WeighingDiagram do
     weighings = Accounts.get_personal_weighings(user.id)
     comparators = Accounts.get_comparators(user.id)
 
+    IO.puts(user.height)
+
     data = Enum.map(weighings, fn weighing ->
-      %{x: Date.to_string(weighing.date), y: Decimal.to_float(weighing.weight)}
+      %{x: Date.to_string(weighing.date),
+        y: round(1000000 * Decimal.to_float(weighing.weight) /
+           Decimal.to_float(user.height) /
+           Decimal.to_float(user.height))/100
+      }
     end)
 
     series = [%{ name: user.email, data: data }]
@@ -25,7 +31,11 @@ defmodule AkrasiaWeb.WeighingDiagram do
     comparator = Accounts.get_user!(comparator_id)
     comparator_weighings = Accounts.get_personal_weighings(comparator_id)
     comparator_data = Enum.map(comparator_weighings, fn weighing ->
-      %{x: Date.to_string(weighing.date), y: Decimal.to_float(weighing.weight)}
+      %{x: Date.to_string(weighing.date),
+        y: round(1000000 *  Decimal.to_float(weighing.weight) /
+           Decimal.to_float(comparator.height) /
+           Decimal.to_float(comparator.height)) / 100
+      }
     end)
 
     {:safe, data} = socket.assigns.series
