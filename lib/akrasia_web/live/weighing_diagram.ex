@@ -35,7 +35,7 @@ defmodule AkrasiaWeb.WeighingDiagram do
 
     series = [data, %{name: comparator.email, data: comparator_data}]
 
-    assign(socket, comparator_id: comparator_id, comparator_name: comparator.email)
+    socket = assign(socket, comparator_id: comparator_id, comparator_name: comparator.name)
     {:noreply, push_event(socket, "series", %{series: series})}
   end
 end

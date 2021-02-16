@@ -55,17 +55,15 @@
     <div id="chart"></div>
     <div id="overviewChart"></div>
   </div>
-  <div class="w-2/12">
+  <div class="w-2/12" x-data="{comparatorId: <%= @comparator_id %>}">
     <h2 class="text-xl">Compare to: <span class="italic"><%= @comparator_name %></span></h2>
     <ul id="comparators">
       <%= for comparator <- @comparators do %>
-        <%= if @comparator_id != comparator.id do %>
-          <li class="text-blue-700">
-            <%= link comparator.name, to: "#",
-              phx_click: "compare",
-              phx_value_comparator_id: comparator.id %>
-          </li>
-        <% end %>
+        <li x-show="comparatorId != <%= comparator.id %>" class="text-blue-700">
+          <%= link comparator.name, to: "#",
+            phx_click: "compare",
+            phx_value_comparator_id: comparator.id %>
+        </li>
       <% end %>
     </ul>
   </div>
