@@ -24,7 +24,9 @@ defmodule AkrasiaWeb.WeighingDiagram do
     {:ok, assign(socket, series: series,
       comparators: comparators,
       comparator_id: 0,
-      comparator_name: "Select below")}
+      comparator_name: "Select below",
+      last_weighing: List.last(weighings)
+    )}
   end
 
   def handle_event("compare", %{"comparator-id" => comparator_id}, socket) do
