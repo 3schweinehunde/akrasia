@@ -1,7 +1,7 @@
 <script>
   var series = <%= @series %>;
 
-  var chart_options = {
+  var chartOptions = {
     series: series,
     chart: {
       id: 'chart',
@@ -23,7 +23,7 @@
   var oneYearAgo = new Date()
   oneYearAgo.setFullYear(new Date().getFullYear() - 1)
 
-  var overview_chart_options = {
+  var overviewChartOptions = {
     series: series,
     chart: {
       id: 'overview_chart',
@@ -48,26 +48,10 @@
     },
     yaxis: {tickAmount: 4}
   };
-
-  function charts(){
-    return {
-      init_charts() {
-        var chart_div = document.getElementById("chart")
-        var chart = new ApexCharts(chart_div, chart_options)
-        chart.render()
-        var overview_chart_div = document.getElementById("overview_chart")
-        var overview_chart = new ApexCharts(overview_chart_div, overview_chart_options)
-        overview_chart.render()
-      },
-    }
-  }
 </script>
 
 <div class="flex-auto flex justify-evenly">
-  <div class="w-6/12" id="charts_container_<%= connected?(@socket) %>"
-      x-data="charts()"
-      x-init="init_charts()"
-      dummy="<%= length(@comparators) %>">
+  <div class="w-6/12" id="charts_container" phx-hook="Charts">
     <div id="chart"></div>
     <div id="overview_chart"></div>
   </div>

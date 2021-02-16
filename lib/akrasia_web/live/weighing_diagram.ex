@@ -34,12 +34,8 @@ defmodule AkrasiaWeb.WeighingDiagram do
     |> List.first()
 
     series = [data, %{name: comparator.email, data: comparator_data}]
-    |> Jason.encode!()
-    |> raw
 
-    {:noreply, assign(socket,
-      series: series,
-      comparator_id: comparator_id,
-      comparator_name: comparator.email)}
+    assign(socket, comparator_id: comparator_id, comparator_name: comparator.email)
+    {:noreply, push_event(socket, "series", %{series: series})}
   end
 end

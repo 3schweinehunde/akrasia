@@ -19,6 +19,24 @@ import NProgress from "nprogress"
 import {LiveSocket} from "phoenix_live_view"
 import ApexCharts from 'apexcharts'
 
+let Hooks = {}
+
+Hooks.Charts = {
+  mounted() {
+    var chartDiv = document.getElementById("chart")
+    var chart = new ApexCharts(chartDiv, chartOptions)
+    var overviewChartDiv = document.getElementById("overview_chart")
+    var overview_chart = new ApexCharts(overviewChartDiv, overviewChartOptions)
+    chart.render()
+    overviewChart.render()
+
+    this.handleEvent("series", ({series}) => {
+      chart.updateSeries(series)
+      overview_chart.updateSeries(series)
+    })
+  },
+}
+
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
@@ -26,7 +44,8 @@ let liveSocket = new LiveSocket("/live", Socket, {
       if(from.__x){ window.Alpine.clone(from.__x, to) }
     }
   },
-  params: {_csrf_token: csrfToken}
+  params: {_csrf_token: csrfToken},
+  hooks: Hooks
 })
 
 // Show progress bar on live navigation and form submits
@@ -42,3 +61,4 @@ liveSocket.connect()
 // >> liveSocket.disableLatencySim()
 window.liveSocket = liveSocket
 window.ApexCharts = ApexCharts
+window.Hooks = Hooks
