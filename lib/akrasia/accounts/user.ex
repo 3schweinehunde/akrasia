@@ -5,6 +5,7 @@ defmodule Akrasia.Accounts.User do
   @derive {Inspect, except: [:password]}
   schema "users" do
     field :email, :string
+    field :name, :string
     field :password, :string, virtual: true
     field :hashed_password, :string
     field :confirmed_at, :naive_datetime
@@ -21,7 +22,7 @@ defmodule Akrasia.Accounts.User do
 
   def changeset(user, attrs, _opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :confirmed_at, :admin, :height, :public,
+    |> cast(attrs, [:email, :name, :password, :confirmed_at, :admin, :height, :public,
                     :invitation_limit, :target])
   end
 
@@ -44,7 +45,7 @@ defmodule Akrasia.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password, :bot_check])
+    |> cast(attrs, [:email, :name, :password, :bot_check])
     |> validate_email()
     |> validate_password(opts)
     |> validate_bot_check()

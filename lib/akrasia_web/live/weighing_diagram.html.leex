@@ -72,12 +72,12 @@
     <div id="overview_chart"></div>
   </div>
   <div class="w-2/12">
-    <h2 class="text-xl">Compare to <%= @comparator_name %></h2>
+    <h2 class="text-xl">Compare to: <span class="italic"><%= @comparator_name %></span></h2>
     <ul id="comparators">
       <%= for comparator <- @comparators do %>
         <%= if @comparator_id != comparator.id do %>
-          <li>
-            <%= link comparator.email, to: "#",
+          <li class="text-blue-700">
+            <%= link comparator.name, to: "#",
               phx_click: "compare",
               phx_value_comparator_id: comparator.id %>
           </li>
