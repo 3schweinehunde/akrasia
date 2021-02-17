@@ -57,6 +57,7 @@ defmodule AkrasiaWeb.Router do
     put "/users/settings", UserSettingsController, :update
     get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
     live "/diagram", WeighingDiagram
+    live "/weighings", MyWeighingGrid
   end
 
   scope "/", AkrasiaWeb do

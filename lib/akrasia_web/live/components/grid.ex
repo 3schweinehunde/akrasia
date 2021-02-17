@@ -137,7 +137,8 @@ defmodule AkrasiaWeb.Grid do
           sort_by: socket.assigns.options.sort_by,
           sort_order: socket.assigns.options.sort_order },
         search: socket.assigns.search_options,
-        like_search: socket.assigns.like_search
+        like_search: socket.assigns.like_search,
+        additional_params: socket.assigns.config.records_getter_params
       )
 
     assign(socket, records: records)

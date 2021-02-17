@@ -2,6 +2,11 @@
 <%= if @current_user do %>
   <li><%= @current_user.email %></li>
   <li>
+    <%= link "My Weighings",
+      to: "/weighings",
+      class: "text-green-500" %>
+  </li>
+  <li>
     <%= link "Settings",
       to: Routes.user_settings_path(@conn, :edit),
       class: "text-yellow-500"
