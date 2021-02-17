@@ -226,6 +226,7 @@ defmodule Akrasia.Accounts do
 
       {:additional_params, %{user_id: user_id}}, query ->
         from w in query, where: w.user_id == ^user_id
+      {:additional_params, nil}, query -> query
 
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
@@ -247,6 +248,9 @@ defmodule Akrasia.Accounts do
   end
 
   def get_weighing!(id), do: Repo.get!(Weighing, id)
+  def get_my_weighing!(id, current_user) do
+    Repo.get_by!(Weighing, [id: id, user_id: current_user.id])
+  end
 
   def get_personal_weighings(user_id) do
     Weighing

@@ -16,7 +16,7 @@ defmodule Akrasia.Accounts.Weighing do
   def changeset(weighing, attrs) do
     weighing
     |> cast(attrs, [:date, :weight, :abdominal_girth, :adipose, :user_id])
-    |> validate_required([:date, :weight, :abdominal_girth, :adipose])
+    |> validate_required([:date, :weight])
   end
 
   def from_legacy_weighing(legacy_weighing) do

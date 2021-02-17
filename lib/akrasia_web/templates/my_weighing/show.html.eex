@@ -1,0 +1,36 @@
+<h1 class="text-2xl">Wägung anzeigen</h1>
+
+<ul class="p-4 list-disc">
+
+  <li>
+    <strong>Date:</strong>
+    <%= @weighing.date %>
+  </li>
+
+  <li>
+    <strong>Weight:</strong>
+    <%= @weighing.weight %>
+  </li>
+
+  <li>
+    <strong>Abdominal girth:</strong>
+    <%= @weighing.abdominal_girth %>
+  </li>
+
+  <li>
+    <strong>Adipose:</strong>
+    <%= @weighing.adipose %>
+  </li>
+
+</ul>
+
+<span>
+  <%= link "Edit", to: Routes.my_weighing_path(@conn, :edit, @weighing),
+    class: "text-yellow-500"
+   %>
+</span> |
+<span>
+  <%= link "Back", to: Routes.my_weighing_path(@conn, :index),
+    class: "text-blue-500"
+  %>
+</span>

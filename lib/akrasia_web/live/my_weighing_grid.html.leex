@@ -1,10 +1,10 @@
 <%= live_component @socket, Grid,
       id: :weighings,
       options: @options,
-      config:  %{heading: "Listing Weighings",
+      config:  %{heading: "Listing My Weighings",
                  records_getter: &Akrasia.Accounts.list_weighings/1,
                  records_getter_params: %{user_id: @current_user_id},
-                 path_helper: :weighing_path #,
+                 path_helper: :my_weighing_path #,
                  #caller: __MODULE__
                  },
       columns: [

@@ -1,0 +1,35 @@
+<%= form_for @changeset, @action,
+  [class: "flex flex-col space-y-4  max-w-md"],
+  fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <%= label f, :date %>
+  <span>
+    <%= date_select f, :date , builder: fn b -> %>
+      <%= b.(:day, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:month, [class: "py-2 pl-1 my-1"]) %>
+      <%= b.(:year, [class: "py-2 pl-1 my-1"]) %> <br/>
+    <% end %>
+  </span>
+  <%= error_tag f, :date %>
+
+  <%= label f, :weight %>
+  <%= number_input f, :weight, step: "any" %>
+  <%= error_tag f, :weight %>
+
+  <%= label f, :abdominal_girth %>
+  <%= number_input f, :abdominal_girth %>
+  <%= error_tag f, :abdominal_girth %>
+
+  <%= label f, :adipose %>
+  <%= number_input f, :adipose, step: "any" %>
+  <%= error_tag f, :adipose %>
+
+  <div>
+    <%= submit "Save", class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded" %>
+  </div>
+<% end %>

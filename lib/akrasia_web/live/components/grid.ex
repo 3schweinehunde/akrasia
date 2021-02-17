@@ -6,6 +6,7 @@ defmodule AkrasiaWeb.Grid do
     socket = assign(socket,
                records: [],
                options: %{},
+               records_getter_params: %{},
                search_options: %{},
                like_search: false,
                icon_show: raw(@icon_show),
@@ -138,7 +139,7 @@ defmodule AkrasiaWeb.Grid do
           sort_order: socket.assigns.options.sort_order },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
-        additional_params: socket.assigns.config.records_getter_params
+        additional_params: socket.assigns.config[:records_getter_params]
       )
 
     assign(socket, records: records)

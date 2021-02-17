@@ -3,7 +3,7 @@
   <li><%= @current_user.email %></li>
   <li>
     <%= link "My Weighings",
-      to: "/weighings",
+      to: Routes.my_weighing_path(@conn, :index),
       class: "text-green-500" %>
   </li>
   <li>
