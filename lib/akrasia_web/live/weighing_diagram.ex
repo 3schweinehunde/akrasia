@@ -1,13 +1,15 @@
 defmodule AkrasiaWeb.WeighingDiagram do
   use AkrasiaWeb, :live_view
   alias Akrasia.Accounts
+  alias Akrasia.Accounts.Weighing
+  use Phoenix.HTML
+  import Ecto.Query, warn: false
 
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
     weighings = Accounts.get_personal_weighings(user.id)
     comparators = Accounts.get_comparators(user.id)
-
-    IO.puts(user.height)
+    weighing_changeset = Accounts.change_weighing(%Weighing{weight: List.last(weighings).weight, user_id: user.id})
 
     data = Enum.map(weighings, fn weighing ->
       %{x: Date.to_string(weighing.date),
@@ -25,7 +27,8 @@ defmodule AkrasiaWeb.WeighingDiagram do
       comparators: comparators,
       comparator_id: 0,
       comparator_name: "Select below",
-      last_weighing: List.last(weighings)
+      last_weighing: List.last(weighings),
+      weighing_changeset: weighing_changeset
     )}
   end
 
@@ -49,5 +52,14 @@ defmodule AkrasiaWeb.WeighingDiagram do
 
     socket = assign(socket, comparator_id: comparator_id, comparator_name: comparator.name)
     {:noreply, push_event(socket, "series", %{series: series})}
+  end
+
+  def handle_event("validate_weighing", %{"weighing" => params}, socket) do
+    changeset =
+      %Weighing{}
+      |> Accounts.change_weighing(params)
+      |> Map.put(:action, :insert)
+
+    {:noreply, assign(socket, changeset: changeset)}
   end
 end
