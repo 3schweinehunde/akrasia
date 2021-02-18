@@ -23,18 +23,29 @@ let Hooks = {}
 
 Hooks.Charts = {
   mounted() {
-    var chartDiv = document.getElementById("chart")
-    var chart = new ApexCharts(chartDiv, chartOptions)
-    var overviewChartDiv = document.getElementById("overviewChart")
-    var overviewChart = new ApexCharts(overviewChartDiv, overviewChartOptions)
-    chart.render()
-    overviewChart.render()
-
-    this.handleEvent("series", ({series}) => {
-      chart.updateSeries(series)
-      overviewChart.updateSeries(series)
-    })
+    initCharts(this)
   },
+  updated() {
+    renderCharts(this)
+  }
+}
+
+function initCharts(hook) {
+  var chartDiv = document.getElementById("chart")
+  hook.chart = new ApexCharts(chartDiv, chartOptions)
+  var overviewChartDiv = document.getElementById("overviewChart")
+  hook.overviewChart = new ApexCharts(overviewChartDiv, overviewChartOptions)
+  renderCharts(hook)
+
+  hook.handleEvent("series", ({series}) => {
+    hook.chart.updateSeries(series)
+    hook.overviewChart.updateSeries(series)
+  })
+}
+
+function renderCharts(hook) {
+  hook.chart.render()
+  hook.overviewChart.render()
 }
 
 let csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")

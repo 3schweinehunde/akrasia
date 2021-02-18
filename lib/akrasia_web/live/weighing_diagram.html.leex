@@ -70,12 +70,12 @@
       </ul>
     </div>
 
-    <div>
+    <div class="mb-16">
       <h2 class="text-xl mb-2">Last Weighing</h2>
       <%= @last_weighing.date %> : <%=@last_weighing.weight %> kg
     </div>
 
-    <div>
+    <div class="mb-16">
       <h2 class="text-xl mb-2"> New Weighing</h2>
       <%= f = form_for @weighing_changeset, "#", [
             phx_change: :validate_weighing,
