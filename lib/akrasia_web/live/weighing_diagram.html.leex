@@ -1,8 +1,9 @@
 <script>
-  var series = <%= @series %>;
+  var userSeries = {name: "<%= @user_name %>", data: <%= @user_data %>};
+  var comparatorSeries = {};
 
   var chartOptions = {
-    series: series,
+    series: [userSeries],
     chart: {
       id: 'chart',
       type: 'line',
@@ -24,7 +25,7 @@
   oneYearAgo.setFullYear(new Date().getFullYear() - 1)
 
   var overviewChartOptions = {
-    series: series,
+    series: [userSeries],
     chart: {
       id: 'overview_chart',
       height: 200,
@@ -88,7 +89,7 @@
           <%= error_tag f, :date %>
 
           <%= label f, :weight, "Gewicht", class: "font-medium" %>
-          <%= number_input f, :weight, required: true %>
+          <%= number_input f, :weight, required: true, step: 0.1 %>
           <%= error_tag f, :weight %>
 
           <div>

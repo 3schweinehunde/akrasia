@@ -4,14 +4,14 @@ defmodule AkrasiaWeb.WeighingDiagram do
   alias Akrasia.Accounts.Weighing
   use Phoenix.HTML
   import Ecto.Query, warn: false
+  import AkrasiaWeb.ErrorHelpers
 
   def mount(_params, session, socket) do
     user = Accounts.get_user_by_session_token(session["user_token"])
     weighings = Accounts.get_personal_weighings(user.id)
     comparators = Accounts.get_comparators(user.id)
-    weighing_changeset = Accounts.change_weighing(%Weighing{weight: List.last(weighings).weight, user_id: user.id})
 
-    data = Enum.map(weighings, fn weighing ->
+    user_bmi_data = Enum.map(weighings, fn weighing ->
       %{x: Date.to_string(weighing.date),
         y: round(1000000 * Decimal.to_float(weighing.weight) /
            Decimal.to_float(user.height) /
@@ -19,39 +19,43 @@ defmodule AkrasiaWeb.WeighingDiagram do
       }
     end)
 
-    series = [%{ name: user.name, data: data }]
-    |> Jason.encode!()
-    |> raw
+    weighing_changeset =
+      Accounts.change_weighing(
+        %Weighing{weight: List.last(weighings).weight}
+      )
 
-    {:ok, assign(socket, series: series,
+    {:ok, assign(socket,
+      user_data: to_json(user_bmi_data),
       comparators: comparators,
       comparator_id: 0,
       comparator_name: "Select below",
+      comparator_series: [],
       last_weighing: List.last(weighings),
-      weighing_changeset: weighing_changeset
+      weighing_changeset: weighing_changeset,
+      user_id: user.id,
+      user_name: user.name
     )}
   end
 
   def handle_event("compare", %{"comparator-id" => comparator_id}, socket) do
     comparator = Accounts.get_user!(comparator_id)
     comparator_weighings = Accounts.get_personal_weighings(comparator_id)
-    comparator_data = Enum.map(comparator_weighings, fn weighing ->
-      %{x: Date.to_string(weighing.date),
+    comparator_bmi_data =
+      Enum.map(comparator_weighings, fn weighing -> %{
+        x: Date.to_string(weighing.date),
         y: round(1000000 *  Decimal.to_float(weighing.weight) /
            Decimal.to_float(comparator.height) /
            Decimal.to_float(comparator.height)) / 100
-      }
-    end)
+      } end)
 
-    {:safe, data} = socket.assigns.series
-    data = data
-    |> Jason.decode!()
-    |> List.first()
+    comparator_series = %{name: comparator.name, data: comparator_bmi_data}
 
-    series = [data, %{name: comparator.name, data: comparator_data}]
-
-    socket = assign(socket, comparator_id: comparator_id, comparator_name: comparator.name)
-    {:noreply, push_event(socket, "series", %{series: series})}
+    socket =
+      assign(socket,
+        comparator_id: comparator_id,
+        comparator_name: comparator.name
+      )
+    {:noreply, push_event(socket, "comparatorSeries", %{data: comparator_series})}
   end
 
   def handle_event("validate_weighing", %{"weighing" => params}, socket) do
@@ -61,5 +65,36 @@ defmodule AkrasiaWeb.WeighingDiagram do
       |> Map.put(:action, :insert)
 
     {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("create_weighing", %{"weighing" => weighing_params}, socket) do
+    weighing_params = Map.put(weighing_params, "user_id", socket.assigns.user_id)
+    case Accounts.create_weighing(weighing_params) do
+      {:ok, weighing} ->
+        assign(socket, weighing_changeset: Accounts.change_weighing(%Weighing{}))
+
+        user = Accounts.get_user!(socket.assigns.user_id)
+        weighings = Accounts.get_personal_weighings(weighing.user_id)
+        user_bmi_data = Enum.map(weighings, fn weighing ->
+          %{x: Date.to_string(weighing.date),
+            y: round(1000000 * Decimal.to_float(weighing.weight) /
+               Decimal.to_float(user.height) /
+               Decimal.to_float(user.height))/100
+          }
+        end)
+
+        user_series = %{name: socket.assigns.user_name, data: user_bmi_data}
+        socket = push_event(socket, "userSeries", %{data: user_series})
+        {:noreply, put_flash(socket, :info, "Wägung gespeichert")}
+
+      {:error, %Ecto.Changeset{} = weighing_changeset} ->
+        {:noreply, assign(socket, weighing_changeset: weighing_changeset)}
+    end
+  end
+
+  def to_json(struct) do
+    struct
+    |> Jason.encode!()
+    |> raw
   end
 end

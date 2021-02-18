@@ -37,9 +37,16 @@ function initCharts(hook) {
   hook.overviewChart = new ApexCharts(overviewChartDiv, overviewChartOptions)
   renderCharts(hook)
 
-  hook.handleEvent("series", ({series}) => {
-    hook.chart.updateSeries(series)
-    hook.overviewChart.updateSeries(series)
+  hook.handleEvent("comparatorSeries", ({data}) => {
+    comparatorSeries = data
+    hook.chart.updateSeries([userSeries, comparatorSeries])
+    hook.overviewChart.updateSeries([userSeries, comparatorSeries])
+  })
+
+  hook.handleEvent("userSeries", ({data}) => {
+    userSeries = data
+    hook.chart.updateSeries([userSeries, comparatorSeries])
+    hook.overviewChart.updateSeries([userSeries, comparatorSeries])
   })
 }
 

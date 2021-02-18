@@ -213,8 +213,6 @@ defmodule Akrasia.Accounts do
   def list_weighings(criteria) when is_list(criteria) do
     query = from w in Weighing
 
-    IO.inspect criteria
-
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
         from q in query,
