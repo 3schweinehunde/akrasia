@@ -15,8 +15,12 @@ defmodule AkrasiaWeb.Surface.Grid do
     {:ok, socket}
   end
 
-  defp toggle_sort_order(:asc), do: :desc
-  defp toggle_sort_order(:desc), do: :asc
+  def update(assigns, socket) do
+    socket = socket
+    |> assign(assigns)
+    |> get_records()
+    {:ok, socket}
+  end
 
   def handle_event("search", %{"search" => search}, socket) do
     [column_string | _] = Map.keys(search)
@@ -67,15 +71,5 @@ defmodule AkrasiaWeb.Surface.Grid do
       )
 
     assign(socket, records: records)
-  end
-
-  defp column_search(form, column_name, value) do
-    text_input(form, String.to_atom(column_name),
-      value: value,
-      placeholder: column_name,
-      autofocus: "autofocus",
-      autocomplete: "off",
-      class: "w-20 p-1.5",
-      phx_debounce: 300)
   end
 end

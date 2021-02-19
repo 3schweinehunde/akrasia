@@ -3,7 +3,6 @@ defmodule AkrasiaWeb.Surface.PaginationLink do
 
   prop page, :integer
   prop per_page, :integer
-  prop target, :module
   prop disabled, :boolean
 
   slot default, required: true

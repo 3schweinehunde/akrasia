@@ -1,8 +1,7 @@
 <a href="#" 
    class={{"border p-2 text-blue-500", "disabled": @disabled }}
-   phx_click="paginate"
-   phx_target="{{ target }}"
-   phx_value_page="{{ page }}"
-   phx_value_per_page="{{per_page}}">
+   click={{ "paginate" }}
+   phx_value_page={{ @page }}
+   phx_value_per_page={{ @per_page }}>
   <slot/>
 </a>

@@ -1,8 +1,7 @@
 <a href="#"
-   phx_click="sort"
-   phx_target="{{@target}}"
-   phx_value_sort_by="{{ @sort_by }}"
-   phx_value_sort_order="toggle_sort_order(@sort_order)">
-  {{@sort_icon}}
+   click="sort"
+   phx_value_sort_by={{ @sort_by }}
+   phx_value_sort_order= "toggle_sort_order(@sort_order)">
+  {{@sort_icon}} 
   <slot/>
 </a>

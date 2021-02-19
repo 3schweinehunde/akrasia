@@ -2,7 +2,6 @@ defmodule AkrasiaWeb.Surface.SortLink do
   use Surface.Component
   prop sort_order, :atom
   prop sort_by, :atom
-  prop target, :module
   prop disabled, :boolean
 
   slot default, required: true
@@ -21,4 +20,7 @@ defmodule AkrasiaWeb.Surface.SortLink do
       _     => ""
     end
   end
+
+  defp toggle_sort_order(:asc), do: :desc
+  defp toggle_sort_order(:desc), do: :asc
 end
