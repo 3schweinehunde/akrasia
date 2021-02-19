@@ -3,6 +3,7 @@ defmodule AkrasiaWeb.MyWeighingController do
 
   alias Akrasia.Accounts
   alias Akrasia.Accounts.Weighing
+  @remember_me_cookie "_akrasia_web_user_remember_me"
 
   def new(conn, _params) do
     changeset = Accounts.change_weighing(%Weighing{})
@@ -56,7 +57,7 @@ defmodule AkrasiaWeb.MyWeighingController do
   end
 
   defp get_current_user(conn) do
-    {user_token, conn} = ensure_user_token(conn)
+    {user_token, _} = ensure_user_token(conn)
     user_token && Accounts.get_user_by_session_token(user_token)
   end
 
