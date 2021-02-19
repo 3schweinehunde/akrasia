@@ -1,0 +1,25 @@
+<div class="pb-6">
+  <PaginationLink active={{ true }}
+                  :if={{ @options.page > 1 }}
+                  page="{{ @current_page - 1 }}"
+                  per_page={{ @options.per_page}}
+                  target= {{ @myself }}>
+    Previous
+  </PaginationLink>
+
+  <PaginationLink :for={{ 1 <- 1..@current_page }}
+                  disabled={{ i == @options.page }}
+                  page="{{ i }}"
+                  per_page={{ @options.per_page}}
+                  target= {{ @myself }}>
+    i
+  </PaginationLink>
+  <% end %>
+
+  <PaginationLink active={{ true }}
+                  page="{{ @current_page + 1 }}"
+                  per_page={{ @per_page}}
+                  target= {{ @myself }}>
+    Next
+  </PaginationLink>
+</div>

@@ -1,0 +1,76 @@
+<h1 class="text-2xl">{{ @config.heading }}</h1>
+
+<div class="py-6">
+  <table class="table-auto">
+    <thead>
+      <tr>
+        <th :for={{ column <- @columns }} class="border p-2">
+          <SortLink sort_by="{{ column.field }}"
+                    target="{{ myself}}">
+            {{ column.name }}
+          </SortLink>
+
+          <%= sort_link(options: @options %>
+        </th>
+        <th class="border p-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <li :for={{ column <- @columns }} class="border p-2">
+          <%= if column[:searchable] do %>
+            <%= f= form_for :search, "#", [
+                  phx_change: :search,
+                  phx_submit: :save,
+                  phx_target: @myself
+                ] %>
+              <%= column_search(f, Atom.to_string(column.field), @search_options[column.field]) %>
+            </form>
+          </td>
+        <% end %>
+        <td class="border p-2 text-center">
+          Search mode:
+          <%= link (if @like_search, do: "contains", else: "exact"),
+                to: "#",
+                phx_click: "toggle_search_mode",
+                phx_target: @myself,
+                class: "text-blue-500" %>
+        </td>
+      </tr>
+
+      <tr for={{ record <- @records }} class="odd:bg-gray-100">
+        <td for={{ column <- @columns }} class="border p-2">
+          <%= if column[:presenter] do %>
+            <%= column.presenter.(record) %>
+          <% else %>
+            <%= Map.get(record, column.field) %>
+          <% end %>
+        </td>
+
+        <td class="border p-2 space-x-2">
+          <Link to="{{ Function.capture(Routes, @config.path_helper, 3).(@socket, :show, record) }}"
+                label="{{ @icon_show }}"
+                class="text-green-500" /> &nbsp;
+
+          <Link to="{{ Function.capture(Routes, @config.path_helper, 3).(@socket, :edit, record) }}"
+                label="{{ @icon_edit }}"
+                class="text-yellow-500" /> &nbsp;
+
+          <Link to={{ Function.capture(Routes, @config.path_helper, 3).(@socket, :delete, record) }}
+            label={{ @icon_delete }}
+            opts={{ data: [confirm: "Are you sure?"], method: :delete }}
+            class="text-red-500" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<Pagination target={{ @myself }}
+            per_page={{ @options.per_page}}
+            curent_page="{{ @options.page }}"
+            caller="{{ @config[:caller]}}" />
+
+<Link to="{{ Function.capture(Routes, @config.path_helper, 2).(@socket, :new) }}"
+  label="New Record"
+  class="text-blue-500" />
