@@ -71,6 +71,8 @@ defmodule Akrasia.MixProject do
       {:bamboo_smtp, "~> 3.0"},
       # mailing
       {:bamboo, "~> 1.4"},
+      # frontend component framework
+      {:surface, "~> 0.1.0"},
     ]
   end
 
