@@ -36,13 +36,14 @@
         </td>
       </tr>
 
-      <tr for={{ record <- @records }} class="odd:bg-gray-100">
-        <td for={{ column <- @columns }} class="border p-2">
-          <%= if column[:presenter] do %>
-            <%= column.presenter.(record) %>
-          <% else %>
-            <%= Map.get(record, column.field) %>
-          <% end %>
+      <tr :for={{ record <- @records }} class="odd:bg-gray-100">
+        <td :for={{ column <- @columns }} class="border p-2">
+          <If condition={{ column[:presenter] }}>
+            {{ column.presenter.(record) }}
+          </If>
+          <If condition={{ !column[:presenter] }}>
+            {{ Map.get(record, column.field) }}
+          </If>
         </td>
 
         <td class="border p-2 space-x-2">
@@ -64,9 +65,7 @@
   </table>
 </div>
 
-<Pagination per_page={{ @options.per_page}}
-            curent_page="{{ @options.page }}"
-            caller="{{ @config[:caller]}}" />
+<Pagination per_page={{ @per_page}} current_page="{{ @current_page }}" />
 
 <Link to="{{ Function.capture(Routes, @config.path_helper, 2).(@socket, :new) }}"
       label="New Record"

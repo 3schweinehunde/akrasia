@@ -1,10 +1,11 @@
 defmodule AkrasiaWeb.Surface.Grid do
   use Surface.Component
-  use AkrasiaWeb.Icons
+  alias AkrasiaWeb.Surface.{SortLink, Pagination}
+  alias Surface.Components.{Form, Link}
+  alias Surface.Components.Form.TextInput
 
-  prop options, :list
-  prop records_getter_params, :map,
-  prop search_options, :map, %{}
+  prop records_getter_params, :map, default: %{}
+  prop search_options, :map, default: %{}
   prop like_search, :boolean, default: false
   data records, :list, default: []
 

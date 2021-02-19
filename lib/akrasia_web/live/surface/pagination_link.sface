@@ -1,6 +1,6 @@
 <a href="#" 
-   class={{"border p-2 text-blue-500", "disabled": @disabled }}
-   click={{ "paginate" }}
+   class={{"border p-2 text-blue-500", disabled: @disabled }}
+   click="paginate"
    phx_value_page={{ @page }}
    phx_value_per_page={{ @per_page }}>
   <slot/>
