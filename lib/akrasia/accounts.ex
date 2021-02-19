@@ -183,6 +183,7 @@ defmodule Akrasia.Accounts do
               query
             end
           end)
+      {:additional_params, _}, query -> query
       {:like_search, _}, query -> query
     end)
     |> Repo.all()

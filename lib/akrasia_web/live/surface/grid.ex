@@ -3,15 +3,25 @@ defmodule AkrasiaWeb.Surface.Grid do
   alias AkrasiaWeb.Surface.{SortLink, Pagination}
   alias Surface.Components.{Form, Link}
   alias Surface.Components.Form.TextInput
+  alias AkrasiaWeb.Router.Helpers, as: Routes
+  use AkrasiaWeb.Icons
 
-  prop page, :integer, default: 1
+  prop icon_show, :string, default: raw(@icon_show)
+  prop icon_edit, :string, default: raw(@icon_edit)
+  prop icon_delete, :string, default: raw(@icon_delete)
+
+  prop id, :string, default: "surface-component"
+  prop heading, :string, default: "Records"
+  prop current_page, :integer, default: 1
   prop per_page, :integer, default: 10
   prop sort_by, :atom, default: :id
-  prop sort_order, :itom, default: :asc
-  prop records_getter, :module
+  prop sort_order, :atom, default: :asc
+  prop path_helper, :atom, required: true
+  prop records_getter, :module, required: true
   prop records_getter_params, :map, default: %{}
   prop search_options, :map, default: %{}
   prop like_search, :boolean, default: false
+  prop columns, :list, required: true
   data records, :list, default: []
 
   def mount(_params, _session, socket) do
@@ -64,16 +74,16 @@ defmodule AkrasiaWeb.Surface.Grid do
 
   defp get_records(socket) do
     records =
-      socket.assigns.config.records_getter.(
+      socket.assigns.records_getter.(
         paginate: %{
-          page: socket.assigns.options.page,
-          per_page: socket.assigns.options.per_page},
+          page: socket.assigns.current_page,
+          per_page: socket.assigns.per_page},
         sort: %{
-          sort_by: socket.assigns.options.sort_by,
-          sort_order: socket.assigns.options.sort_order },
+          sort_by: socket.assigns.sort_by,
+          sort_order: socket.assigns.sort_order },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
-        additional_params: socket.assigns.config[:records_getter_params]
+        additional_params: socket.assigns[:records_getter_params]
       )
 
     assign(socket, records: records)

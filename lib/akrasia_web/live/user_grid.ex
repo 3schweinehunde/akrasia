@@ -1,5 +1,5 @@
 defmodule AkrasiaWeb.UserGrid do
-  use AkrasiaWeb, :live_view
+  use Surface.LiveView
   alias AkrasiaWeb.Surface.Grid
 
   def mount(_params, _session, socket) do
