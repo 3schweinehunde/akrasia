@@ -10,7 +10,7 @@ defmodule AkrasiaWeb.Surface.Grid do
   prop icon_edit, :string, default: raw(@icon_edit)
   prop icon_delete, :string, default: raw(@icon_delete)
 
-  prop id, :string, default: "surface-component"
+  prop id, :string, required: true
   prop heading, :string, default: "Records"
   prop current_page, :integer, default: 1
   prop per_page, :integer, default: 10
@@ -23,13 +23,6 @@ defmodule AkrasiaWeb.Surface.Grid do
   prop like_search, :boolean, default: false
   prop columns, :list, required: true
   data records, :list, default: []
-
-  def mount(_params, _session, socket) do
-    socket = socket
-     |> get_records()
-     |> Surface.init()
-    {:ok, socket}
-  end
 
   def update(assigns, socket) do
     socket = socket
@@ -50,25 +43,23 @@ defmodule AkrasiaWeb.Surface.Grid do
   end
 
   def handle_event("sort", %{"sort-by"=> sort_by, "sort-order"=> sort_order}, socket) do
-    sort_options = %{sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order)}
-    socket = assign(socket, options: Map.merge(socket.assigns.options, sort_options))
-
-    socket = get_records(socket)
+    socket = socket
+      |> assign(sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order))
+      |> get_records()
     {:noreply, socket}
   end
 
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
-    paginate_options = %{page: String.to_integer(page), per_page: String.to_integer(per_page)}
-    socket = assign(socket, options: Map.merge(socket.assigns.options, paginate_options))
-
-    socket = get_records(socket)
+    socket = socket
+      |> assign(current_page: String.to_integer(page), per_page: String.to_integer(per_page))
+      |> get_records()
     {:noreply, socket}
   end
 
   def handle_event("toggle_search_mode", _, socket) do
-    socket = assign(socket, like_search: !socket.assigns.like_search)
-    socket = get_records(socket)
-
+    socket = socket
+      |> assign(like_search: !socket.assigns.like_search)
+      |> get_records()
     {:noreply, socket}
   end
 

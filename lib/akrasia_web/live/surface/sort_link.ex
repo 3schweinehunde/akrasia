@@ -6,22 +6,25 @@ defmodule AkrasiaWeb.Surface.SortLink do
   prop icon_desc, :string, default: raw(@icon_desc)
   prop sort_order, :atom
   prop sort_by, :atom
+  prop field, :atom
   prop disabled, :boolean
   prop sort_icon, :string
+  prop target, :string
 
   slot default, required: true
 
-  def mount(_params, _session, socket) do
+  def update(assigns, socket) do
     socket = socket
-     |> assign(sort_icon: sort_icon(socket.assigns.sort_order))
+     |> assign(assigns)
+     |> assign(sort_icon: sort_icon(assigns.sort_order))
      |> Surface.init()
     {:ok, socket}
   end
 
   defp sort_icon(sort_order) do
     case sort_order do
-      :asc  -> @icon_asc
-      :desc -> @icon_desc
+      :asc  -> raw(@icon_asc)
+      :desc -> raw(@icon_desc)
       _     -> ""
     end
   end

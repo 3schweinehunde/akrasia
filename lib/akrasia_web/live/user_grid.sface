@@ -1,4 +1,4 @@
-<Grid id="weighings"
+<Grid id="usergrid"
       heading="Listing Users"
       columns={{ @columns }}
       records_getter={{ &Akrasia.Accounts.list_users/1 }}

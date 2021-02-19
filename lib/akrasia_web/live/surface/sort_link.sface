@@ -1,7 +1,9 @@
 <a href="#"
-   click="sort"
-   phx_value_sort_by={{ @sort_by }}
-   phx_value_sort_order={{ toggle_sort_order(@sort_order) }}>
-  {{@sort_icon}} 
+   :on-click={{ "sort", target: "#usergrid" }}
+   phx-value-sort-by={{ @field }}
+   phx-value-sort-order={{ toggle_sort_order(@sort_order) }}>
+   <If condition= {{ @sort_by == @field }}> 
+     {{ @sort_icon }} 
+   </If>
   <slot/>
 </a>
