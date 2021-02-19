@@ -4,6 +4,11 @@ defmodule AkrasiaWeb.Surface.Grid do
   alias Surface.Components.{Form, Link}
   alias Surface.Components.Form.TextInput
 
+  prop page, :integer, default: 1
+  prop per_page, :integer, default: 10
+  prop sort_by, :atom, default: :id
+  prop sort_order, :itom, default: :asc
+  prop records_getter, :module
   prop records_getter_params, :map, default: %{}
   prop search_options, :map, default: %{}
   prop like_search, :boolean, default: false
