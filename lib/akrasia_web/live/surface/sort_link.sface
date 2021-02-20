@@ -1,5 +1,5 @@
 <a href="#"
-   :on-click={{ "sort", target: "#usergrid" }}
+   :on-click={{ "sort", target: @target }}
    phx-value-sort-by={{ @field }}
    phx-value-sort-order={{ toggle_sort_order(@sort_order) }}>
    <If condition= {{ @sort_by == @field }}> 

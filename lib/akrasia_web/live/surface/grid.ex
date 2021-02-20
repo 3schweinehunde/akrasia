@@ -35,9 +35,9 @@ defmodule AkrasiaWeb.Surface.Grid do
     [column_string | _] = Map.keys(search)
     column = String.to_atom(column_string)
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
-    socket = assign(socket, search_options: search_options)
-    socket = assign(socket, %{column => search[column_string]})
-    socket = get_records(socket)
+    socket = socket
+      |> assign(search_options: search_options, column: search[column_string])
+      |> get_records()
 
     {:noreply, socket}
   end

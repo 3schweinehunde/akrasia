@@ -9,7 +9,7 @@
                   disabled={{ i == @current_page }}
                   page={{ i }}
                   per_page={{ @per_page }}>
-    i
+    {{ i }}
   </PaginationLink>
 
   <PaginationLink page={{ @current_page + 1 }}
