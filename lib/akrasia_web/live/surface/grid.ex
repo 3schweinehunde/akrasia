@@ -21,8 +21,9 @@ defmodule AkrasiaWeb.Surface.Grid do
   prop records_getter_params, :map, default: %{}
   prop search_options, :map, default: %{}
   prop like_search, :boolean, default: false
-  prop columns, :list, required: true
+
   data records, :list, default: []
+  slot columns
 
   def update(assigns, socket) do
     socket = socket
@@ -79,4 +80,13 @@ defmodule AkrasiaWeb.Surface.Grid do
 
     assign(socket, records: records)
   end
+end
+
+defmodule Column do
+  use Surface.Component, slot: "columns"
+
+  prop field, :string
+  prop name, :string
+  prop sortable, :boolean, default: true
+  prop searchable, :boolean, default: true
 end

@@ -7,7 +7,7 @@
         <tr>
           <th :for={{ column <- @columns }} class="border p-2">
             <SortLink sort_by={{ @sort_by }} 
-                      field={{ column.field }} 
+                      field={{ String.to_atom(column.field) }} 
                       sort_order={{ @sort_order }}
                       target={{ "#" <> @id }}>
               {{ column.name }}
@@ -24,12 +24,12 @@
                   change={{"search", target: "#" <> @id }}
                   submit="save" 
                   opts={{ autocomplete: "off" }}>
-              <TextInput field={{ column.field }}
-                         value={{ @search_options[column.field] }} 
+              <TextInput field={{ String.to_atom(column.field) }}
+                         value={{ @search_options[String.to_atom(column.field)] }} 
                          class="w-20 p-1.5"
                          opts={{ autofocus: "autofocus", 
                                  autocomplete: "off", 
-                                 placeholder: Atom.to_string(column.field), 
+                                 placeholder: column.field, 
                                  "phx-debounce": 300 }} />
             </Form>
           </td>
@@ -48,7 +48,7 @@
               {{ column.presenter.(record) }}
             </If>
             <If condition={{ !column[:presenter] }}>
-              {{ Map.get(record, column.field) }}
+              {{ Map.get(record, String.to_atom(column.field)) }}
             </If>
           </td>
 

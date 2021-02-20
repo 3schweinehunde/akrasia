@@ -3,54 +3,7 @@ defmodule AkrasiaWeb.UserGrid do
   alias AkrasiaWeb.Surface.Grid
 
   def mount(_params, _session, socket) do
-    columns = [
-      %{field: :id,
-        name: "ID",
-        sortable: true,
-        searchable: true},
-      %{field: :name,
-        name: "Name",
-        sortable: true,
-        searchable: true},
-      %{field: :email,
-        name: "Email",
-        sortable: true,
-        searchable: true},
-      %{field: :confirmed_at,
-        name: "Confirmed at",
-        sortable: true,
-        searchable: true},
-      %{field: :admin,
-        name: "Admin",
-        sortable: true,
-        searchable: true},
-      %{field: :height,
-        name: "Height",
-        sortable: true,
-        searchable: true},
-      %{field: :public,
-        name: "Public",
-        sortable: true,
-        searchable: true},
-      %{field: :target,
-        name: "Target",
-        sortable: true,
-        searchable: true},
-      %{field: :invitation_limit,
-        name: "Invitation_limit",
-        sortable: true,
-        searchable: true},
-      %{field: :inserted_at,
-        name: "Inserted at",
-        sortable: true,
-        searchable: true},
-      %{field: :updated_at,
-        name: "Updated at",
-        sortable: true,
-        searchable: true},
-    ]
-
-    socket = assign(socket, options: %{}, columns: columns)
+    socket = assign(socket, options: %{})
     {:ok, socket}
   end
 
