@@ -89,4 +89,5 @@ defmodule Column do
   prop name, :string
   prop sortable, :boolean, default: true
   prop searchable, :boolean, default: true
+  prop presenter, :fun
 end

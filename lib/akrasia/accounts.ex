@@ -225,7 +225,7 @@ defmodule Akrasia.Accounts do
 
       {:additional_params, %{user_id: user_id}}, query ->
         from w in query, where: w.user_id == ^user_id
-      {:additional_params, nil}, query -> query
+      {:additional_params, _}, query -> query
 
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn

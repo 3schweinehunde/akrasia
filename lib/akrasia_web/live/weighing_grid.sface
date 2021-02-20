@@ -1,0 +1,18 @@
+<Grid id="weighingsgrid"
+      heading="Listing Weighings"
+      records_getter={{ &Akrasia.Accounts.list_weighings/1 }}
+      path_helper={{ :weighing_path }}>
+  <Column field="id" name="ID" />
+  <Column field="date" name="Date" />
+  <Column field="weight" name="Weight" />
+  <Column field="abdominal_girth" name="Abdominal girth" />
+  <Column field="adipose" name="adipose" />
+  <Column field="user_id" name="User Id" />
+  <Column field="user_name" name="ID" />
+  <Column field="user_email" 
+          name="User Email" 
+          sortable="false" 
+          searchable="false"
+          presenter={{ &Akrasia.Accounts.Weighing.user_email/1 }} />
+</Grid>
+
