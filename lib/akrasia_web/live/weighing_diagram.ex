@@ -20,10 +20,9 @@ defmodule AkrasiaWeb.WeighingDiagram do
     end)
 
     weighing_changeset =
-      Accounts.change_weighing(
-        %Weighing{weight: List.last(weighings).weight}
-      )
-
+        Accounts.change_weighing(
+          %Weighing{date: Date.utc_today(),
+                    weight: List.last(weighings).weight})
     {:ok, assign(socket,
       user_data: to_json(user_bmi_data),
       comparators: comparators,
@@ -64,10 +63,11 @@ defmodule AkrasiaWeb.WeighingDiagram do
       |> Accounts.change_weighing(params)
       |> Map.put(:action, :insert)
 
-    {:noreply, assign(socket, changeset: changeset)}
+    {:noreply, assign(socket, weighing_changeset: changeset)}
   end
 
   def handle_event("create_weighing", %{"weighing" => weighing_params}, socket) do
+    IO.inspect(socket.assigns.user_id)
     weighing_params = Map.put(weighing_params, "user_id", socket.assigns.user_id)
     case Accounts.create_weighing(weighing_params) do
       {:ok, weighing} ->

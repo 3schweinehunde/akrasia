@@ -85,7 +85,7 @@
             class: "flex flex-col space-y-4 w-96 max-w-xl"
           ] %>
           <%= label f, :date, class: "font-medium"  %>
-          <%= date_input f, :date, value: Date.utc_today(), required: true %>
+          <%= date_input f, :date, required: true %>
           <%= error_tag f, :date %>
 
           <%= label f, :weight, "Gewicht", class: "font-medium" %>
