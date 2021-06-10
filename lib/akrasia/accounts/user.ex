@@ -158,8 +158,4 @@ defmodule Akrasia.Accounts.User do
       add_error(changeset, :current_password, "is not valid")
     end
   end
-
-  def from_legacy_user(legacy_user) do
-    struct(__MODULE__, legacy_user)
-  end
 end

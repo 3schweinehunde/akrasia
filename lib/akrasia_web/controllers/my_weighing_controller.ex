@@ -11,6 +11,8 @@ defmodule AkrasiaWeb.MyWeighingController do
   end
 
   def create(conn, %{"weighing" => weighing_params}) do
+    weighing_params = Map.put(weighing_params, "user_id", get_current_user(conn).id)
+
     case Accounts.create_weighing(weighing_params) do
       {:ok, weighing} ->
         conn

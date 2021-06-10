@@ -9,7 +9,6 @@ defmodule Akrasia.Application do
     children = [
       # Start the Ecto repository
       Akrasia.Repo,
-#      Akrasia.LegacyRepo,
       # Start the Telemetry supervisor
       AkrasiaWeb.Telemetry,
       # Start the PubSub system
