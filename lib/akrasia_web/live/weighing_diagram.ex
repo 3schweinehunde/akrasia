@@ -67,7 +67,6 @@ defmodule AkrasiaWeb.WeighingDiagram do
   end
 
   def handle_event("create_weighing", %{"weighing" => weighing_params}, socket) do
-    IO.inspect(socket.assigns.user_id)
     weighing_params = Map.put(weighing_params, "user_id", socket.assigns.user_id)
     case Accounts.create_weighing(weighing_params) do
       {:ok, weighing} ->

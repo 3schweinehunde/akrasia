@@ -268,7 +268,6 @@ defmodule Akrasia.Accounts do
   def create_weighing(attrs \\ %{}) do
     %Weighing{}
     |> Weighing.changeset(attrs)
-    |> IO.inspect()
     |> Repo.insert()
   end
 
