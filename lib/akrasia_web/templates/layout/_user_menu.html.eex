@@ -7,6 +7,11 @@
       class: "text-green-500" %>
   </li>
   <li>
+    <%= link "Diagram",
+      to: Routes.my_weighing_path(@conn, :diagram),
+      class: "text-blue-500" %>
+  </li>
+  <li>
     <%= link "Settings",
       to: Routes.user_settings_path(@conn, :edit),
       class: "text-yellow-500"

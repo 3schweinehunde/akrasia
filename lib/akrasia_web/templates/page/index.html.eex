@@ -34,10 +34,6 @@
             </div>
           <% end %>
 
-          <%= label f, :name, class: "font-medium"  %>
-          <%= text_input f, :name, required: true %>
-          <%= error_tag f, :name %>
-
           <%= label f, :email, "E-Mail Adresse", class: "font-medium" %>
           <%= email_input f, :email, required: true %>
           <%= error_tag f, :email %>
