@@ -14,7 +14,8 @@ defmodule Akrasia.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Akrasia.PubSub},
       # Start the Endpoint (http/https)
-      AkrasiaWeb.Endpoint
+      AkrasiaWeb.Endpoint,
+      {PidFile.Worker, file: "akrasia.pid"}
       # Start a worker by calling: Akrasia.Worker.start_link(arg)
       # {Akrasia.Worker, arg}
     ]

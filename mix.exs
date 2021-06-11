@@ -73,6 +73,8 @@ defmodule Akrasia.MixProject do
       {:bamboo, "~> 1.4"},
       # frontend component framework
       {:surface, "~> 0.1.0"},
+      # Creating a pidfile
+      {:pid_file, "~> 0.1.1"},
     ]
   end
 
