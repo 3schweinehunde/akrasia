@@ -10,7 +10,7 @@ config :akrasia, AkrasiaWeb.Endpoint,
 
 config :logger, level: :info
 
-config :akrasia, :environment, "production"
+config :akrasia, :environment, "prod"
 config :phoenix, :serve_endpoints, true
 
 import_config "prod.secret.exs"
