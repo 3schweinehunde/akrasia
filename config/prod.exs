@@ -13,10 +13,10 @@ config :logger, level: :info
 
 config :akrasia, :environment, "prod"
 
-config :pan, :children, [
+config :akrasia, :children, [
   Akrasia.Repo,
   AkrasiaWeb.Telemetry,
-  {Phoenix.PubSub, name: :pan_pubsub, adapter: Phoenix.PubSub.PG2},
+  {Phoenix.PubSub, name: :akrasia_pubsub, adapter: Phoenix.PubSub.PG2},
   AkrasiaWeb.Endpoint,
   {PidFile.Worker, file: "pan.pid"}
 ]
