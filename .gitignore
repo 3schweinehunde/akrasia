@@ -1,11 +1,9 @@
 # The directory Mix will write compiled artifacts to.
 /_build/
-
-# If you run "mix test --cover", coverage assets end up here.
-/cover/
-
-# The directory Mix downloads your dependencies sources to.
-/deps/
+/db
+/cover
+/deps
+/*.ez
 
 # Where 3rd-party dependencies like ExDoc output generated docs.
 /doc/
@@ -15,9 +13,6 @@
 
 # If the VM crashes, it generates a dump, let's ignore it too.
 erl_crash.dump
-
-# Also ignore archive artifacts (built via "mix archive.build").
-*.ez
 
 # Ignore package tarball (built via "mix hex.build").
 akrasia-*.tar
@@ -31,7 +26,10 @@ npm-debug.log
 # Since we are building assets from assets/,
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
-/priv/static/
+/priv/static/assets/
+
+# Surface: Ignore auto-generated hook files
+/assets/js/_hooks/
 
 #Pidfile
 akrasia.pid
