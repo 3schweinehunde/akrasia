@@ -43,8 +43,6 @@ defmodule Akrasia.MixProject do
       {:ecto_sql, "~> 3.4"},
       # database adapter
       {:postgrex, "~> 0.16"},
-      # database adapter
-      {:myxql, "~> 0.6"},
       # phoenix live views
       {:phoenix_live_view, "~> 0.17"},
       # HTML parser
@@ -76,12 +74,6 @@ defmodule Akrasia.MixProject do
     ]
   end
 
-  # Aliases are shortcuts or tasks specific to the current project.
-  # For example, to install project dependencies and perform other setup tasks, run:
-  #
-  #     $ mix setup
-  #
-  # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
