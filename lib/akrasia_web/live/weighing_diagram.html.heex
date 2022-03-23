@@ -58,11 +58,11 @@
   </div>
 
   <div class="w-2/12 flex flex-col">
-    <div x-data="{comparatorId: <%= @comparator_id %>}" class="mb-16">
+    <div x-data="{comparatorId: #{@comparator_id}}" class="mb-16">
       <h2 class="text-xl mb-2">Compare to: <span class="italic"><%= @comparator_name %></span></h2>
       <ul id="comparators">
         <%= for comparator <- @comparators do %>
-          <li x-show="comparatorId != <%= comparator.id %>" class="text-blue-700">
+          <li x-show="comparatorId != #{comparator.id}" class="text-blue-700">
             <%= link comparator.name, to: "#",
               phx_click: "compare",
               phx_value_comparator_id: comparator.id %>
@@ -78,12 +78,12 @@
 
     <div class="mb-16">
       <h2 class="text-xl mb-2"> New Weighing</h2>
-      <%= f = form_for @weighing_changeset, "#", [
+      <%= form_for @weighing_changeset, "#", [
             phx_change: :validate_weighing,
             phx_submit: :create_weighing,
             id: 'weighing_form',
             class: "flex flex-col space-y-4 w-96 max-w-xl"
-          ] %>
+          ], fn f -> %>
           <%= label f, :date, class: "font-medium"  %>
           <%= date_input f, :date, required: true %>
           <%= error_tag f, :date %>
@@ -96,7 +96,7 @@
             <%= submit "Speichern",
               [class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 my-4 px-3 rounded"] %>
           </div>
-        </form>
+      <% end %>
     </div>
   </div>
 </div>
