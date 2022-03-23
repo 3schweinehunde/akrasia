@@ -70,7 +70,9 @@ defmodule Akrasia.MixProject do
       # frontend component framework
       {:surface, "~> 0.7"},
       # Creating a pidfile
-      {:pid_file, "~> 0.2"}
+      {:pid_file, "~> 0.2"},
+      # Javascript bundler
+      {:esbuild, "~> 0.4", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -79,7 +81,8 @@ defmodule Akrasia.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd npm install --prefix assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      "assets.deploy": ["esbuild default --minify", "phx.digest"]
     ]
   end
 end

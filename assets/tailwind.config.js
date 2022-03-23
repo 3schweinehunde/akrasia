@@ -1,25 +1,13 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
-  purge: [
-    "../**/*.html.eex",
-    "../**/*.html.leex",
-    "../**/views/**/*.ex",
-    "../**/live/**/*.ex",
-    "./js/**/*.js",
-  ],
-  darkMode: false, // or 'media' or 'class'
+  enabled: process.env.NODE_ENV === "production",
+  content: ["../lib/**/*.{ex,eex,heex,sface}", "./js/**/*.js"],
   theme: {
     fontFamily: {
-      sans: ['Ubuntu'],
-      mono: ['Ubuntu\\ Mono'],
-    },
-    extend: {},
-  },
-  variants: {
-    extend: {
-      backgroundColor: ['odd', 'even'],
+      sans: ["'Ubuntu'", ...defaultTheme.fontFamily.sans],
+      mono: ["'Ubuntu Mono'", ...defaultTheme.fontFamily.mono],
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),    
-  ],
+  plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
 };

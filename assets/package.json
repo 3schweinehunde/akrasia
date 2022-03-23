@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "alpinejs": "^3.9.2",
-    "topbar": "^1.0.1"
+    "topbar": "^1.0.1",
+    "apexcharts": "^3.33.2"
   }
 }

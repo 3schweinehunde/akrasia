@@ -1,16 +1,12 @@
-// We need to import the CSS so that webpack will load it.
-// The MiniCssExtractPlugin is used to separate it out into
-// its own CSS file.
-import "../css/app.css";
-
-// webpack automatically bundles all modules in your
-// entry points. Those entry points can be configured
-// in "webpack.config.js".
-import "alpinejs";
+// Configure module entry points in "webpack.config.js".
+// Import deps with the dep name or local files with a relative path, for example:
+//     import socket from "./socket"
+import Alpine from "alpinejs";
 import "phoenix_html";
 import { Socket } from "phoenix";
-import NProgress from "nprogress";
+import topbar from "topbar";
 import { LiveSocket } from "phoenix_live_view";
+// import Hooks from "./_hooks";
 import ApexCharts from "apexcharts";
 
 let Hooks = {};
@@ -49,14 +45,17 @@ function renderCharts(hook) {
   hook.overviewChart.render();
 }
 
+window.Alpine = Alpine;
+Alpine.start();
+
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
   .getAttribute("content");
 let liveSocket = new LiveSocket("/live", Socket, {
   dom: {
     onBeforeElUpdated(from, to) {
-      if (from.__x) {
-        window.Alpine.clone(from.__x, to);
+      if (from._x_dataStack) {
+        window.Alpine.clone(from, to);
       }
     },
   },
@@ -65,8 +64,24 @@ let liveSocket = new LiveSocket("/live", Socket, {
 });
 
 // Show progress bar on live navigation and form submits
-window.addEventListener("phx:page-loading-start", (info) => NProgress.start());
-window.addEventListener("phx:page-loading-stop", (info) => NProgress.done());
+// Show progress bar on live navigation and form submits
+topbar.config({
+  barColors: { 0: "#ffce54" },
+  shadowColor: "rgba(0, 0, 0, .3)",
+});
+let topBarScheduled = undefined;
+
+window.addEventListener("phx:page-loading-start", () => {
+  if (!topBarScheduled) {
+    topBarScheduled = setTimeout(() => topbar.show(), 400);
+  }
+});
+
+window.addEventListener("phx:page-loading-stop", () => {
+  clearTimeout(topBarScheduled);
+  topBarScheduled = undefined;
+  topbar.hide();
+});
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();
