@@ -24,12 +24,10 @@
               <path d="M 4 7 L 4 9 L 28 9 L 28 7 Z M 4 15 L 4 17 L 28 17 L 28 15 Z M 4 23 L 4 25 L 28 25 L 28 23 Z"/>
             </svg>
           </button>
-          <a class="text-2xl text-gray-500" href="/">BMI Monitor@mittenin.at</a>
+          <a class="text-2xl text-gray-500" href="/">Akrasia@mittenin.at</a>
         </div>
 
         <div id="nav-right" class="flex space-x-8">
-          <a href="/?locale=de">DE</a>
-          <a href="/?locale=en">EN</a>
           <%= render "_user_menu.html", conn: @conn, current_user: @current_user %>
         </div>
       </nav>
@@ -40,7 +38,7 @@
     <footer class="flex bg-gray-100 p-4 space-x-8 justify-center w-full fixed bottom-0 border-1">
     <!-- a full-width fixed footer with subtle-gray-background and a small border,
          the elements are padded within the footer, and against each other and are horizontally centered -->
-      <a href="http://bmi.mittenin.at">BMI Monitor </a> @ <a href="http://www.mittenin.at">Mittenin.at</a>
+      <span><a href="http://akrasia.mittenin.at">Akrasia </a> @ <a href="http://www.mittenin.at">Mittenin.at</a></span>
       <a href="/page/imprint">Imprint</a>
       <a href="/page/privacy">Privacy</a>
     </footer>
