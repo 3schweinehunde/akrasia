@@ -1,7 +1,7 @@
 <Grid id="weighingsgrid"
       heading="Listing Weighings"
-      records_getter={{ &Akrasia.Accounts.list_weighings/1 }}
-      path_helper={{ :weighing_path }}>
+      records_getter={&Akrasia.Accounts.list_weighings/1}
+      path_helper={:weighing_path}>
   <Column field="id" name="ID" />
   <Column field="date" name="Date" />
   <Column field="weight" name="Weight" />
@@ -13,6 +13,6 @@
           name="User Email" 
           sortable="false" 
           searchable="false"
-          presenter={{ &Akrasia.Accounts.Weighing.user_email/1 }} />
+          presenter={&Akrasia.Accounts.Weighing.user_email/1} />
 </Grid>
 

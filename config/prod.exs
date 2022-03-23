@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :akrasia, AkrasiaWeb.Endpoint,
   http: [port: 9999, compress: false],

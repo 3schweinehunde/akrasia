@@ -5,7 +5,7 @@ defmodule Akrasia.MixProject do
     [
       app: :akrasia,
       version: "0.1.0",
-      elixir: "~> 1.7",
+      elixir: "~> 1.13",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -34,47 +34,45 @@ defmodule Akrasia.MixProject do
   defp deps do
     [
       # algorithm used for comeonin
-      {:bcrypt_elixir, "~> 2.0"},
+      {:bcrypt_elixir, "~> 3.0"},
       # web framework
-      {:phoenix, "~> 1.5.7"},
+      {:phoenix, "~> 1.6"},
       # phoenix support for ecto
       {:phoenix_ecto, "~> 4.1"},
       # ecto sql adapter
       {:ecto_sql, "~> 3.4"},
       # database adapter
-      {:postgrex, ">= 0.0.0"},
+      {:postgrex, "~> 0.16"},
       # database adapter
-      {:myxql, "~> 0.4.0"},
+      {:myxql, "~> 0.6"},
       # phoenix live views
-      {:phoenix_live_view, "~> 0.15.0"},
+      {:phoenix_live_view, "~> 0.17"},
       # HTML parser
-      {:floki, ">= 0.27.0", only: :test},
+      {:floki, "~> 0.27", only: :test},
       # view layer
-      {:phoenix_html, "~> 2.11"},
+      {:phoenix_html, "~> 3.2"},
       # live reloading in development
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       # live view dashboard
-      {:phoenix_live_dashboard, "~> 0.4"},
+      {:phoenix_live_dashboard, "~> 0.6"},
       # defines metrics based on telemetry events
       {:telemetry_metrics, "~> 0.4"},
       # collect and dispatching measurements as telemetry events
-      {:telemetry_poller, "~> 0.4"},
+      {:telemetry_poller, "~> 1.0"},
       # i18n and l10n
       {:gettext, "~> 0.11"},
       # Json generation,
       {:jason, "~> 1.0"},
       # web server plug
       {:plug_cowboy, "~> 2.0"},
-      # athlentication code generator
-      {:phx_gen_auth, "~> 0.6", only: [:dev], runtime: false},
       # mailing smtp adapter,
-      {:bamboo_smtp, "~> 3.0"},
+      {:bamboo_smtp, "~> 4.1"},
       # mailing
-      {:bamboo, "~> 1.4"},
+      {:bamboo, "~> 2.2"},
       # frontend component framework
-      {:surface, "~> 0.1.0"},
+      {:surface, "~> 0.7"},
       # Creating a pidfile
-      {:pid_file, "~> 0.1.1"},
+      {:pid_file, "~> 0.2"}
     ]
   end
 

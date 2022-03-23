@@ -1,69 +1,71 @@
-<div id={{ @id }} class="m-12">
-  <h1 class="text-2xl">{{ @heading }}</h1>
+<div id={@id} class="m-12">
+  <h1 class="text-2xl">{@heading}</h1>
 
   <div class="py-6">
     <table class="table-auto">
       <thead>
         <tr>
-          <th :for={{ column <- @columns }} class="border p-2">
-            <SortLink sort_by={{ @sort_by }} 
-                      field={{ String.to_atom(column.field) }} 
-                      sort_order={{ @sort_order }}
-                      target={{ "#" <> @id }}>
-              {{ column.name }}
-            </SortLink>
-          </th>
+          {#for column <- @columns}
+            <th class="border p-2">
+              <SortLink sort_by={@sort_by} 
+                        field={String.to_atom(column.field)} 
+                        sort_order={@sort_order}
+                        target={"#" <> @id}>
+                {column.name}
+              </SortLink>
+            </th>
+          {/for}
           <th class="border p-2">Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td :for={{ column <- @columns }} class="border p-2">
-            <Form :if={{ column[:searchable] }} 
-                  for={{ :search }} 
-                  change={{"search", target: "#" <> @id }}
+          <td :for={column <- @columns} class="border p-2">
+            <Form :if={column[:searchable]} 
+                  for={:search} 
+                  change={"search", target: "#" <> @id}
                   submit="save" 
-                  opts={{ autocomplete: "off" }}>
-              <TextInput field={{ String.to_atom(column.field) }}
-                         value={{ @search_options[String.to_atom(column.field)] }} 
+                  opts={autocomplete: "off"}>
+              <TextInput field={String.to_atom(column.field)}
+                         value={@search_options[String.to_atom(column.field)]} 
                          class="w-20 p-1.5"
-                         opts={{ autofocus: "autofocus", 
+                         opts={autofocus: "autofocus", 
                                  autocomplete: "off", 
                                  placeholder: column.field, 
-                                 "phx-debounce": 300 }} />
+                                 "phx-debounce": 300} />
             </Form>
           </td>
           <td class="border p-2 text-center">
             Search mode:
             <Link to="#"
-              click={{"toggle_search_mode", target: "#" <> @id }}
-              label={{ if @like_search, do: "contains", else: "exact" }}
+              click={"toggle_search_mode", target: "#" <> @id}
+              label={if @like_search, do: "contains", else: "exact"}
               class="text-blue-500" />
           </td>
         </tr>
 
-        <tr :for={{ record <- @records }} class="odd:bg-gray-100">
-          <td :for={{ column <- @columns }} class="border p-2">
-            <If condition={{ column[:presenter] }}>
-              {{ column.presenter.(record) }}
-            </If>
-            <If condition={{ !column[:presenter] }}>
-              {{ Map.get(record, String.to_atom(column.field)) }}
-            </If>
+        <tr :for={record <- @records} class="odd:bg-gray-100">
+          <td :for={column <- @columns} class="border p-2">
+            {#if column[:presenter]}
+              {column.presenter.(record)}
+            {/if}
+            {#if !column[:presenter]}
+              {Map.get(record, String.to_atom(column.field))}
+            {/if}
           </td>
 
           <td class="border p-2 space-x-2">
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :show, record) }}
-                  label={{ @icon_show }}
+            <Link to={Function.capture(Routes, @path_helper, 3).(@socket, :show, record)}
+                  label={@icon_show}
                   class="text-green-500" /> &nbsp;
 
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :edit, record) }}
-                  label={{ @icon_edit }}
+            <Link to={Function.capture(Routes, @path_helper, 3).(@socket, :edit, record)}
+                  label={@icon_edit}
                   class="text-yellow-500" /> &nbsp;
 
-            <Link to={{ Function.capture(Routes, @path_helper, 3).(@socket, :delete, record) }}
-                  label={{ @icon_delete }}
-                  opts={{ data: [confirm: "Are you sure?"], method: :delete }}
+            <Link to={Function.capture(Routes, @path_helper, 3).(@socket, :delete, record)}
+                  label={@icon_delete}
+                  opts={data: [confirm: "Are you sure?"], method: :delete}
                   class="text-red-500" />
           </td>
         </tr>
@@ -71,9 +73,9 @@
     </table>
   </div>
 
-  <Pagination per_page={{ @per_page}} current_page={{ @current_page }} />
+  <Pagination per_page={@per_page} current_page={@current_page} />
 
-  <Link to="{{ Function.capture(Routes, @path_helper, 2).(@socket, :new) }}"
+  <Link to={"#{Function.capture(Routes, @path_helper, 2).(@socket, :new)}"}
         label="New Record"
         class="text-blue-500" />
 </div>

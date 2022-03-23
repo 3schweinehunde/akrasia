@@ -1,19 +1,20 @@
 <div class="pb-6">
-  <PaginationLink :if={{ @current_page > 1 }}
-                  page={{ @current_page - 1 }}
-                  per_page={{ @per_page}}>
+  <PaginationLink :if={@current_page > 1}
+                  page={@current_page - 1}
+                  per_page={@per_page}>
     Previous
   </PaginationLink>
 
-  <PaginationLink :for={{ i <- 1..@current_page }}
-                  disabled={{ i == @current_page }}
-                  page={{ i }}
-                  per_page={{ @per_page }}>
-    {{ i }}
-  </PaginationLink>
+  {#for i <- 1..@current_page}
+    <PaginationLink disabled={i == @current_page}
+                    page={i}
+                    per_page={@per_page}>
+      {i}
+    </PaginationLink>
+  {/for}
 
-  <PaginationLink page={{ @current_page + 1 }}
-                  per_page={{ @per_page }}>
+  <PaginationLink page={@current_page + 1}
+                  per_page={@per_page}>
     Next
   </PaginationLink>
 </div>

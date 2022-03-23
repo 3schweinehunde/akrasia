@@ -1,9 +1,9 @@
 <a href="#"
-   :on-click={{ "sort", target: @target }}
-   phx-value-sort-by={{ @field }}
-   phx-value-sort-order={{ toggle_sort_order(@sort_order) }}>
-   <If condition= {{ @sort_by == @field }}> 
-     {{ @sort_icon }} 
-   </If>
-  <slot/>
+   :on-click={"sort", target: @target}
+   phx-value-sort-by={@field}
+   phx-value-sort-order={toggle_sort_order(@sort_order)}>
+   {#if @sort_by == @field }} 
+     {@sort_icon} 
+   {/if}
+  <#slot/>
 </a>

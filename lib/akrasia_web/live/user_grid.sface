@@ -1,7 +1,7 @@
 <Grid id="usergrid"
       heading="Listing Users"
-      records_getter={{ &Akrasia.Accounts.list_users/1 }}
-      path_helper={{ :user_path }}>
+      records_getter={&Akrasia.Accounts.list_users/1}
+      path_helper={:user_path}>
   <Column field="id" name="ID" />
   <Column field="name" name="Name" />
   <Column field="email" name="Email" />
