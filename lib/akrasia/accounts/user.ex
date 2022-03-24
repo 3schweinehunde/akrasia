@@ -15,15 +15,24 @@ defmodule Akrasia.Accounts.User do
     field :invitation_limit, :integer
     field :target, :decimal
     field :bot_check, :integer, virtual: true
-  # belongs_to :invitation, Akrasia.Accounts.Invitation, foreign_key: :invitation_id
+    # belongs_to :invitation, Akrasia.Accounts.Invitation, foreign_key: :invitation_id
 
     timestamps()
   end
 
   def changeset(user, attrs, _opts \\ []) do
     user
-    |> cast(attrs, [:email, :name, :password, :confirmed_at, :admin, :height, :public,
-                    :invitation_limit, :target])
+    |> cast(attrs, [
+      :email,
+      :name,
+      :password,
+      :confirmed_at,
+      :admin,
+      :height,
+      :public,
+      :invitation_limit,
+      :target
+    ])
   end
 
   @doc """
@@ -66,16 +75,20 @@ defmodule Akrasia.Accounts.User do
     |> validate_length(:password, min: 8, max: 80)
     |> validate_format(:password, ~r/[a-z]/, message: "at least one lower case character")
     |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
-    |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
+    |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/,
+      message: "at least one digit or punctuation character"
+    )
     |> maybe_hash_password(opts)
   end
 
   defp validate_bot_check(changeset) do
     changeset
     |> validate_required([:bot_check])
-    |> validate_number(:bot_check, equal_to: 42, message: "You got this one wrong, please try again!")
+    |> validate_number(:bot_check,
+      equal_to: 42,
+      message: "You got this one wrong, please try again!"
+    )
   end
-
 
   defp maybe_hash_password(changeset, opts) do
     hash_password? = Keyword.get(opts, :hash_password, true)

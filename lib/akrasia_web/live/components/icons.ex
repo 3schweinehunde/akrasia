@@ -1,5 +1,4 @@
 defmodule AkrasiaWeb.Icons do
-
   defmacro __using__(_) do
     quote do
       @icon_asc """

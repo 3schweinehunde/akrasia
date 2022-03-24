@@ -14,18 +14,20 @@ defmodule AkrasiaWeb.Surface.SortLink do
   slot default, required: true
 
   def update(assigns, socket) do
-    socket = socket
-     |> assign(assigns)
-     |> assign(sort_icon: sort_icon(assigns.sort_order))
-     |> Surface.init()
+    socket =
+      socket
+      |> assign(assigns)
+      |> assign(sort_icon: sort_icon(assigns.sort_order))
+      |> Surface.init()
+
     {:ok, socket}
   end
 
   defp sort_icon(sort_order) do
     case sort_order do
-      :asc  -> raw(@icon_asc)
+      :asc -> raw(@icon_asc)
       :desc -> raw(@icon_desc)
-      _     -> ""
+      _ -> ""
     end
   end
 

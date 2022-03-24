@@ -3,10 +3,10 @@ defmodule Akrasia.Accounts.UserNotifier do
     import Bamboo.Email
 
     new_email(
-        from: "noreply@akrasia.informatom.com",
-        to: to,
-        subject: "Akrasia Email Notification",
-        text_body: body
+      from: "noreply@akrasia.informatom.com",
+      to: to,
+      subject: "Akrasia Email Notification",
+      text_body: body
     )
     |> Akrasia.Mailer.deliver_now()
 

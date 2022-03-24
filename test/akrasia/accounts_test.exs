@@ -505,8 +505,18 @@ defmodule Akrasia.AccountsTest do
   describe "weighings" do
     alias Akrasia.Accounts.Weighing
 
-    @valid_attrs %{abdominal_girth: 42, adipose: "120.5", date: ~N[2010-04-17 14:00:00], weight: "120.5"}
-    @update_attrs %{abdominal_girth: 43, adipose: "456.7", date: ~N[2011-05-18 15:01:01], weight: "456.7"}
+    @valid_attrs %{
+      abdominal_girth: 42,
+      adipose: "120.5",
+      date: ~N[2010-04-17 14:00:00],
+      weight: "120.5"
+    }
+    @update_attrs %{
+      abdominal_girth: 43,
+      adipose: "456.7",
+      date: ~N[2011-05-18 15:01:01],
+      weight: "456.7"
+    }
     @invalid_attrs %{abdominal_girth: nil, adipose: nil, date: nil, weight: nil}
 
     def weighing_fixture(attrs \\ %{}) do

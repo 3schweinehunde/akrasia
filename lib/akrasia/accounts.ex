@@ -175,16 +175,22 @@ defmodule Akrasia.Accounts do
           {column, value}, query ->
             if value != "" do
               if criteria[:like_search] do
-                from q in query, where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%"<>value<>"%"))
+                from q in query,
+                  where:
+                    ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
               else
                 from q in query, where: ^[{column, value}]
               end
             else
               query
             end
-          end)
-      {:additional_params, _}, query -> query
-      {:like_search, _}, query -> query
+        end)
+
+      {:additional_params, _}, query ->
+        query
+
+      {:like_search, _}, query ->
+        query
     end)
     |> Repo.all()
   end
@@ -212,7 +218,7 @@ defmodule Akrasia.Accounts do
   #################################################################
 
   def list_weighings(criteria) when is_list(criteria) do
-    query = from w in Weighing
+    query = from(w in Weighing)
 
     Enum.reduce(criteria, query, fn
       {:paginate, %{page: page, per_page: per_page}}, query ->
@@ -225,30 +231,37 @@ defmodule Akrasia.Accounts do
 
       {:additional_params, %{user_id: user_id}}, query ->
         from w in query, where: w.user_id == ^user_id
-      {:additional_params, _}, query -> query
+
+      {:additional_params, _}, query ->
+        query
 
       {:search, search_options}, query ->
         Enum.reduce(search_options, query, fn
           {column, value}, query ->
             if value != "" do
               if criteria[:like_search] do
-                from q in query, where: ilike(fragment("cast (? as text)", field(q, ^column)), ^("%"<>value<>"%"))
+                from q in query,
+                  where:
+                    ilike(fragment("cast (? as text)", field(q, ^column)), ^("%" <> value <> "%"))
               else
                 from q in query, where: ^[{column, value}]
               end
             else
               query
             end
-          end)
-      {:like_search, _}, query -> query
+        end)
+
+      {:like_search, _}, query ->
+        query
     end)
     |> Repo.all()
     |> Repo.preload(:user)
   end
 
   def get_weighing!(id), do: Repo.get!(Weighing, id)
+
   def get_my_weighing!(id, current_user) do
-    Repo.get_by!(Weighing, [id: id, user_id: current_user.id])
+    Repo.get_by!(Weighing, id: id, user_id: current_user.id)
   end
 
   def get_personal_weighings(user_id) do
@@ -259,9 +272,11 @@ defmodule Akrasia.Accounts do
   end
 
   def get_comparators(user_id) do
-    from(u in User, where: u.id != ^user_id,
-                    where: u.public == true,
-                    order_by: u.email)
+    from(u in User,
+      where: u.id != ^user_id,
+      where: u.public == true,
+      order_by: u.email
+    )
     |> Repo.all()
   end
 

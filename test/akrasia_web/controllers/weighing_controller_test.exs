@@ -3,8 +3,18 @@ defmodule AkrasiaWeb.WeighingControllerTest do
 
   alias Akrasia.Accounts
 
-  @create_attrs %{abdominal_girth: 42, adipose: "120.5", date: ~N[2010-04-17 14:00:00], weight: "120.5"}
-  @update_attrs %{abdominal_girth: 43, adipose: "456.7", date: ~N[2011-05-18 15:01:01], weight: "456.7"}
+  @create_attrs %{
+    abdominal_girth: 42,
+    adipose: "120.5",
+    date: ~N[2010-04-17 14:00:00],
+    weight: "120.5"
+  }
+  @update_attrs %{
+    abdominal_girth: 43,
+    adipose: "456.7",
+    date: ~N[2011-05-18 15:01:01],
+    weight: "456.7"
+  }
   @invalid_attrs %{abdominal_girth: nil, adipose: nil, date: nil, weight: nil}
 
   def fixture(:weighing) do
@@ -75,6 +85,7 @@ defmodule AkrasiaWeb.WeighingControllerTest do
     test "deletes chosen weighing", %{conn: conn, weighing: weighing} do
       conn = delete(conn, Routes.weighing_path(conn, :delete, weighing))
       assert redirected_to(conn) == Routes.weighing_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.weighing_path(conn, :show, weighing))
       end

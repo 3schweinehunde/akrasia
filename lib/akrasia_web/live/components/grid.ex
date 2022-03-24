@@ -3,15 +3,18 @@ defmodule AkrasiaWeb.Grid do
   use AkrasiaWeb.Icons
 
   def mount(socket) do
-    socket = assign(socket,
-               records: [],
-               options: %{},
-               records_getter_params: %{},
-               search_options: %{},
-               like_search: false,
-               icon_show: raw(@icon_show),
-               icon_edit: raw(@icon_edit),
-               icon_delete: raw(@icon_delete))
+    socket =
+      assign(socket,
+        records: [],
+        options: %{},
+        records_getter_params: %{},
+        search_options: %{},
+        like_search: false,
+        icon_show: raw(@icon_show),
+        icon_edit: raw(@icon_edit),
+        icon_delete: raw(@icon_delete)
+      )
+
     {:ok, socket}
   end
 
@@ -22,13 +25,15 @@ defmodule AkrasiaWeb.Grid do
   end
 
   defp pagination_link(socket, opts) do
-    [options: options,
-     caller: caller,
-     link_title: link_title,
-     page: page,
-     class: class,
-     myself: myself,
-     path_helper: path_helper] = opts
+    [
+      options: options,
+      caller: caller,
+      link_title: link_title,
+      page: page,
+      class: class,
+      myself: myself,
+      path_helper: path_helper
+    ] = opts
 
     if opts[:caller] do
       live_patch(link_title,
@@ -42,23 +47,26 @@ defmodule AkrasiaWeb.Grid do
         class: class
       )
     else
-      link link_title,
-           to: "#",
-           phx_click: "paginate",
-           phx_target: myself,
-           phx_value_page: page,
-           phx_value_per_page: options.per_page,
-           class: class
+      link(link_title,
+        to: "#",
+        phx_click: "paginate",
+        phx_target: myself,
+        phx_value_page: page,
+        phx_value_per_page: options.per_page,
+        class: class
+      )
     end
   end
 
   defp sort_link(socket, opts) do
-    [link_title: link_title,
-     sort_by: sort_by,
-     options: options,
-     caller: caller,
-     myself: myself,
-     path_helper: path_helper] = opts
+    [
+      link_title: link_title,
+      sort_by: sort_by,
+      options: options,
+      caller: caller,
+      myself: myself,
+      path_helper: path_helper
+    ] = opts
 
     link_title =
       if sort_by == options.sort_by do
@@ -72,27 +80,28 @@ defmodule AkrasiaWeb.Grid do
       end
 
     if caller do
-      live_patch link_title,
+      live_patch(link_title,
         to:
-        Function.capture(Routes, path_helper, 3).(socket, caller,
+          Function.capture(Routes, path_helper, 3).(socket, caller,
             sort_by: sort_by,
             sort_order: toggle_sort_order(options.sort_order),
             page: options.page,
             per_page: options.per_page
           )
+      )
     else
-      link link_title,
-           to: "#",
-           phx_click: "sort",
-           phx_target: myself,
-           phx_value_sort_by: sort_by,
-           phx_value_sort_order: toggle_sort_order(options.sort_order)
+      link(link_title,
+        to: "#",
+        phx_click: "sort",
+        phx_target: myself,
+        phx_value_sort_by: sort_by,
+        phx_value_sort_order: toggle_sort_order(options.sort_order)
+      )
     end
   end
 
   defp toggle_sort_order(:asc), do: :desc
   defp toggle_sort_order(:desc), do: :asc
-
 
   def handle_event("search", %{"search" => search}, socket) do
     [column_string | _] = Map.keys(search)
@@ -105,7 +114,7 @@ defmodule AkrasiaWeb.Grid do
     {:noreply, socket}
   end
 
-  def handle_event("sort", %{"sort-by"=> sort_by, "sort-order"=> sort_order}, socket) do
+  def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
     sort_options = %{sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order)}
     socket = assign(socket, options: Map.merge(socket.assigns.options, sort_options))
 
@@ -133,10 +142,12 @@ defmodule AkrasiaWeb.Grid do
       socket.assigns.config.records_getter.(
         paginate: %{
           page: socket.assigns.options.page,
-          per_page: socket.assigns.options.per_page},
+          per_page: socket.assigns.options.per_page
+        },
         sort: %{
           sort_by: socket.assigns.options.sort_by,
-          sort_order: socket.assigns.options.sort_order },
+          sort_order: socket.assigns.options.sort_order
+        },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
         additional_params: socket.assigns.config[:records_getter_params]
@@ -152,6 +163,7 @@ defmodule AkrasiaWeb.Grid do
       autofocus: "autofocus",
       autocomplete: "off",
       class: "w-20 p-1.5",
-      phx_debounce: 300)
+      phx_debounce: 300
+    )
   end
 end

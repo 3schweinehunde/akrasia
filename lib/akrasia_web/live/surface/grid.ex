@@ -26,9 +26,11 @@ defmodule AkrasiaWeb.Surface.Grid do
   slot columns
 
   def update(assigns, socket) do
-    socket = socket
-    |> assign(assigns)
-    |> get_records()
+    socket =
+      socket
+      |> assign(assigns)
+      |> get_records()
+
     {:ok, socket}
   end
 
@@ -36,31 +38,39 @@ defmodule AkrasiaWeb.Surface.Grid do
     [column_string | _] = Map.keys(search)
     column = String.to_atom(column_string)
     search_options = Map.merge(socket.assigns.search_options, %{column => search[column_string]})
-    socket = socket
+
+    socket =
+      socket
       |> assign(search_options: search_options, column: search[column_string])
       |> get_records()
 
     {:noreply, socket}
   end
 
-  def handle_event("sort", %{"sort-by"=> sort_by, "sort-order"=> sort_order}, socket) do
-    socket = socket
+  def handle_event("sort", %{"sort-by" => sort_by, "sort-order" => sort_order}, socket) do
+    socket =
+      socket
       |> assign(sort_by: String.to_atom(sort_by), sort_order: String.to_atom(sort_order))
       |> get_records()
+
     {:noreply, socket}
   end
 
   def handle_event("paginate", %{"page" => page, "per-page" => per_page}, socket) do
-    socket = socket
+    socket =
+      socket
       |> assign(current_page: String.to_integer(page), per_page: String.to_integer(per_page))
       |> get_records()
+
     {:noreply, socket}
   end
 
   def handle_event("toggle_search_mode", _, socket) do
-    socket = socket
+    socket =
+      socket
       |> assign(like_search: !socket.assigns.like_search)
       |> get_records()
+
     {:noreply, socket}
   end
 
@@ -69,10 +79,12 @@ defmodule AkrasiaWeb.Surface.Grid do
       socket.assigns.records_getter.(
         paginate: %{
           page: socket.assigns.current_page,
-          per_page: socket.assigns.per_page},
+          per_page: socket.assigns.per_page
+        },
         sort: %{
           sort_by: socket.assigns.sort_by,
-          sort_order: socket.assigns.sort_order },
+          sort_order: socket.assigns.sort_order
+        },
         search: socket.assigns.search_options,
         like_search: socket.assigns.like_search,
         additional_params: socket.assigns[:records_getter_params]
