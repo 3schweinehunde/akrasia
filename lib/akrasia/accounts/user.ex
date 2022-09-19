@@ -20,7 +20,7 @@ defmodule Akrasia.Accounts.User do
     timestamps()
   end
 
-  def changeset(user, attrs, _opts \\ []) do
+  def changeset(user, attrs, opts \\ []) do
     user
     |> cast(attrs, [
       :email,
