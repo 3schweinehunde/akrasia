@@ -11,10 +11,6 @@
   <%= email_input f, :email %>
   <%= error_tag f, :email %>
 
-  <%= label f, :email %>
-  <%= email_input f, :email %>
-  <%= error_tag f, :email %>
-
   <%= label f, :name %>
   <%= text_input f, :name %>
   <%= error_tag f, :name %>
@@ -53,7 +49,7 @@
 
   <%= label f, :target %>
   <%= number_input f, :target, step: "0.1" %>
-  <%= error_tag f, :invittargetation_limit %>
+  <%= error_tag f, :target %>
 
   <div>
     <%= submit "Save", class: "bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 my-4 px-3 rounded" %>

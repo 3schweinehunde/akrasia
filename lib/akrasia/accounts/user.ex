@@ -33,6 +33,7 @@ defmodule Akrasia.Accounts.User do
       :invitation_limit,
       :target
     ])
+    |> validate_password(opts)
   end
 
   @doc """
