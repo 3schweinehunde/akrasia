@@ -10,17 +10,20 @@ of private people into these files.
 ## Working with the user
 
 - **Number** findings, options and open items, and keep the numbering going across sessions.
-  **Next new number: #19.** Update it here when you use new numbers. The user steers by
+  **Next new number: #29.** Update it here when you use new numbers. The user steers by
   number ("go with 3", "close #5").
 - While the user is "still exploring", only investigate and answer. Edit the backlog or the
   code only on an explicit request. Go step by step; the user prefers manual over automatic.
+- Never hesitate to ask questions (user, 2026-11-15). Ask before starting a step
+  rather than guessing at scope or preferences.
 - Don't put your own ideas into backlog items or summaries as if they were decided. Mark them
   as suggestions or ask when the wording is vague.
 - [backlog.md](backlog.md) holds only open work. Delete finished items (no "done" section)
   and put reference knowledge that is worth keeping into this file or docs/claude. Cleanups
   noticed during other work become a numbered backlog item, and the user decides later.
   Don't fold them into the current diff.
-- Commit only when asked. Never amend a commit after handing it over for pushing; add a new
+- Commit in steps, and only when the user says "commit": finish a step, report it,
+  and wait. Never amend a commit after handing it over for pushing; add a new
   commit instead. The user pushes and deploys on their own: never claim commits are
   undeployed, say what a deploy of them needs (migrations, assets, console steps).
 - Unrelated `mix format` changes are welcome: commit them separately as "mix format".
@@ -58,7 +61,8 @@ cd assets && npm run deploy   # production Tailwind build
 ```
 
 Dev and test databases: `akrasia_dev` / `akrasia_test`, user `postgres` / `postgres` on localhost.
-Prod (`config/prod.secret.exs`) reads `DATABASE_URL` and `SECRET_KEY_BASE` from the environment
+Prod is deployed and run the same way as pan, with Erlang and Elixir installed via asdf
+(`.tool-versions`); use pan's setup as the model. Prod (`config/prod.secret.exs`) reads `DATABASE_URL` and `SECRET_KEY_BASE` from the environment
 and listens on port 9999 (IPv6).
 
 ## Layout
