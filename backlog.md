@@ -16,13 +16,6 @@ otherwise.
 Deployment: nobody is using akrasia right now, so it is fine to deploy only
 after sections 1 and 2 are done and leave prod not running until then.
 
-- **#50 Switch from `master` to `main`**, like pan.
-  State on 2026-11-15: no `main` exists anywhere yet. The remotes are `code`,
-  `gitea` and `github`, all with `master` at the same commit as local.
-  Steps: rename the branch, push `main` to all three remotes, set it as the
-  default branch in each remote's settings (the user), delete `master` on
-  the remotes, and point the prod deployment at `main`.
-
 - **#17 Upgrade the stack.** Today: Phoenix 1.6, LiveView 0.17, esbuild 0.14,
   Tailwind 3, Bamboo, Cowboy; `config :logger, level: :warn` in test.exs is
   deprecated. `.tool-versions` pins Erlang 29.1.1 / Elixir 1.20.4 like the
@@ -32,8 +25,11 @@ after sections 1 and 2 are done and leave prod not running until then.
 
   Steps, each committed separately when the user says "commit":
   (1) remove Surface and the generator leftovers (done 2026-11-15),
-  (2) upgrade the deps, (3) fix until it compiles, (4) fix until the tests
-  pass. The rewrite parts below happen within (3) and (4).
+  (2) upgrade the deps (done 2026-11-15: `mix.exs` modelled on a fresh
+  `phx.new` 1.8.16 project, new `mix.lock`, npm only for ApexCharts,
+  topbar and heroicons vendored in `assets/vendor/` like the generator),
+  (3) fix until it compiles, (4) fix until the tests pass. The rewrite
+  parts below happen within (3) and (4).
 
   Stack:
   - #20 Go straight to pan's versions: Phoenix 1.8, LiveView 1.2,
@@ -53,8 +49,15 @@ after sections 1 and 2 are done and leave prod not running until then.
   - #35 Wrap all UI texts in `gettext` while rewriting the templates;
     the German translations follow later (#28).
   - #44 Remove Alpine.js (one `x-show` in the comparator list, replace it
-    server-side, plus the `Alpine.clone` workaround in app.js), unless the
-    current Backpex version needs Alpine.
+    server-side, plus the `Alpine.clone` workaround in app.js). Backpex
+    0.24 does not need Alpine (checked 2026-11-15); already gone from
+    package.json.
+  - #51 ApexCharts 3.24 → 8 (user). Check the changelog for breaking
+    changes in line and brush charts and theming.
+  - #52 Dev tools like pan: tidewave, claude + usage_rules + igniter, credo,
+    sobelow (user). Set them up (claude installer, `.sobelow-conf`, credo
+    config) in step (3).
+  - DaisyUI comes as the generator's git dependency (not npm as in pan).
 
   Auth:
   - #25 Regenerate auth with the Phoenix 1.8 `phx.gen.auth`, then carry over
@@ -126,6 +129,13 @@ after sections 1 and 2 are done and leave prod not running until then.
   tests and has never been run. The regenerated auth (#25) brings its own
   tests. Add tests for the diagram, "My Weighings" and the
   `Akrasia.Weighings` context.
+- **#50 Switch from `master` to `main`**, like pan. Done last, after
+  everything else in this section (user, 2026-11-15).
+  State on 2026-11-15: no `main` exists anywhere yet. The remotes are `code`,
+  `gitea` and `github`, all with `master` at the same commit as local.
+  Steps: rename the branch, push `main` to all three remotes, set it as the
+  default branch in each remote's settings (the user), delete `master` on
+  the remotes, and point the prod deployment at `main`.
 
 ## 2. Security problems
 

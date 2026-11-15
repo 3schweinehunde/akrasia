@@ -10,7 +10,7 @@ of private people into these files.
 ## Working with the user
 
 - **Number** findings, options and open items, and keep the numbering going across sessions.
-  **Next new number: #51.** Update it here when you use new numbers. The user steers by
+  **Next new number: #53.** Update it here when you use new numbers. The user steers by
   number ("go with 3", "close #5").
 - While the user is "still exploring", only investigate and answer. Edit the backlog or the
   code only on an explicit request. Go step by step; the user prefers manual over automatic.
