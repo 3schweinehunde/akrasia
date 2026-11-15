@@ -10,6 +10,99 @@ section.
 
 ---
 
+## Open questions (2026-11-15)
+
+These are decisions to make before or during the upgrade (#17), because the
+templates are rewritten there anyway (#21) and migrations come with the auth
+generator (#25). Wherever an option says "suggestion", it is Claude's
+suggestion, not a decision. Once a question is answered, move the decision
+into the item it belongs to and delete the question here.
+
+### Bot filter at sign-up (#29)
+
+With magic-link sign-up, a bot account can't do anything until someone
+clicks the link in the email. The remaining risk is that bots make akrasia
+send emails to strangers' addresses, which hurts the mail server's
+reputation. Pan uses the same "42" question as akrasia.
+
+- **#30** Keep "42". It has worked and needs no dependency. A bot written
+  for this site gets past it once.
+- **#31** Hidden honeypot field plus a minimum fill-in time of about
+  3 seconds. Users see nothing. It catches generic bots, but not ones
+  written for the site.
+- **#32** A third-party captcha (Turnstile, hCaptcha). Not suggested:
+  external scripts and a privacy-page entry, overkill here.
+- **#33** Rate limiting per IP for sign-up and magic-link requests (`hammer`).
+  Works alongside any of the above, and is the only option that actually
+  limits the mail abuse.
+- Suggestion: #31 + #33 (and later the same for pan). To keep akrasia and
+  pan identical: #30 + #33.
+
+### Admin and grids
+
+- **#46 Backpex for `/admin`** (suggestion). A LiveView admin panel built on
+  Tailwind and DaisyUI, so it fits #34. Resources are described as modules
+  listing their fields; it provides list, search, filters, sorting,
+  pagination, show/edit/new/delete and permissions per action. It would
+  replace `UserGrid`, `WeighingGrid`, `UserController`, `WeighingController`
+  and their templates, which settles #37 and most of #36. Downsides: a
+  dependency with its own release pace, and its own layout component that
+  needs fitting into ours. Check whether the current version still needs
+  Alpine.js (affects #44).
+- **#47 Flop + Flop Phoenix** for the user-facing "My Weighings" list: a
+  table with sorting, filtering and pagination, where only allowed fields
+  are possible. Suggestion: only if users should get search and filters too;
+  otherwise a plain 1.8 table with sorting by a fixed list of columns.
+- **#48 Torch** generates the admin pages as code (no runtime dependency).
+  More code to own, less polished.
+- **#49 Kaffy / LiveAdmin.** Not suggested: Kaffy is Bootstrap-based and not
+  very active, and LiveAdmin is less mature.
+- **#36 If no admin library is used, rewrite the grid** as a 1.8 component in
+  which each column names its field, and only those fields can be sorted or
+  searched (fixes #4). Choose one: a) own small component (suggestion),
+  b) `flop`.
+- **#37 If no admin library is used, admin CRUD:** a) convert
+  `UserController` and `WeighingController` to LiveViews (`phx.gen.live`
+  style), b) keep them as controllers with 1.8 HTML modules.
+
+### Scope of the upgrade
+
+- **#34 Move DaisyUI (#18) into #17.** Phoenix 1.8's generator already ships
+  DaisyUI with a light and a dark theme. Since every template gets rewritten
+  for #21, use Latte and Mocha right away instead of a second pass later.
+- **#35 Multilingual UI (#28):** wrap the texts in `gettext` while
+  rewriting the templates; the German translations come later. Choose one:
+  a) during #21 (each template is touched only once), b) later as its own
+  step (a smaller diff now).
+- **#38 A weighings context:** move the weighings out of `Accounts` into
+  `Akrasia.Weighings`, using the 1.8 scopes (`current_scope`), so the context
+  itself enforces "my weighings".
+- **#43 Fix the diagram bugs (#1, #2, #3) during the rewrite:** one BMI
+  function, an empty state for users with no weighings or no height, and
+  resetting the form after saving.
+- **#44 Remove Alpine.js.** Akrasia uses it for a single `x-show` in the
+  comparator list, and the server already knows `comparator_id`. Removing
+  it also removes the `Alpine.clone` workaround. Pan keeps Alpine; say so
+  if it should stay as a shared tool. Depends on #46 (Backpex and Alpine).
+- **#45 Static pages (#11):** own routes for imprint and privacy instead of
+  `/page/:template`, which removes the 500 on unknown names.
+
+### Data and migrations
+
+- **#39 Deleting users (#6):** a) the user's weighings are deleted with the
+  user (`on_delete: :delete_all`), b) deleting a user who has weighings is
+  refused with a message.
+- **#40 Migrations (#7):** in the same migration step, re-add the index on
+  `weighings.user_id` and rename the migration module. The rename is safe,
+  because Ecto tracks migrations by version number, not by module name.
+- **#41 `invitation_limit` (#15):** a) remove the column, b) keep it for a
+  future invitation feature.
+- **#42 Seeds (#10):** a) a small `seeds.exs` with an admin user, a public
+  test user and a few weighings, so a fresh setup works without the prod
+  backup; b) remove `run priv/repo/seeds.exs` from the setup alias.
+
+---
+
 ## 1. Get it running
 
 Deployment (user, 2026-11-15): nobody is using akrasia right now, so it is
@@ -36,7 +129,7 @@ running until then.
     probably also settles #5 (on_mount) and #13.
   - #29 Adopt the Phoenix 1.8 login flow: sign up with email only, magic
     link login, optional password. Existing prod passwords (bcrypt) keep
-    working. Open: does the "42" bot question stay at sign-up?
+    working. The bot filter is open, see "Open questions" (#30–#33).
   - Steps, each committed separately when the user says "commit":
     (1) remove Surface (#12) and the leftovers (#14) (done 2026-11-15),
     (2) upgrade the deps, (3) fix until it compiles, (4) fix until the
