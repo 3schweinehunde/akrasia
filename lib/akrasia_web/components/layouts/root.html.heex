@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang={Gettext.get_locale(AkrasiaWeb.Gettext)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title default="Akrasia" phx-no-format>{assigns[:page_title]}</.live_title>
+    <%!-- a theme chosen in the toggle, set before the first paint; without one
+         the CSS follows prefers-color-scheme (assets/js/theme_toggle.js) --%>
+    <script>
+      try {
+        var theme = localStorage.getItem("akrasia_theme");
+        if (theme === "latte" || theme === "mocha") {
+          document.documentElement.setAttribute("data-theme", theme);
+        }
+      } catch (e) {}
+    </script>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/css/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/app.js"}>
+    </script>
+  </head>
+  <body class="bg-base-200 min-h-screen flex flex-col">
+    {@inner_content}
+  </body>
+</html>

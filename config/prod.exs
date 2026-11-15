@@ -1,7 +1,12 @@
 import Config
 
+# Prod runs like pan: `mix phx.server` behind nginx (TLS there), with a pid
+# file. Akrasia.Repo and the endpoint's secret_key_base are env-var driven,
+# see config/runtime.exs.
+
 config :akrasia, AkrasiaWeb.Endpoint,
-  http: [port: 9999, compress: false],
+  # IPv6 any address (dual stack), as before with Cowboy's :inet6
+  http: [ip: {0, 0, 0, 0, 0, 0, 0, 0}, port: 9999],
   url: [scheme: "https", host: "akrasia.informatom.com", port: 443],
   cache_static_manifest: "priv/static/cache_manifest.json",
   server: true,
@@ -9,16 +14,29 @@ config :akrasia, AkrasiaWeb.Endpoint,
   check_origin: ["https://akrasia.informatom.com"],
   version: Mix.Project.config()[:version]
 
-config :logger, level: :info
-
-config :akrasia, :environment, "prod"
-
+# Supervision tree (read by Akrasia.Application, like pan)
 config :akrasia, :children, [
-  Akrasia.Repo,
   AkrasiaWeb.Telemetry,
-  {Phoenix.PubSub, name: :akrasia_pubsub, adapter: Phoenix.PubSub.PG2},
+  Akrasia.Repo,
+  {Phoenix.PubSub, name: Akrasia.PubSub},
   AkrasiaWeb.Endpoint,
-  {PidFile.Worker, file: "pan.pid"}
+  {PidFile.Worker, file: "akrasia.pid"}
 ]
 
-import_config "prod.secret.exs"
+# Mail through the local MTA, as before with Bamboo
+config :akrasia, Akrasia.Mailer,
+  adapter: Swoosh.Adapters.SMTP,
+  relay: "localhost",
+  port: 25,
+  tls: :if_available,
+  auth: :never,
+  retries: 1
+
+# The SMTP adapter needs no API client
+config :swoosh, :api_client, false
+
+# Disable Swoosh Local Memory Storage
+config :swoosh, local: false
+
+# Do not print debug messages in production
+config :logger, level: :info

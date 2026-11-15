@@ -29,6 +29,8 @@ of private people into these files.
   and wait. Never amend a commit after handing it over for pushing; add a new
   commit instead. The user pushes and deploys on their own: never claim commits are
   undeployed, say what a deploy of them needs (migrations, assets, console steps).
+- Writing tests is encouraged (user, 2026-11-15): add tests for what you build. The
+  old suite was generator scaffolding and was removed in #17 step 3a.
 - Unrelated `mix format` changes are welcome: commit them separately as "mix format".
 - Before proposing a root cause, look at the real data and code instead of theorizing.
 - To show a scratchpad file, Read it: the Read call is clickable in the user's VSCode.

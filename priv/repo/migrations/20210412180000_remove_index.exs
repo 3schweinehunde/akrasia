@@ -1,4 +1,4 @@
-defmodule Akrasia.Repo.Migrations.CreateWeighings do
+defmodule Akrasia.Repo.Migrations.RemoveIndex do
   use Ecto.Migration
 
   def change do

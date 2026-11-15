@@ -1,0 +1,26 @@
+<Layouts.app flash={@flash} current_scope={@current_scope}>
+  <div class="hero rounded-box bg-base-100 py-12">
+    <div class="hero-content max-w-2xl flex-col text-center">
+      <h1 class="flex items-center gap-2 text-3xl">
+        <.icon name="hero-scale" class="size-10" /> {gettext("BMI Monitor")}
+      </h1>
+      <p>
+        {gettext("Do you want to keep your weight or even lose some?")}
+      </p>
+      <p>
+        {gettext(
+          "Watch your Body Mass Index and be more consistent by publishing your status and comparing it with friends and acquaintances!"
+        )}
+      </p>
+
+      <div class="flex gap-4 pt-4">
+        <%= if @current_scope && @current_scope.user do %>
+          <.button navigate={~p"/diagram"} variant="primary">{gettext("To your diagram")}</.button>
+        <% else %>
+          <.button navigate={~p"/users/log-in"} variant="primary">{gettext("Log in")}</.button>
+          <.button navigate={~p"/users/register"}>{gettext("Register")}</.button>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</Layouts.app>

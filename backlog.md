@@ -35,6 +35,11 @@ informed the users, and the plan stays (#53, 2026-11-15).
   (user, 2026-11-15): (3a) config and app shell (layouts, DaisyUI
   Latte/Mocha, gettext), (3b) auth, (3c) weighings context, "My Weighings"
   and the diagram, (3d) Backpex admin, (3e) migrations and dev tools.
+  3a (2026-11-15) removed all old web code (views, templates, LiveViews,
+  grid, controllers, `UserAuth`) and the old `Accounts` context with their
+  tests, so the repo compiles at every step. Port them from git at commit
+  `af94d86`, e.g. `git show af94d86:lib/akrasia/accounts.ex`.
+  Texts are English msgids; German stays in #28 (user: English first).
 
   Stack:
   - #20 Go straight to pan's versions: Phoenix 1.8, LiveView 1.2,
@@ -89,8 +94,10 @@ informed the users, and the plan stays (#53, 2026-11-15).
   Data and migrations:
   - #39 Deleting a user deletes their weighings
     (`on_delete: :delete_all` on `weighings.user_id`).
-  - #40 Re-add the index on `weighings.user_id` and give migration
-    `20210412180000_remove_index.exs` its own module name.
+  - #40 Re-add the index on `weighings.user_id`. The module rename of
+    `20210412180000_remove_index.exs` (→ `RemoveIndex`) was done in 3a,
+    because the duplicate name made migrating an empty DB fail
+    (`20210115` ran the drop index code); prod is not affected.
   - #41 Drop the unused column `invitation_limit` (and the commented-out
     `invitation` relation). Every prod user has a value (9, 10, 96, 100);
     losing them is accepted (#56).
@@ -112,8 +119,8 @@ informed the users, and the plan stays (#53, 2026-11-15).
   - **#3 BMI calculation is duplicated three times** (→ #43).
   - **#6 Deleting a user who has weighings fails** with
     `Ecto.ConstraintError` (→ #39).
-  - **#7 Migration module name `CreateWeighings` used twice, and the
-    `weighings.user_id` index is dropped** (→ #40).
+  - **#7 The `weighings.user_id` index is dropped** (→ #40; the duplicate
+    module name is fixed).
   - **#10 `mix ecto.setup` runs the non-existent `priv/repo/seeds.exs`** (→ #42).
   - **#11 `/page/:template` renders any template name from the URL**,
     unknown names give a 500 (→ #45).

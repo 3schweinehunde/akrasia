@@ -1,17 +1,19 @@
 defmodule AkrasiaWeb.Router do
   use AkrasiaWeb, :router
 
-  import AkrasiaWeb.UserAuth
-
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {AkrasiaWeb.LayoutView, :root}
+    plug :put_root_layout, html: {AkrasiaWeb.Layouts, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
-    plug :fetch_current_user
+    # until #17 step 3b: nobody is logged in; replaced by phx.gen.auth's
+    # fetch_current_scope_for_user
+    plug :assign_no_scope
   end
+
+  defp assign_no_scope(conn, _opts), do: Plug.Conn.assign(conn, :current_scope, nil)
 
   pipeline :api do
     plug :accepts, ["json"]
@@ -19,63 +21,22 @@ defmodule AkrasiaWeb.Router do
 
   scope "/", AkrasiaWeb do
     pipe_through :browser
+
+    get "/", PageController, :home
+    # own routes instead of /page/:template (#45)
+    get "/imprint", PageController, :imprint
+    get "/privacy", PageController, :privacy
   end
 
-  scope "/admin", AkrasiaWeb do
-    pipe_through [:browser, :require_authenticated_admin_user]
-
-    live "/weighings", WeighingGrid, :index, as: :weighing
-    live "/users", UserGrid, :index, as: :user
-  end
-
-  if Mix.env() in [:dev, :test] do
+  # Enable LiveDashboard and Swoosh mailbox preview in development
+  if Application.compile_env(:akrasia, :dev_routes) do
     import Phoenix.LiveDashboard.Router
 
-    scope "/" do
+    scope "/dev" do
       pipe_through :browser
+
       live_dashboard "/dashboard", metrics: AkrasiaWeb.Telemetry
+      forward "/mailbox", Plug.Swoosh.MailboxPreview
     end
-  end
-
-  scope "/", AkrasiaWeb do
-    pipe_through [:browser, :redirect_if_user_is_authenticated]
-
-    get "/users/register", UserRegistrationController, :new
-    post "/users/register", UserRegistrationController, :create
-    get "/users/log_in", UserSessionController, :new
-    post "/users/log_in", UserSessionController, :create
-    get "/users/reset_password", UserResetPasswordController, :new
-    post "/users/reset_password", UserResetPasswordController, :create
-    get "/users/reset_password/:token", UserResetPasswordController, :edit
-    put "/users/reset_password/:token", UserResetPasswordController, :update
-  end
-
-  scope "/", AkrasiaWeb do
-    pipe_through [:browser, :require_authenticated_user]
-
-    get "/users/settings", UserSettingsController, :edit
-    put "/users/settings", UserSettingsController, :update
-    get "/users/settings/confirm_email/:token", UserSettingsController, :confirm_email
-    live "/diagram", WeighingDiagram, :diagram, as: :my_weighing
-    live "/weighings", MyWeighingGrid, :index, as: :my_weighing
-    resources "/weighings", MyWeighingController, except: [:index]
-  end
-
-  scope "/", AkrasiaWeb do
-    pipe_through [:browser]
-
-    delete "/users/log_out", UserSessionController, :delete
-    get "/users/confirm", UserConfirmationController, :new
-    post "/users/confirm", UserConfirmationController, :create
-    get "/users/confirm/:token", UserConfirmationController, :confirm
-    get "/page/:template", PageController, :show
-    get "/", PageController, :index
-  end
-
-  scope "/admin", AkrasiaWeb do
-    pipe_through [:browser, :require_authenticated_admin_user]
-
-    resources "/weighings", WeighingController, except: [:index]
-    resources "/users", UserController, except: [:index]
   end
 end

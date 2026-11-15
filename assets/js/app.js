@@ -1,94 +1,92 @@
 // Bundled by esbuild (see config :esbuild in config/config.exs).
-// Import deps with the dep name or local files with a relative path, for example:
-//     import socket from "./socket"
-import Alpine from "alpinejs";
-import "phoenix_html";
-import { Socket } from "phoenix";
-import topbar from "topbar";
-import { LiveSocket } from "phoenix_live_view";
-// import Hooks from "./_hooks";
-import ApexCharts from "apexcharts";
+// npm packages (only ApexCharts) are imported by name, vendored files from
+// ../vendor with relative paths.
 
-let Hooks = {};
+// Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
+import "phoenix_html"
+// Establish Phoenix Socket and LiveView configuration.
+import {Socket} from "phoenix"
+import {LiveSocket} from "phoenix_live_view"
+import {hooks as colocatedHooks} from "phoenix-colocated/akrasia"
+import topbar from "../vendor/topbar"
+import ApexCharts from "apexcharts"
+import "./theme_toggle"
 
-Hooks.Charts = {
+// BMI diagram (AkrasiaWeb.WeighingDiagram). The chart options are still
+// globals from the template; this hook gets rewritten in #17 step 3c.
+const Charts = {
   mounted() {
-    initCharts(this);
+    this.chart = new ApexCharts(document.getElementById("chart"), chartOptions)
+    this.overviewChart = new ApexCharts(document.getElementById("overviewChart"), overviewChartOptions)
+    this.chart.render()
+    this.overviewChart.render()
+
+    this.handleEvent("comparatorSeries", ({data}) => {
+      comparatorSeries = data
+      this.chart.updateSeries([userSeries, comparatorSeries])
+      this.overviewChart.updateSeries([userSeries, comparatorSeries])
+    })
+
+    this.handleEvent("userSeries", ({data}) => {
+      userSeries = data
+      this.chart.updateSeries([userSeries, comparatorSeries])
+      this.overviewChart.updateSeries([userSeries, comparatorSeries])
+    })
   },
-  updated() {
-    renderCharts(this);
-  },
-};
-
-function initCharts(hook) {
-  var chartDiv = document.getElementById("chart");
-  hook.chart = new ApexCharts(chartDiv, chartOptions);
-  var overviewChartDiv = document.getElementById("overviewChart");
-  hook.overviewChart = new ApexCharts(overviewChartDiv, overviewChartOptions);
-  renderCharts(hook);
-
-  hook.handleEvent("comparatorSeries", ({ data }) => {
-    comparatorSeries = data;
-    hook.chart.updateSeries([userSeries, comparatorSeries]);
-    hook.overviewChart.updateSeries([userSeries, comparatorSeries]);
-  });
-
-  hook.handleEvent("userSeries", ({ data }) => {
-    userSeries = data;
-    hook.chart.updateSeries([userSeries, comparatorSeries]);
-    hook.overviewChart.updateSeries([userSeries, comparatorSeries]);
-  });
 }
 
-function renderCharts(hook) {
-  hook.chart.render();
-  hook.overviewChart.render();
-}
-
-window.Alpine = Alpine;
-Alpine.start();
-
-let csrfToken = document
-  .querySelector("meta[name='csrf-token']")
-  .getAttribute("content");
-let liveSocket = new LiveSocket("/live", Socket, {
-  dom: {
-    onBeforeElUpdated(from, to) {
-      if (from._x_dataStack) {
-        window.Alpine.clone(from, to);
-      }
-    },
-  },
-  params: { _csrf_token: csrfToken },
-  hooks: Hooks,
-});
+const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
+const liveSocket = new LiveSocket("/live", Socket, {
+  longPollFallbackMs: 2500,
+  params: {_csrf_token: csrfToken},
+  hooks: {...colocatedHooks, Charts},
+})
 
 // Show progress bar on live navigation and form submits
-// Show progress bar on live navigation and form submits
-topbar.config({
-  barColors: { 0: "#ffce54" },
-  shadowColor: "rgba(0, 0, 0, .3)",
-});
-let topBarScheduled = undefined;
-
-window.addEventListener("phx:page-loading-start", () => {
-  if (!topBarScheduled) {
-    topBarScheduled = setTimeout(() => topbar.show(), 400);
-  }
-});
-
-window.addEventListener("phx:page-loading-stop", () => {
-  clearTimeout(topBarScheduled);
-  topBarScheduled = undefined;
-  topbar.hide();
-});
+topbar.config({barColors: {0: "#ffce54"}, shadowColor: "rgba(0, 0, 0, .3)"})
+window.addEventListener("phx:page-loading-start", _info => topbar.show(300))
+window.addEventListener("phx:page-loading-stop", _info => topbar.hide())
 
 // connect if there are any LiveViews on the page
-liveSocket.connect();
+liveSocket.connect()
 
 // expose liveSocket on window for web console debug logs and latency simulation:
 // >> liveSocket.enableDebug()
 // >> liveSocket.enableLatencySim(1000)  // enabled for duration of browser session
 // >> liveSocket.disableLatencySim()
-window.liveSocket = liveSocket;
-window.ApexCharts = ApexCharts;
+window.liveSocket = liveSocket
+
+// The lines below enable quality of life phoenix_live_reload
+// development features:
+//
+//     1. stream server logs to the browser console
+//     2. click on elements to jump to their definitions in your code editor
+//
+if (process.env.NODE_ENV === "development") {
+  window.addEventListener("phx:live_reload:attached", ({detail: reloader}) => {
+    // Enable server log streaming to client.
+    // Disable with reloader.disableServerLogs()
+    reloader.enableServerLogs()
+
+    // Open configured PLUG_EDITOR at file:line of the clicked element's HEEx component
+    //
+    //   * click with "c" key pressed to open at caller location
+    //   * click with "d" key pressed to open at function component definition location
+    let keyDown
+    window.addEventListener("keydown", e => keyDown = e.key)
+    window.addEventListener("keyup", _e => keyDown = null)
+    window.addEventListener("click", e => {
+      if(keyDown === "c"){
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        reloader.openEditorAtCaller(e.target)
+      } else if(keyDown === "d"){
+        e.preventDefault()
+        e.stopImmediatePropagation()
+        reloader.openEditorAtDef(e.target)
+      }
+    }, true)
+
+    window.liveReloader = reloader
+  })
+}

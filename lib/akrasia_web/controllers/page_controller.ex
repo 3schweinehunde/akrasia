@@ -1,14 +1,10 @@
 defmodule AkrasiaWeb.PageController do
   use AkrasiaWeb, :controller
-  alias Akrasia.Accounts
-  alias Akrasia.Accounts.User
 
-  def index(conn, _params) do
-    changeset = Accounts.change_user_registration(%User{})
-    render(conn, "index.html", error_message: nil, changeset: changeset)
-  end
+  def home(conn, _params), do: render(conn, :home)
 
-  def show(conn, %{"template" => template}) do
-    render(conn, "#{template}.html")
-  end
+  # imprint and privacy have their own routes instead of /page/:template (#45)
+  def imprint(conn, _params), do: render(conn, :imprint)
+
+  def privacy(conn, _params), do: render(conn, :privacy)
 end

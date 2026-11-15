@@ -1,3 +1,3 @@
 defmodule Akrasia.Mailer do
-  use Bamboo.Mailer, otp_app: :akrasia
+  use Swoosh.Mailer, otp_app: :akrasia
 end
