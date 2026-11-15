@@ -65,20 +65,21 @@ informed the users, and the plan stays (#53, 2026-11-15).
   - #51 ApexCharts 3.24 → 8 (user). Check the changelog for breaking
     changes in line and brush charts and theming.
   - #52 Dev tools like pan: tidewave, claude + usage_rules + igniter, credo,
-    sobelow (user). Set them up (claude installer, `.sobelow-conf`, credo
-    config) in step (3).
+    sobelow (user). Set them up (claude installer, `.sobelow-conf`) in 3e;
+    `.credo.exs` is taken over from pan (3b, user asked for it early).
   - DaisyUI comes as the generator's git dependency (not npm as in pan).
 
-  Auth:
-  - #25 Regenerate auth with the Phoenix 1.8 `phx.gen.auth`, then carry over
-    `admin`, `name`, `height`, `public`, `target`. This should also settle
-    #5 (admin check via `on_mount`) and #13.
-  - #29 Phoenix 1.8 login flow: sign up with email only, magic link login,
-    optional password. Existing prod passwords (bcrypt) keep working.
-  - #31 Replace the "42" question with a hidden honeypot field plus a
-    minimum fill-in time (about 3 seconds). Later the same for pan.
-  - #33 Rate limiting per IP for sign-up and magic-link requests (`hammer`),
-    against making akrasia send mails to strangers' addresses.
+  Auth: built in 3b (2026-11-15): `phx.gen.auth --live` (#57), migration
+  `20261115200947_upgrade_auth_to_phoenix_18` (password nullable,
+  `users_tokens.authenticated_at`; existing sessions stay valid, old
+  reset/change tokens deleted), sign-up with email + name (user), honeypot
+  + minimum time (#31), Hammer rate limit per client IP (#33, `ClientIP`
+  reads X-Real-IP / last X-Forwarded-For), own profile page
+  `/users/profile` for name, height, public, target (user; no sudo mode),
+  admin checks `on_mount :require_admin` + `require_admin_user` (#5, used in
+  3d), login redirects to `/diagram`. Password rules are now Phoenix's
+  (12–72 characters, no character classes); existing passwords keep
+  working. Later: the same bot filter for pan (#31).
 
   Admin and lists:
   - #46 Backpex for `/admin` (users, weighings). It replaces `UserGrid`,
@@ -89,7 +90,6 @@ informed the users, and the plan stays (#53, 2026-11-15).
   - #38 Weighings move out of `Accounts` into their own context
     `Akrasia.Weighings`, using the 1.8 scopes (`current_scope`), so the
     context enforces "my weighings".
-  - #45 Imprint and privacy get their own routes; `/page/:template` goes away.
 
   Data and migrations:
   - #39 Deleting a user deletes their weighings
@@ -101,8 +101,6 @@ informed the users, and the plan stays (#53, 2026-11-15).
   - #41 Drop the unused column `invitation_limit` (and the commented-out
     `invitation` relation). Every prod user has a value (9, 10, 96, 100);
     losing them is accepted (#56).
-  - #42 Remove `run priv/repo/seeds.exs` from the `ecto.setup` alias; dev
-    uses the prod backup (#19).
 
   Diagram:
   - #43 Fix #1, #2 and #3 during the rewrite: one BMI function, an empty
@@ -121,22 +119,12 @@ informed the users, and the plan stays (#53, 2026-11-15).
     `Ecto.ConstraintError` (→ #39).
   - **#7 The `weighings.user_id` index is dropped** (→ #40; the duplicate
     module name is fixed).
-  - **#10 `mix ecto.setup` runs the non-existent `priv/repo/seeds.exs`** (→ #42).
-  - **#11 `/page/:template` renders any template name from the URL**,
-    unknown names give a 500 (→ #45).
-  - **#13 `MyWeighingController` looks up the current user itself** from
-    the session or cookie (→ #25, #38).
   - **#15 `invitation_limit` is unused** (→ #41).
 
-- **#8 `config :akrasia, :children` (dev.exs, prod.exs) is never read.**
-  `Akrasia.Application` hard-codes the children. The prod entry names
-  `pan.pid`, while the application writes `akrasia.pid`. Prod runs like
-  pan (#26), so keep the pid file and use pan's setup as the model.
-  Fits into step (3) of #17.
-- **#16 Tests.** The current suite is mostly generated auth and scaffold
-  tests and has never been run. The regenerated auth (#25) brings its own
-  tests. Add tests for the diagram, "My Weighings" and the
-  `Akrasia.Weighings` context.
+- **#16 Tests.** Writing tests is encouraged (user). Done for the app shell
+  and auth (generated + own: bot filter, rate limit, profile, admin checks,
+  client IP). Still to add: the diagram, "My Weighings", the
+  `Akrasia.Weighings` context and the Backpex admin.
 - **#50 Switch from `master` to `main`**, like pan. Done last, after
   everything else in this section (user, 2026-11-15).
   State on 2026-11-15: no `main` exists anywhere yet. The remotes are `code`,
@@ -152,15 +140,23 @@ informed the users, and the plan stays (#53, 2026-11-15).
   be exhausted, and unknown fields crash the query. Goes away with #46 and
   #47 (fixed column lists). Verify that no `String.to_atom` on user input is
   left afterwards.
-- **#5 Admin LiveViews have no admin check of their own.** There is no
-  `live_session` or `on_mount`; only the HTTP pipeline checks `admin`.
-  After #25 and #46, verify that every admin LiveView checks `admin` on
-  mount, including after live navigation.
-- **#9 Secrets in config.** `config/config.exs` has a hard-coded
-  `secret_key_base` (dev value) in a public repo.
-  `config/prod.secret.exs` still uses the deprecated `use Mix.Config`.
-  Move the secrets to `config/runtime.exs` during #17, with pan's prod and
-  runtime config as the model (#26).
+- **#5 Admin pages must check `admin` themselves.** The checks exist since
+  3b (`on_mount {UserAuth, :require_admin}`, plug `require_admin_user`,
+  tested). In 3d, put every admin route behind both, and test that a
+  non-admin can not reach them, including by live navigation.
+- **#58 Does nginx pass the client IP?** The rate limit (#33) reads
+  `X-Real-IP` or the last `X-Forwarded-For` entry. If akrasia's nginx sets
+  neither, all visitors share one limit (5 mails per 10 minutes). Check the
+  nginx config on the server (user) and add `proxy_set_header X-Real-IP
+  $remote_addr;` if missing.
+- **#59 Password login has no rate limit.** #33 covers only requests that
+  send mails. Password guessing on `/users/log-in` is not limited
+  (finding 2026-11-15, user decides).
+- **#60 Privacy page is not up to date** (finding 2026-11-15, user decides):
+  it does not mention the client IP kept in memory for 10 minutes for the
+  rate limit (#33), the theme choice in the browser's localStorage, or the
+  login mails; it links to Twitter and uses `mailto://` (should be
+  `mailto:`). The imprint has the same two links.
 
 ## 3. Languages
 

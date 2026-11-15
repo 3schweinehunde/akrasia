@@ -10,7 +10,7 @@ of private people into these files.
 ## Working with the user
 
 - **Number** findings, options and open items, and keep the numbering going across sessions.
-  **Next new number: #57.** Update it here when you use new numbers. The user steers by
+  **Next new number: #62.** Update it here when you use new numbers. The user steers by
   number ("go with 3", "close #5").
 - While the user is "still exploring", only investigate and answer. Edit the backlog or the
   code only on an explicit request. Go step by step; the user prefers manual over automatic.
@@ -71,6 +71,8 @@ Dev and test databases: `akrasia_dev` / `akrasia_test`, user `postgres` / `postg
 Query the real data before proposing a cause for a bug. `schema_migrations` on prod
 contains `20210119104900` (convert_datetime_to_date_in_weighings), whose file was deleted
 in 2021. It shows as "NO FILE" in `mix ecto.migrations` and is left as it is (#54).
+`users_id_seq` was behind `max(users.id)` on prod (4 vs. 9, probably since the 2021 import),
+so sign-ups failed with a `users_pkey` error; fixed by migration `20261115220000` (#61).
 Prod is deployed and run the same way as pan, with Erlang and Elixir installed via asdf
 (`.tool-versions`); use pan's setup as the model. Prod (`config/prod.secret.exs`) reads `DATABASE_URL` and `SECRET_KEY_BASE` from the environment
 and listens on port 9999 (IPv6).

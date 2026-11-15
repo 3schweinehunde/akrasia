@@ -28,8 +28,14 @@ config :akrasia, :children, [
   AkrasiaWeb.Telemetry,
   Akrasia.Repo,
   {Phoenix.PubSub, name: Akrasia.PubSub},
+  {Akrasia.RateLimit, clean_period: :timer.minutes(1)},
   AkrasiaWeb.Endpoint
 ]
+
+# Bot filter (#31) and rate limit (#33) would reject the quick, repeated
+# sign-ups of the test suite; their own tests set them explicitly.
+config :akrasia, :signup_min_seconds, 0
+config :akrasia, Akrasia.RateLimit, mail_limit: 1000
 
 # In test we don't send emails
 config :akrasia, Akrasia.Mailer, adapter: Swoosh.Adapters.Test

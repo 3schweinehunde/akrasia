@@ -19,6 +19,7 @@ config :akrasia, :children, [
   AkrasiaWeb.Telemetry,
   Akrasia.Repo,
   {Phoenix.PubSub, name: Akrasia.PubSub},
+  {Akrasia.RateLimit, clean_period: :timer.minutes(1)},
   AkrasiaWeb.Endpoint,
   {PidFile.Worker, file: "akrasia.pid"}
 ]

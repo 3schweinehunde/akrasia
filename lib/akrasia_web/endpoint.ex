@@ -12,8 +12,9 @@ defmodule AkrasiaWeb.Endpoint do
   ]
 
   socket "/live", Phoenix.LiveView.Socket,
-    websocket: [connect_info: [session: @session_options]],
-    longpoll: [connect_info: [session: @session_options]]
+    # peer_data and x_headers for AkrasiaWeb.ClientIP (rate limiting, #33)
+    websocket: [connect_info: [:peer_data, :x_headers, session: @session_options]],
+    longpoll: [connect_info: [:peer_data, :x_headers, session: @session_options]]
 
   # Serve at "/" the static files from "priv/static" directory.
   #

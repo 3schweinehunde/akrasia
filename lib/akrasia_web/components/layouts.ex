@@ -40,7 +40,9 @@ defmodule AkrasiaWeb.Layouts do
             <li :if={@current_scope.user.admin}>
               <.link navigate={~p"/admin/users"} class="link">{gettext("Admin")}</.link>
             </li>
-            <li><.link href={~p"/users/settings"} class="link">{gettext("Settings")}</.link></li>
+            <li>
+              <.link navigate={~p"/users/profile"} class="link">{gettext("Profile")}</.link>
+            </li>
             <li>
               <.link href={~p"/users/log-out"} method="delete" class="link">
                 {gettext("Log out")}
