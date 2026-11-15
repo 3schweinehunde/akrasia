@@ -54,16 +54,13 @@ informed the users, and the plan stays (#53, 2026-11-15).
     #18, is done here. Each template is written once. Reference, not decided
     for akrasia: pan's `../pan/docs/claude/catppuccin-themes.md` and
     `../pan/DESIGN.md` (Latte default, Mocha as `prefersdark`, follow the
-    OS when no theme is set, toggle in the UI). The ApexCharts colors on
-    the diagram must follow the theme too.
+    OS when no theme is set, toggle in the UI). The diagram follows the theme (3c).
   - #35 Wrap all UI texts in `gettext` while rewriting the templates;
     the German translations follow later (#28).
-  - #44 Remove Alpine.js (one `x-show` in the comparator list, replace it
-    server-side, plus the `Alpine.clone` workaround in app.js). Backpex
-    0.24 does not need Alpine (checked 2026-11-15); already gone from
-    package.json.
-  - #51 ApexCharts 3.24 → 8 (user). Check the changelog for breaking
-    changes in line and brush charts and theming.
+  - #51 Chart library: ECharts 6 (Apache 2.0), user 2026-11-15. ApexCharts
+    left MIT after 4.7.0; its license from 5.0 on needs a paid OEM license
+    for products used by others. The diagram opens with the full history
+    (user), a zoom slider replaces the old brush chart.
   - #52 Dev tools like pan: tidewave, claude + usage_rules + igniter, credo,
     sobelow (user). Set them up (claude installer, `.sobelow-conf`) in 3e;
     `.credo.exs` is taken over from pan (3b, user asked for it early).
@@ -85,11 +82,9 @@ informed the users, and the plan stays (#53, 2026-11-15).
   - #46 Backpex for `/admin` (users, weighings). It replaces `UserGrid`,
     `WeighingGrid`, `AkrasiaWeb.Grid`, `UserController`,
     `WeighingController` and their templates. Fit its layout into ours.
-  - #47 "My Weighings" becomes a plain 1.8 table with sorting by a fixed
-    list of columns and simple paging; no search, no Flop.
-  - #38 Weighings move out of `Accounts` into their own context
-    `Akrasia.Weighings`, using the 1.8 scopes (`current_scope`), so the
-    context enforces "my weighings".
+  "My Weighings" (#47, plain table, sorting by a fixed column list, paging;
+  abdominal girth and body fat kept as optional fields, user) and the
+  `Akrasia.Weighings` context with scopes (#38) are built in 3c.
 
   Data and migrations:
   - #39 Deleting a user deletes their weighings
@@ -102,29 +97,18 @@ informed the users, and the plan stays (#53, 2026-11-15).
     `invitation` relation). Every prod user has a value (9, 10, 96, 100);
     losing them is accepted (#56).
 
-  Diagram:
-  - #43 Fix #1, #2 and #3 during the rewrite: one BMI function, an empty
-    state for users with no weighings or no height, and after saving a
-    reset form and an updated "Last Weighing". One prod user has no
-    weighings, which is useful to test the empty state (#55).
-
   Items covered by these decisions. Delete each one when it is done:
-  - **#1 Diagram page crashes for new users** (→ #43). `WeighingDiagram.mount`
-    calls `List.last(weighings).weight` and divides by `user.height`.
-  - **#2 Inline weighing form is not reset after saving** (→ #43). The
-    result of `assign(socket, weighing_changeset: ...)` is thrown away in
-    `handle_event("create_weighing")`; "Last Weighing" is not updated.
-  - **#3 BMI calculation is duplicated three times** (→ #43).
   - **#6 Deleting a user who has weighings fails** with
     `Ecto.ConstraintError` (→ #39).
   - **#7 The `weighings.user_id` index is dropped** (→ #40; the duplicate
     module name is fixed).
   - **#15 `invitation_limit` is unused** (→ #41).
 
-- **#16 Tests.** Writing tests is encouraged (user). Done for the app shell
-  and auth (generated + own: bot filter, rate limit, profile, admin checks,
-  client IP). Still to add: the diagram, "My Weighings", the
-  `Akrasia.Weighings` context and the Backpex admin.
+- **#16 Tests.** Writing tests is encouraged (user). Done for the app shell,
+  auth (generated + own: bot filter, rate limit, profile, admin checks,
+  client IP), the `Akrasia.Weighings` context, "My Weighings" and the
+  diagram (empty states, form reset, target BMI, comparators). Still to
+  add: the Backpex admin (3d). The chart hook itself (JS) is untested.
 - **#50 Switch from `master` to `main`**, like pan. Done last, after
   everything else in this section (user, 2026-11-15).
   State on 2026-11-15: no `main` exists anywhere yet. The remotes are `code`,

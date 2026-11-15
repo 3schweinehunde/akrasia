@@ -1,5 +1,5 @@
 // Bundled by esbuild (see config :esbuild in config/config.exs).
-// npm packages (only ApexCharts) are imported by name, vendored files from
+// npm packages (only ECharts) are imported by name, vendored files from
 // ../vendor with relative paths.
 
 // Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
@@ -9,37 +9,14 @@ import {Socket} from "phoenix"
 import {LiveSocket} from "phoenix_live_view"
 import {hooks as colocatedHooks} from "phoenix-colocated/akrasia"
 import topbar from "../vendor/topbar"
-import ApexCharts from "apexcharts"
+import {BmiChart} from "./bmi_chart"
 import "./theme_toggle"
-
-// BMI diagram (AkrasiaWeb.WeighingDiagram). The chart options are still
-// globals from the template; this hook gets rewritten in #17 step 3c.
-const Charts = {
-  mounted() {
-    this.chart = new ApexCharts(document.getElementById("chart"), chartOptions)
-    this.overviewChart = new ApexCharts(document.getElementById("overviewChart"), overviewChartOptions)
-    this.chart.render()
-    this.overviewChart.render()
-
-    this.handleEvent("comparatorSeries", ({data}) => {
-      comparatorSeries = data
-      this.chart.updateSeries([userSeries, comparatorSeries])
-      this.overviewChart.updateSeries([userSeries, comparatorSeries])
-    })
-
-    this.handleEvent("userSeries", ({data}) => {
-      userSeries = data
-      this.chart.updateSeries([userSeries, comparatorSeries])
-      this.overviewChart.updateSeries([userSeries, comparatorSeries])
-    })
-  },
-}
 
 const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content")
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
   params: {_csrf_token: csrfToken},
-  hooks: {...colocatedHooks, Charts},
+  hooks: {...colocatedHooks, BmiChart},
 })
 
 // Show progress bar on live navigation and form submits
