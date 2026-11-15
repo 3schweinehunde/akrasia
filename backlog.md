@@ -13,8 +13,10 @@ otherwise.
 
 ## 1. Get it running
 
-Deployment: nobody is using akrasia right now, so it is fine to deploy only
-after sections 1 and 2 are done and leave prod not running until then.
+Deployment: it is fine to deploy only after sections 1 and 2 are done and
+leave prod not running until then. The prod data shows 13 weighings since
+June 2026 (latest 2026-11-09), so akrasia is in light use; the user has
+informed the users, and the plan stays (#53, 2026-11-15).
 
 - **#17 Upgrade the stack.** Today: Phoenix 1.6, LiveView 0.17, esbuild 0.14,
   Tailwind 3, Bamboo, Cowboy; `config :logger, level: :warn` in test.exs is
@@ -29,7 +31,10 @@ after sections 1 and 2 are done and leave prod not running until then.
   `phx.new` 1.8.16 project, new `mix.lock`, npm only for ApexCharts,
   topbar and heroicons vendored in `assets/vendor/` like the generator),
   (3) fix until it compiles, (4) fix until the tests pass. The rewrite
-  parts below happen within (3) and (4).
+  parts below happen within (3) and (4). Step (3) is split into commits
+  (user, 2026-11-15): (3a) config and app shell (layouts, DaisyUI
+  Latte/Mocha, gettext), (3b) auth, (3c) weighings context, "My Weighings"
+  and the diagram, (3d) Backpex admin, (3e) migrations and dev tools.
 
   Stack:
   - #20 Go straight to pan's versions: Phoenix 1.8, LiveView 1.2,
@@ -87,14 +92,16 @@ after sections 1 and 2 are done and leave prod not running until then.
   - #40 Re-add the index on `weighings.user_id` and give migration
     `20210412180000_remove_index.exs` its own module name.
   - #41 Drop the unused column `invitation_limit` (and the commented-out
-    `invitation` relation).
+    `invitation` relation). Every prod user has a value (9, 10, 96, 100);
+    losing them is accepted (#56).
   - #42 Remove `run priv/repo/seeds.exs` from the `ecto.setup` alias; dev
     uses the prod backup (#19).
 
   Diagram:
   - #43 Fix #1, #2 and #3 during the rewrite: one BMI function, an empty
     state for users with no weighings or no height, and after saving a
-    reset form and an updated "Last Weighing".
+    reset form and an updated "Last Weighing". One prod user has no
+    weighings, which is useful to test the empty state (#55).
 
   Items covered by these decisions. Delete each one when it is done:
   - **#1 Diagram page crashes for new users** (→ #43). `WeighingDiagram.mount`
@@ -119,12 +126,6 @@ after sections 1 and 2 are done and leave prod not running until then.
   `pan.pid`, while the application writes `akrasia.pid`. Prod runs like
   pan (#26), so keep the pid file and use pan's setup as the model.
   Fits into step (3) of #17.
-- **#19 Restore the prod backup into `akrasia_dev`.** A prod backup exists
-  and can be brought in. Real data is then available to check the bugs
-  against, as in pan. The user restores it; Claude says when it is needed.
-  That is once #17 compiles and the server should start; the tests use the
-  test DB and don't need it. #40 and #41 add migrations that then run
-  against this data.
 - **#16 Tests.** The current suite is mostly generated auth and scaffold
   tests and has never been run. The regenerated auth (#25) brings its own
   tests. Add tests for the diagram, "My Weighings" and the

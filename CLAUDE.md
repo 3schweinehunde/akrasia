@@ -10,10 +10,13 @@ of private people into these files.
 ## Working with the user
 
 - **Number** findings, options and open items, and keep the numbering going across sessions.
-  **Next new number: #53.** Update it here when you use new numbers. The user steers by
+  **Next new number: #57.** Update it here when you use new numbers. The user steers by
   number ("go with 3", "close #5").
 - While the user is "still exploring", only investigate and answer. Edit the backlog or the
   code only on an explicit request. Go step by step; the user prefers manual over automatic.
+- Stay within what was asked. Things the user does themselves (e.g. restoring the prod
+  backup, #19) are theirs: answer, and don't start searching their file system for
+  files they mentioned. Ask for a path instead (2026-11-15).
 - Never hesitate to ask questions (user, 2026-11-15). Ask before starting a step
   rather than guessing at scope or preferences.
 - Don't put your own ideas into backlog items or summaries as if they were decided. Mark them
@@ -60,7 +63,12 @@ mix assets.deploy         # esbuild --minify + phx.digest
 cd assets && npm run deploy   # production Tailwind build
 ```
 
-Dev and test databases: `akrasia_dev` / `akrasia_test`, user `postgres` / `postgres` on localhost.
+Dev and test databases: `akrasia_dev` / `akrasia_test`, user `postgres` / `postgres` on localhost
+(Postgres 18). `akrasia_dev` is a prod backup, restored by the user on 2026-11-15
+(8 users, 1217 weighings 2010-06 to 2026-11). The user restores backups; Claude doesn't.
+Query the real data before proposing a cause for a bug. `schema_migrations` on prod
+contains `20210119104900` (convert_datetime_to_date_in_weighings), whose file was deleted
+in 2021. It shows as "NO FILE" in `mix ecto.migrations` and is left as it is (#54).
 Prod is deployed and run the same way as pan, with Erlang and Elixir installed via asdf
 (`.tool-versions`); use pan's setup as the model. Prod (`config/prod.secret.exs`) reads `DATABASE_URL` and `SECRET_KEY_BASE` from the environment
 and listens on port 9999 (IPv6).
