@@ -67,8 +67,6 @@ defmodule Akrasia.MixProject do
       {:bamboo_smtp, "~> 4.1"},
       # mailing
       {:bamboo, "~> 2.2"},
-      # frontend component framework
-      {:surface, "~> 0.7"},
       # Creating a pidfile
       {:pid_file, "~> 0.2"},
       # Javascript bundler

@@ -1,4 +1,4 @@
-// Configure module entry points in "webpack.config.js".
+// Bundled by esbuild (see config :esbuild in config/config.exs).
 // Import deps with the dep name or local files with a relative path, for example:
 //     import socket from "./socket"
 import Alpine from "alpinejs";

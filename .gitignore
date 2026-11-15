@@ -28,8 +28,5 @@ npm-debug.log
 # this depending on your deployment strategy.
 /priv/static/assets/
 
-# Surface: Ignore auto-generated hook files
-/assets/js/_hooks/
-
 #Pidfile
 akrasia.pid

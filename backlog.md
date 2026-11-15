@@ -16,7 +16,7 @@ Deployment (user, 2026-11-15): nobody is using akrasia right now, so it is
 fine to deploy only after sections 1 and 2 are done and leave prod not
 running until then.
 
-- **#17 Outdated stack:** Phoenix 1.6, LiveView 0.17, Surface 0.7,
+- **#17 Outdated stack:** Phoenix 1.6, LiveView 0.17,
   esbuild 0.14, `config :logger, level: :warn` in test.exs (deprecated).
   `.tool-versions` now pins Erlang 29.1.1 / Elixir 1.20.4 like the sibling
   projects (2026-11-15), but the 2022 `mix.lock` does not build there.
@@ -34,17 +34,13 @@ running until then.
   - #25 Regenerate auth with the Phoenix 1.8 `phx.gen.auth`, then carry
     over `bot_check`, `admin`, `name`, `height`, `public`, `target`. This
     probably also settles #5 (on_mount) and #13.
+  - #29 Adopt the Phoenix 1.8 login flow: sign up with email only, magic
+    link login, optional password. Existing prod passwords (bcrypt) keep
+    working. Open: does the "42" bot question stay at sign-up?
   - Steps, each committed separately when the user says "commit":
-    (1) remove Surface (#12) and the leftovers (#14), (2) upgrade the deps,
-    (3) fix until it compiles, (4) fix until the tests pass.
-- **#12 Two grid implementations.** The admin weighings grid still uses the
-  Surface grid (`live/surface/`). Everything else uses `AkrasiaWeb.Grid`.
-  Decided by the user (2026-11-15): get rid of Surface. Move the weighings
-  grid to `AkrasiaWeb.Grid`, remove `live/surface/`, the `:surface` dep, the
-  Surface parts of `.formatter.exs`, and `import Surface` in `akrasia_web.ex`.
-- **#14 Generator leftovers:** `PageLive` (+ its template and test, not routed)
-  and `assets/webpack.config.js` (esbuild is used). Removing them before #17
-  leaves less to migrate.
+    (1) remove Surface (#12) and the leftovers (#14) (done 2026-11-15),
+    (2) upgrade the deps, (3) fix until it compiles, (4) fix until the
+    tests pass.
 - **#10 `mix ecto.setup` runs `priv/repo/seeds.exs`, which does not exist.**
 - **#19 Restore the prod backup into `akrasia_dev`.** A prod backup exists
   and can be brought in (user, 2026-11-15). Real data is then available to
@@ -61,8 +57,8 @@ running until then.
 ## 2. Security problems
 
 - **#4 `String.to_atom` on user input.** The grid LiveViews turn the URL
-  params `sort_by` and `sort_order` into atoms. `AkrasiaWeb.Grid` and
-  `AkrasiaWeb.Surface.Grid` do the same in their search and sort events.
+  params `sort_by` and `sort_order` into atoms. `AkrasiaWeb.Grid` does the
+  same in its search and sort events.
   `MyWeighingGrid` is open to every logged-in user, so atoms can be
   exhausted, and unknown fields crash the query.
 - **#5 Admin LiveViews have no admin check of their own (to verify).**
