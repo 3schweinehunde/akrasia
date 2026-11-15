@@ -109,6 +109,12 @@ Deployment (user, 2026-11-15): nobody is using akrasia right now, so it is
 fine to deploy only after sections 1 and 2 are done and leave prod not
 running until then.
 
+- **#50 Switch from `master` to `main`** (user, 2026-11-15), like pan.
+  State on 2026-11-15: no `main` exists anywhere yet. The remotes are `code`,
+  `gitea` and `github`, all with `master` at the same commit as local.
+  Steps: rename the branch, push `main` to all three remotes, set it as the
+  default branch in each remote's settings (the user), delete `master` on
+  the remotes, and point the prod deployment at `main`.
 - **#17 Outdated stack:** Phoenix 1.6, LiveView 0.17,
   esbuild 0.14, `config :logger, level: :warn` in test.exs (deprecated).
   `.tool-versions` now pins Erlang 29.1.1 / Elixir 1.20.4 like the sibling

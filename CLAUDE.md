@@ -10,7 +10,7 @@ of private people into these files.
 ## Working with the user
 
 - **Number** findings, options and open items, and keep the numbering going across sessions.
-  **Next new number: #50.** Update it here when you use new numbers. The user steers by
+  **Next new number: #51.** Update it here when you use new numbers. The user steers by
   number ("go with 3", "close #5").
 - While the user is "still exploring", only investigate and answer. Edit the backlog or the
   code only on an explicit request. Go step by step; the user prefers manual over automatic.
@@ -131,5 +131,6 @@ and listens on port 9999 (IPv6).
 ## Conventions
 
 - Run `mix format` before committing.
-- Git remotes: `github` (public), `gitea` and `gitlab`. Work happens on `master`.
+- Git remotes: `code`, `gitea` and `github` (public). Work happens on `master` until
+  the switch to `main` (#50).
 - Known bugs and cleanups are tracked in [backlog.md](backlog.md), not here.
